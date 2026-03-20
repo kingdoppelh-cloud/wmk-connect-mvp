@@ -7,11 +7,12 @@ interface Props {
     companies: Company[];
     favorites: string[];
     onToggleFavorite: (id: string) => void;
+    onSelectCompany: (id: string) => void;
 }
 
 const CATEGORIES = ['Alle', 'Gastronomie', 'Friseure', 'Handwerk', 'Dienstleistung'];
 
-export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite }) => {
+export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany }) => {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Alle');
 
@@ -131,6 +132,7 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                             company={company}
                             isFavorite={favorites.includes(company.id)}
                             onToggleFavorite={onToggleFavorite}
+                            onSelect={() => onSelectCompany(company.id)}
                         />
                     ))
                 ) : (

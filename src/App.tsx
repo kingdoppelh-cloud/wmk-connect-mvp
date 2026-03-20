@@ -2,12 +2,14 @@ import { useState, useEffect, Suspense, lazy } from 'react';
 import { Layout } from './components/Layout';
 import { Discover } from './components/Discover';
 import { Favorites } from './components/Favorites';
+import { CompanyDetail } from './components/CompanyDetail';
 import { useCompanies } from './hooks/useCompanies';
 
 const MapView = lazy(() => import('./components/MapView').then(module => ({ default: module.MapView })));
 
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
 
   // Echte Daten aus Supabase abrufen!
@@ -30,6 +32,13 @@ function App() {
     });
   };
 
+  const selectedCompany = companies.find(c => c.id === selectedCompanyId);
+
+  // Detailansicht hat Vorrang vor Tabs, wenn eine Firma ausgewählt ist
+  if (selectedCompanyId && selectedCompany) {
+    return <CompanyDetail company={selectedCompany} onBack={() => setSelectedCompanyId(null)} />;
+  }
+
   // Loading-State anzeigen
   if (isLoading) {
     return (
@@ -49,13 +58,13 @@ function App() {
   }
 
   const TABS = {
-    discover: <Discover companies={companies} favorites={favorites} onToggleFavorite={toggleFavorite} />,
+    discover: <Discover companies={companies} favorites={favorites} onToggleFavorite={toggleFavorite} onSelectCompany={setSelectedCompanyId} />,
     map: (
       <Suspense fallback={<div className="flex h-[50vh] items-center justify-center text-gray-400">Karte lädt...</div>}>
-        <MapView companies={companies} />
+        <MapView companies={companies} onSelectCompany={(id: string) => { setSelectedCompanyId(id); setActiveTab('discover'); }} />
       </Suspense>
     ),
-    favorites: <Favorites companies={companies} favorites={favorites} onToggleFavorite={toggleFavorite} />
+    favorites: <Favorites companies={companies} favorites={favorites} onToggleFavorite={toggleFavorite} onSelectCompany={setSelectedCompanyId} />
   };
 
   return (

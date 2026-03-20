@@ -5,8 +5,12 @@ export interface Company {
     address: string;
     phone: string;
     whatsapp: string;
+    email?: string;
     websiteUrl: string;
     description: string;
+    descriptionLong?: string;
+    image?: string;
+    gallery?: string[];
     isPremium: boolean;
     coordinates: [number, number];
     openingHours: { [key: string]: string };
@@ -18,9 +22,16 @@ export const companies: Company[] = [
         name: 'Gasthaus zum Schwan',
         category: 'Gastronomie',
         description: 'Traditionelle hessische Küche im Herzen von Bad Sooden-Allendorf.',
+        descriptionLong: 'Willkommen im Gasthaus zum Schwan. Seit Generationen bieten wir unseren Gästen feinste hessische Spezialitäten in gemütlicher Atmosphäre. Entdecken Sie unsere berühmte Grüne Soße, zarte Wildgerichte aus heimischer Jagd und saisonale Köstlichkeiten. Ob im historischen Gastraum oder in unserem idyllischen Biergarten – wir freuen uns auf Ihren Besuch!',
         websiteUrl: 'https://hotel-schwan.de',
         phone: '+4956522026',
         whatsapp: '4956522026',
+        email: 'info@hotel-schwan.de',
+        image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=1000',
+        gallery: [
+            'https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=800'
+        ],
         coordinates: [51.2721, 9.9834],
         openingHours: {
             "0": "11:30-22:00", // Sonntag

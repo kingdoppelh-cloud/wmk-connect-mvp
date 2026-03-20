@@ -39,9 +39,10 @@ const BSA_CENTER: [number, number] = [51.2721, 9.9834];
 
 interface Props {
     companies: Company[];
+    onSelectCompany: (id: string) => void;
 }
 
-export const MapView: React.FC<Props> = ({ companies }) => {
+export const MapView: React.FC<Props> = ({ companies, onSelectCompany }) => {
     return (
         <div className="h-[calc(100vh-140px)] w-full relative">
             <MapContainer
@@ -67,14 +68,22 @@ export const MapView: React.FC<Props> = ({ companies }) => {
                                 </span>
                                 <h4 className="font-extrabold text-sm">{company.name}</h4>
                                 <p className="text-xs text-gray-500 mb-3">{company.address}</p>
-                                <a
-                                    href={company.websiteUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block text-center bg-gray-900 text-white py-2 px-4 rounded-lg text-xs font-bold"
-                                >
-                                    Website besuchen
-                                </a>
+                                <div className="grid grid-cols-2 gap-2 mt-3">
+                                    <button
+                                        onClick={() => onSelectCompany(company.id)}
+                                        className="text-center bg-accent text-white py-2 px-3 rounded-lg text-[10px] font-black uppercase tracking-tighter"
+                                    >
+                                        Details
+                                    </button>
+                                    <a
+                                        href={company.websiteUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-center bg-gray-900 text-white py-2 px-3 rounded-lg text-[10px] font-black uppercase tracking-tighter"
+                                    >
+                                        Website
+                                    </a>
+                                </div>
                             </div>
                         </Popup>
                     </Marker>

@@ -7,9 +7,10 @@ interface Props {
     companies: Company[];
     favorites: string[];
     onToggleFavorite: (id: string) => void;
+    onSelectCompany: (id: string) => void;
 }
 
-export const Favorites: React.FC<Props> = ({ companies, favorites, onToggleFavorite }) => {
+export const Favorites: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany }) => {
     const favoriteCompanies = companies.filter(c => favorites.includes(c.id));
 
     return (
@@ -27,6 +28,7 @@ export const Favorites: React.FC<Props> = ({ companies, favorites, onToggleFavor
                             company={company}
                             isFavorite={true}
                             onToggleFavorite={onToggleFavorite}
+                            onSelect={() => onSelectCompany(company.id)}
                         />
                     ))
                 ) : (

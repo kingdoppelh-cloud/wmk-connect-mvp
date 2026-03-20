@@ -9,9 +9,10 @@ interface Props {
     company: Company;
     isFavorite: boolean;
     onToggleFavorite: (id: string) => void;
+    onSelect?: () => void;
 }
 
-export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavorite }) => {
+export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavorite, onSelect }) => {
     const currentStatus = getStatusLabel(company.openingHours);
 
     const handleShare = async () => {
@@ -36,8 +37,9 @@ export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavo
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            onClick={onSelect}
             className={cn(
-                "relative rounded-2xl p-5 mb-5 transition-all duration-500 bg-white shadow-sm",
+                "relative rounded-2xl p-5 mb-5 transition-all duration-500 bg-white shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.01] active:scale-100 group",
                 company.isPremium
                     ? "border-2 border-premium ring-4 ring-premium/10 ring-offset-0"
                     : "border border-gray-100"
@@ -88,7 +90,7 @@ export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavo
             </div>
 
             {/* Actions */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3" onClick={(e) => e.stopPropagation()}>
                 <a
                     href={company.websiteUrl}
                     target="_blank"
