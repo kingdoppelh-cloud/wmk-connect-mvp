@@ -12,17 +12,6 @@ export function cn(...inputs: ClassValue[]) {
 export const Layout: React.FC<{ children: React.ReactNode, activeTab: string, setActiveTab: (tab: string) => void }> = ({ children, activeTab, setActiveTab }) => {
     return (
         <div className="flex flex-col min-h-screen pb-20 safe-bottom">
-            {/* Header */}
-            <header className="sticky top-0 z-50 glass px-6 py-4 flex items-center justify-between border-b border-gray-100">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                        WMK
-                    </div>
-                    <h1 className="text-xl font-extrabold tracking-tight">
-                        WMK <span className="text-accent underline decoration-2 underline-offset-4">Connect</span>
-                    </h1>
-                </div>
-            </header>
 
             {/* Main Content */}
             <main className="flex-1 w-full max-w-2xl mx-auto">

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X } from 'lucide-react';
+import { Search, X, Star, ArrowRight } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 
@@ -32,7 +32,26 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
     }, [search, selectedCategory]);
 
     return (
-        <div className="px-6 pt-6">
+        <div className="px-6 pt-12 pb-10">
+            {/* Hero Section */}
+            <div className="text-center mb-12 animate-in fade-in slide-in-from-top duration-700">
+                <div className="relative inline-block mb-6">
+                    <img
+                        src="/logo.png"
+                        alt="WMK Connect Logo"
+                        className="w-48 h-48 mx-auto drop-shadow-2xl relative z-10 hover:scale-105 transition-transform duration-500"
+                    />
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-accent/20 rounded-full blur-3xl -z-10 animate-pulse" />
+                </div>
+                <h1 className="text-4xl font-black tracking-tight text-slate-900 mb-2">
+                    WMK <span className="text-accent underline decoration-4 underline-offset-8">Connect</span>
+                </h1>
+                <p className="text-slate-500 font-medium text-lg italic">
+                    Ihre Region. Ihre Firmen. Ein Netzwerk.
+                </p>
+            </div>
+
             {/* Search Bar */}
             <div className="relative mb-6">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -67,6 +86,33 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                         {cat}
                     </button>
                 ))}
+            </div>
+
+            {/* Premium CTA */}
+            <div className="mb-8 p-6 rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-xl relative overflow-hidden group">
+                <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-3">
+                        <div className="p-1.5 bg-premium/20 rounded-lg">
+                            <Star className="text-premium fill-premium" size={18} />
+                        </div>
+                        <span className="text-premium font-bold text-xs uppercase tracking-widest">Premium Vorteil</span>
+                    </div>
+                    <h3 className="text-xl font-black mb-2 leading-tight">Werde Top-Empfehlung</h3>
+                    <p className="text-slate-400 text-sm mb-6 max-w-[200px]">Erscheinen Sie ganz oben und gewinnen Sie mehr Kunden.</p>
+                    <a
+                        href="https://buy.stripe.com/8x2fZg5LybQYdyte7R6oo00"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-lg shadow-accent/25 active:scale-95"
+                    >
+                        Jetzt Premium buchen
+                        <ArrowRight size={16} />
+                    </a>
+                </div>
+
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-premium/10 rounded-full blur-3xl group-hover:bg-premium/20 transition-colors" />
+                <Star className="absolute bottom-6 right-6 text-white/5 rotate-12" size={80} />
             </div>
 
             {/* Results Label */}
