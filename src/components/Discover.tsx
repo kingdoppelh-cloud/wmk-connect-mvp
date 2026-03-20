@@ -1,16 +1,17 @@
 import React, { useState, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
-import { companies } from '../data/companies';
+import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 
 interface Props {
+    companies: Company[];
     favorites: string[];
     onToggleFavorite: (id: string) => void;
 }
 
 const CATEGORIES = ['Alle', 'Gastronomie', 'Friseure', 'Handwerk', 'Dienstleistung'];
 
-export const Discover: React.FC<Props> = ({ favorites, onToggleFavorite }) => {
+export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite }) => {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Alle');
 

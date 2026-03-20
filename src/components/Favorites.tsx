@@ -1,14 +1,15 @@
 import React from 'react';
-import { companies } from '../data/companies';
+import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 import { Heart } from 'lucide-react';
 
 interface Props {
+    companies: Company[];
     favorites: string[];
     onToggleFavorite: (id: string) => void;
 }
 
-export const Favorites: React.FC<Props> = ({ favorites, onToggleFavorite }) => {
+export const Favorites: React.FC<Props> = ({ companies, favorites, onToggleFavorite }) => {
     const favoriteCompanies = companies.filter(c => favorites.includes(c.id));
 
     return (

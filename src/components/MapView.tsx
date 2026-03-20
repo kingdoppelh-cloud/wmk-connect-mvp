@@ -2,7 +2,7 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { companies } from '../data/companies';
+import { type Company } from '../data/companies';
 
 // Fix for Leaflet default icon issues in React
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -37,7 +37,11 @@ const standardIcon = new L.Icon({
 
 const BSA_CENTER: [number, number] = [51.2721, 9.9834];
 
-export const MapView: React.FC = () => {
+interface Props {
+    companies: Company[];
+}
+
+export const MapView: React.FC<Props> = ({ companies }) => {
     return (
         <div className="h-[calc(100vh-140px)] w-full relative">
             <MapContainer

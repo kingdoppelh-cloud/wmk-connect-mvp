@@ -1,18 +1,15 @@
 export interface Company {
     id: string;
     name: string;
-    category: 'Gastronomie' | 'Friseure' | 'Handwerk' | 'Dienstleistung';
-    description: string;
-    websiteUrl: string;
+    category: string;
+    address: string;
     phone: string;
     whatsapp: string;
-    coordinates: [number, number]; // [lat, lng]
-    openingHours: {
-        [key: string]: string; // "mon": "08:00-18:00"
-    };
+    websiteUrl: string;
+    description: string;
     isPremium: boolean;
-    address: string;
-    imageUrl?: string;
+    coordinates: [number, number];
+    openingHours: { [key: string]: string };
 }
 
 export const companies: Company[] = [
