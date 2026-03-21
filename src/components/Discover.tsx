@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, Star, ArrowRight, Building2, Briefcase, MapPin, Sparkles } from 'lucide-react';
+import { Search, X, Star, ArrowRight, Building2, Briefcase, MapPin, Sparkles, Heart, Bell } from 'lucide-react';
 import { useNews } from '../hooks/useNews';
+import { useFollows } from '../hooks/useFollows';
+import { usePushNotifications } from '../hooks/usePushNotifications';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 import { SkeletonCard } from './SkeletonCard';
@@ -99,6 +101,9 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                     </button>
                 </div>
             </div>
+
+            {/* Push Notification Opt-in */}
+            <PushOptIn />
 
             {/* Search Bar */}
             <div className="relative mb-6">
@@ -233,55 +238,110 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
 
 const NewsPreview: React.FC<{ onSelectCompany: (id: string) => void }> = ({ onSelectCompany }) => {
     const { posts, isLoading } = useNews();
-    const latestPosts = posts.slice(0, 5);
+    const { followedIds } = useFollows();
 
-    if (isLoading || latestPosts.length === 0) return null;
+    const followedPosts = posts.filter(p => followedIds.includes(p.company_id)).slice(0, 5);
+    const globalPosts = posts.slice(0, 5);
+
+    if (isLoading || globalPosts.length === 0) return null;
 
     return (
-        <section className="mb-10 -mx-6">
-            <div className="px-6 mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-                    <div className="p-1.5 bg-accent/10 rounded-lg text-accent">
-                        <Sparkles size={18} className="fill-current" />
+        <div className="space-y-10">
+            {followedPosts.length > 0 && (
+                <section className="-mx-6">
+                    <div className="px-6 mb-4 flex items-center justify-between">
+                        <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                            <div className="p-1.5 bg-rose-50 rounded-lg text-rose-500">
+                                <Heart size={18} className="fill-current" />
+                            </div>
+                            Deine Favoriten
+                        </h2>
                     </div>
-                    Live aus der Region
-                </h2>
-                <span className="text-[10px] font-black text-accent uppercase tracking-widest animate-pulse">Neu</span>
+                    <div className="flex gap-4 overflow-x-auto no-scrollbar px-6 pb-2">
+                        {followedPosts.map(post => (
+                            <NewsCard key={post.id} post={post} onClick={() => onSelectCompany(post.company_id)} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            <section className="-mx-6">
+                <div className="px-6 mb-4 flex items-center justify-between">
+                    <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                        <div className="p-1.5 bg-accent/10 rounded-lg text-accent">
+                            <Sparkles size={18} className="fill-current" />
+                        </div>
+                        Live aus der Region
+                    </h2>
+                    <span className="text-[10px] font-black text-accent uppercase tracking-widest animate-pulse">Neu</span>
+                </div>
+
+                <div className="flex gap-4 overflow-x-auto no-scrollbar px-6 pb-2">
+                    {globalPosts.map(post => (
+                        <NewsCard key={post.id} post={post} onClick={() => onSelectCompany(post.company_id)} />
+                    ))}
+                </div>
+            </section>
+        </div>
+    );
+};
+
+const NewsCard = ({ post, onClick }: { post: any, onClick: () => void }) => (
+    <div
+        onClick={onClick}
+        className="min-w-[280px] bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:border-accent/20 transition-all active:scale-[0.98] cursor-pointer"
+    >
+        <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-8 rounded-xl overflow-hidden border border-slate-100">
+                <img src={post.company?.image} className="w-full h-full object-cover" alt="" />
+            </div>
+            <div className="min-w-0">
+                <h4 className="text-xs font-black text-slate-900 truncate">{post.company?.name}</h4>
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tight">
+                    vor {Math.max(1, Math.floor((new Date().getTime() - new Date(post.created_at).getTime()) / (1000 * 60 * 60)))} Std.
+                </p>
+            </div>
+        </div>
+        <p className="text-slate-600 text-sm font-medium line-clamp-2 leading-relaxed mb-3">
+            {post.content}
+        </p>
+        <div className="flex items-center justify-between">
+            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full">
+                {post.type}
+            </span>
+            <div className="text-accent">
+                <ArrowRight size={14} />
+            </div>
+        </div>
+    </div>
+);
+
+const PushOptIn = () => {
+    const { permission, subscribe, isSubscribed } = usePushNotifications();
+
+    if (permission === 'granted' || isSubscribed) return null;
+
+    return (
+        <div className="mb-6 bg-slate-900 rounded-3xl p-5 text-white flex items-center justify-between border border-white/10 shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 blur-3xl -mr-16 -mt-16 group-hover:bg-accent/30 transition-all duration-700" />
+
+            <div className="flex items-center gap-4 relative z-10">
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
+                    <Bell size={24} className="text-accent animate-bounce" />
+                </div>
+                <div>
+                    <h3 className="font-black uppercase tracking-tight text-sm">Nichts mehr verpassen!</h3>
+                    <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">Aktivieren für News deiner Favoriten</p>
+                </div>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto no-scrollbar px-6 pb-2">
-                {latestPosts.map(post => (
-                    <div
-                        key={post.id}
-                        onClick={() => onSelectCompany(post.company_id)}
-                        className="min-w-[280px] bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:border-accent/20 transition-all active:scale-[0.98] cursor-pointer"
-                    >
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="w-8 h-8 rounded-xl overflow-hidden border border-slate-100">
-                                <img src={post.company?.image} className="w-full h-full object-cover" alt="" />
-                            </div>
-                            <div className="min-w-0">
-                                <h4 className="text-xs font-black text-slate-900 truncate">{post.company?.name}</h4>
-                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tight">
-                                    vor {Math.max(1, Math.floor((new Date().getTime() - new Date(post.created_at).getTime()) / (1000 * 60 * 60)))} Std.
-                                </p>
-                            </div>
-                        </div>
-                        <p className="text-slate-600 text-sm font-medium line-clamp-2 leading-relaxed mb-3">
-                            {post.content}
-                        </p>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full">
-                                {post.type}
-                            </span>
-                            <div className="text-accent">
-                                <ArrowRight size={14} />
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </section>
+            <button
+                onClick={subscribe}
+                className="relative z-10 bg-accent hover:bg-accent-light text-slate-900 px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 shadow-xl shadow-accent/20"
+            >
+                Aktivieren
+            </button>
+        </div>
     );
 };
 

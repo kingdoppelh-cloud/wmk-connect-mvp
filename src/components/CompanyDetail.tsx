@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import {
     ArrowLeft, MapPin, Globe, Phone, Mail, BadgeCheck, Star,
-    MessageCircle, Briefcase, BarChart2, ArrowRight, Clock, Share2
+    MessageCircle, Briefcase, BarChart2, ArrowRight, Clock, Share2,
+    Bell, BellOff, UserPlus, Users
 } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { LeadCaptureModal } from './LeadCaptureModal';
@@ -9,6 +9,7 @@ import { useSEO } from '../hooks/useSEO';
 import { supabase } from '../utils/supabase';
 import { cn } from './Layout';
 import { useNews } from '../hooks/useNews';
+import { useFollows } from '../hooks/useFollows';
 import { Sparkles } from 'lucide-react';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -54,6 +55,7 @@ interface Props {
 
 export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies = [], onSelectCompany }) => {
     const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
+    const { isFollowed, followerCount, toggleFollow } = useFollows(company.id);
 
     useSEO({
         title: company.name,
@@ -167,6 +169,21 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                     </div>
 
                     <div className="flex gap-2">
+                        <button
+                            onClick={() => toggleFollow(company.id)}
+                            className={cn(
+                                "flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all active:scale-95 border shadow-lg shadow-slate-900/5",
+                                isFollowed
+                                    ? "bg-slate-900 text-white border-slate-900"
+                                    : "bg-white text-slate-900 border-slate-200 hover:border-slate-300"
+                            )}
+                        >
+                            {isFollowed ? <Bell size={20} /> : <UserPlus size={20} />}
+                            <span className="hidden sm:inline">{isFollowed ? 'Folge ich' : 'Folgen'}</span>
+                            {followerCount > 0 && (
+                                <span className="ml-1 opacity-60 font-medium">({followerCount})</span>
+                            )}
+                        </button>
                         <a
                             href={`tel:${company.phone}`}
                             onClick={() => trackClick('click_phone')}

@@ -150,7 +150,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             });
             setIsAddingNews(false);
             setNewPost({ content: '', type: 'news' });
-            alert('Beitrag veröffentlicht!');
+            alert('Beitrag veröffentlicht! Follower wurden benachrichtigt.');
         } catch (err) {
             alert('Fehler beim Posten');
         }
