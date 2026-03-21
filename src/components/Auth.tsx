@@ -8,8 +8,8 @@ interface Props {
 
 export const Auth: React.FC<Props> = ({ onBack }) => {
     const [loading, setLoading] = useState(false);
+    const [sent, setSent] = useState(false);
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -18,14 +18,45 @@ export const Auth: React.FC<Props> = ({ onBack }) => {
         setError(null);
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            const { error } = await supabase.auth.signInWithOtp({
+                email,
+                options: {
+                    emailRedirectTo: window.location.origin
+                }
+            });
             if (error) throw error;
+            setSent(true);
         } catch (err: any) {
-            setError(err.message || 'Login fehlgeschlagen');
+            setError(err.message || 'Versand fehlgeschlagen');
         } finally {
             setLoading(false);
         }
     };
+
+    if (sent) {
+        return (
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+                <div className="w-full max-w-md text-center">
+                    <div className="bg-white p-12 rounded-[3rem] shadow-2xl border border-slate-100 space-y-6">
+                        <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto">
+                            <Mail size={40} />
+                        </div>
+                        <h2 className="text-3xl font-black text-slate-900">E-Mail gesendet!</h2>
+                        <p className="text-slate-500 font-medium leading-relaxed">
+                            Wir haben einen Magic Link an <strong>{email}</strong> geschickt.
+                            Klicken Sie auf den Link in der E-Mail, um sich einzuloggen.
+                        </p>
+                        <button
+                            onClick={onBack}
+                            className="text-accent font-bold uppercase text-xs tracking-widest pt-4 block mx-auto underline underline-offset-8"
+                        >
+                            Zurück zur Startseite
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
@@ -34,8 +65,8 @@ export const Auth: React.FC<Props> = ({ onBack }) => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-sm mb-4 border border-slate-100">
                         <ShieldCheck className="text-accent" size={32} />
                     </div>
-                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">Admin Login</h1>
-                    <p className="text-slate-500 font-bold uppercase text-[10px] tracking-widest mt-1">Nur für befugte Unternehmen</p>
+                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">Händler Login</h1>
+                    <p className="text-slate-500 font-bold uppercase text-[10px] tracking-widest mt-1">Passwortloser Zugang via Magic Link</p>
                 </div>
 
                 <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
@@ -49,22 +80,7 @@ export const Auth: React.FC<Props> = ({ onBack }) => {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="admin@wmk-connect.de"
-                                    className="w-full bg-slate-50 border border-slate-100 pl-12 pr-4 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all font-bold text-slate-900"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-2 text-left">
-                            <label className="text-xs font-black text-slate-400 uppercase tracking-tighter ml-1">Passwort</label>
-                            <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                <input
-                                    required
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
+                                    placeholder="firma@beispiel.de"
                                     className="w-full bg-slate-50 border border-slate-100 pl-12 pr-4 py-4 rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all font-bold text-slate-900"
                                 />
                             </div>
@@ -72,7 +88,7 @@ export const Auth: React.FC<Props> = ({ onBack }) => {
 
                         {error && (
                             <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-red-500 text-xs font-bold animate-shake">
-                                {error === 'Invalid login credentials' ? 'Ungültige Anmeldedaten' : error}
+                                {error}
                             </div>
                         )}
 
@@ -86,7 +102,7 @@ export const Auth: React.FC<Props> = ({ onBack }) => {
                             ) : (
                                 <>
                                     <LogIn size={18} />
-                                    Anmelden
+                                    Magic Link anfordern
                                 </>
                             )}
                         </button>

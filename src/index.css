@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-accent: #e11d48; /* Ein starkes Rot/Rosa als Akzentfarbe */
-  --color-premium: #fbbf24; /* Gold für Premium-Einträge */
+  --color-accent: #e11d48;
+  /* Ein starkes Rot/Rosa als Akzentfarbe */
+  --color-premium: #fbbf24;
+  /* Gold für Premium-Einträge */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
@@ -30,6 +32,7 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -46,5 +49,28 @@ body {
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .safe-bottom {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* Premium Pin Pulse Animation */
+.premium-pin {
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.6));
+  animation: pin-pulse 2s infinite ease-in-out;
+}
+
+@keyframes pin-pulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));
+  }
+
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.8));
+  }
+
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));
   }
 }

@@ -14,6 +14,7 @@ export interface Company {
     isPremium: boolean;
     coordinates: [number, number];
     openingHours: { [key: string]: string };
+    distance?: number;
 }
 
 export const companies: Company[] = [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Share2, Star, Phone, MessageCircle, ExternalLink } from 'lucide-react';
+import { Heart, Share2, Star, Phone, MessageCircle, ExternalLink, MapPin } from 'lucide-react';
 import type { Company } from '../data/companies';
 import { getStatusLabel, isOpen } from '../utils/timeUtils';
 import { cn } from './Layout';
@@ -47,9 +47,11 @@ export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavo
         >
             {/* Premium Badge */}
             {company.isPremium && (
-                <div className="absolute -top-3 left-6 glass px-3 py-1 rounded-full border border-premium flex items-center gap-1.5 shadow-sm">
-                    <Star size={14} className="text-premium fill-premium" />
-                    <span className="text-[10px] font-bold text-gray-800 uppercase tracking-tighter">Top-Empfehlung</span>
+                <div className="absolute -top-3 left-6 glass px-4 py-1.5 rounded-full border border-premium flex items-center gap-2 shadow-lg z-10 bg-white/90 backdrop-blur-sm">
+                    <div className="w-4 h-4 bg-premium rounded-full flex items-center justify-center">
+                        <Star size={10} className="text-white fill-white" />
+                    </div>
+                    <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Premium Partner</span>
                 </div>
             )}
 
@@ -65,15 +67,31 @@ export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavo
                         {company.address}
                     </p>
                 </div>
-                <button
-                    onClick={() => onToggleFavorite(company.id)}
-                    className={cn(
-                        "p-2 rounded-full transition-all duration-300 shadow-sm",
-                        isFavorite ? "bg-accent/10 text-accent" : "bg-gray-50 text-gray-400 hover:bg-gray-100"
+                <div className="flex items-center gap-2">
+                    {company.image && (
+                        <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-100 flex-shrink-0 bg-slate-50">
+                            <img
+                                src={company.image}
+                                alt={company.name}
+                                loading="lazy"
+                                decoding="async"
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=100';
+                                }}
+                            />
+                        </div>
                     )}
-                >
-                    <Heart size={20} fill={isFavorite ? "currentColor" : "none"} strokeWidth={2} />
-                </button>
+                    <button
+                        onClick={() => onToggleFavorite(company.id)}
+                        className={cn(
+                            "p-2 rounded-full transition-all duration-300 shadow-sm",
+                            isFavorite ? "bg-accent/10 text-accent" : "bg-gray-50 text-gray-400 hover:bg-gray-100"
+                        )}
+                    >
+                        <Heart size={20} fill={isFavorite ? "currentColor" : "none"} strokeWidth={2} />
+                    </button>
+                </div>
             </div>
 
             <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed mb-4">
@@ -87,6 +105,12 @@ export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavo
                 )}>
                     {currentStatus}
                 </div>
+                {company.distance !== undefined && company.distance < Infinity && (
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md">
+                        <MapPin size={10} />
+                        {company.distance.toFixed(1)} km entfernt
+                    </div>
+                )}
             </div>
 
             {/* Actions */}

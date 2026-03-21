@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, Star, ArrowRight, Building2, Briefcase } from 'lucide-react';
+import { Search, X, Star, ArrowRight, Building2, Briefcase, MapPin } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 import { SkeletonCard } from './SkeletonCard';
@@ -11,11 +11,13 @@ interface Props {
     onToggleFavorite: (id: string) => void;
     onSelectCompany: (id: string) => void;
     isLoading?: boolean;
+    userLocation?: [number, number] | null;
+    onLocationRequest?: () => void;
 }
 
 const CATEGORIES = ['Alle', 'Gastronomie', 'Friseure', 'Handwerk', 'Dienstleistung'];
 
-export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany, isLoading }) => {
+export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany, isLoading, userLocation, onLocationRequest }) => {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Alle');
     const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
@@ -32,6 +34,11 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 // Premium entries always first
                 if (a.isPremium && !b.isPremium) return -1;
                 if (!a.isPremium && b.isPremium) return 1;
+
+                // Then sort by distance if user location is available
+                if (userLocation && a.distance !== undefined && b.distance !== undefined) {
+                    return a.distance - b.distance;
+                }
                 return 0;
             });
     }, [companies, search, selectedCategory]);
@@ -109,11 +116,21 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
 
             {/* Category Chips */}
             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-6 -mx-2 px-2">
+                <button
+                    onClick={onLocationRequest}
+                    className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 shadow-sm border flex items-center gap-1.5 ${userLocation
+                        ? "bg-emerald-500 text-white border-emerald-500 scale-105 shadow-emerald-200"
+                        : "bg-white text-slate-700 border-gray-100 hover:bg-gray-50"
+                        }`}
+                >
+                    <MapPin size={14} className={userLocation ? "animate-pulse" : ""} />
+                    {userLocation ? "In meiner Nähe" : "Nähe finden"}
+                </button>
                 {CATEGORIES.map(cat => (
                     <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`whitespace-nowrap px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 shadow-sm border ${selectedCategory === cat
+                        className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 shadow-sm border ${selectedCategory === cat
                             ? "bg-accent text-white border-accent scale-105 shadow-accent/20"
                             : "bg-white text-gray-500 border-gray-100 hover:bg-gray-50"
                             }`}

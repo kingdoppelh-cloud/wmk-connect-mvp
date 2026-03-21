@@ -16,12 +16,19 @@ const MapView = lazy(() => import('./components/MapView').then(module => ({ defa
 import { InstallPrompt } from './components/InstallPrompt';
 import { MerchantDashboard } from './components/MerchantDashboard';
 import { SwipeJobs } from './components/SwipeJobs';
+import { JobsBoard } from './components/JobsBoard';
+import { PartnerBenefits } from './components/PartnerBenefits';
+import { Impressum } from './components/Impressum';
+import { Datenschutz } from './components/Datenschutz';
 
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
 
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [showSwipeJobsId, setShowSwipeJobsId] = useState<string | null>(null);
+  const [showPartnerBenefits, setShowPartnerBenefits] = useState(false);
+  const [showImpressum, setShowImpressum] = useState(false);
+  const [showDatenschutz, setShowDatenschutz] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [session, setSession] = useState<Session | null>(null);
 
@@ -31,7 +38,7 @@ function App() {
   const [isAddingCompany, setIsAddingCompany] = useState(false);
 
   // Echte Daten aus Supabase abrufen!
-  const { companies, isLoading, error, addCompany, updateCompany, deleteCompany, uploadFile } = useCompanies();
+  const { companies, isLoading, error, addCompany, updateCompany, deleteCompany, uploadFile, userLocation, requestLocation } = useCompanies();
 
   useEffect(() => {
     const handleOpenMerchant = (e: any) => {
@@ -58,16 +65,31 @@ function App() {
     // Auth-Listener abonnieren
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, currentSession: Session | null) => {
       setSession(currentSession);
+
+      // Auto-detect company for merchants
+      if (currentSession?.user?.email) {
+        const merchantCompany = companies.find(c => c.email?.toLowerCase() === currentSession.user.email?.toLowerCase());
+        if (merchantCompany) {
+          setSelectedCompanyId(merchantCompany.id);
+          setActiveTab('merchant');
+        }
+      }
     });
 
     // Hidden Admin Trigger (Double click Logo)
     (window as any).onAdminRequest = () => setIsAdminMode(true);
 
+    // Legal Page triggers
+    (window as any).showImpressum = () => setShowImpressum(true);
+    (window as any).showDatenschutz = () => setShowDatenschutz(true);
+
     return () => {
       subscription.unsubscribe();
       (window as any).onAdminRequest = null;
+      (window as any).showImpressum = null;
+      (window as any).showDatenschutz = null;
     };
-  }, []);
+  }, [companies]); // Dependency on companies ensures match works once data is loaded
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -139,7 +161,12 @@ function App() {
     if (activeTab === 'merchant') {
       return <MerchantDashboard company={selectedCompany} onClose={() => setActiveTab('discover')} />;
     }
-    return <CompanyDetail company={selectedCompany} onBack={() => setSelectedCompanyId(null)} />;
+    return <CompanyDetail
+      company={selectedCompany}
+      onBack={() => setSelectedCompanyId(null)}
+      allCompanies={companies}
+      onSelectCompany={setSelectedCompanyId}
+    />;
   }
 
   if (showSwipeJobsId) {
@@ -158,7 +185,18 @@ function App() {
   }
 
   const TABS = {
-    discover: <Discover companies={companies} favorites={favorites} onToggleFavorite={toggleFavorite} onSelectCompany={setSelectedCompanyId} isLoading={isLoading} />,
+    discover: <Discover
+      companies={companies}
+      favorites={favorites}
+      onToggleFavorite={toggleFavorite}
+      onSelectCompany={setSelectedCompanyId}
+      isLoading={isLoading}
+      userLocation={userLocation}
+      onLocationRequest={requestLocation}
+    />,
+    jobs: (
+      <JobsBoard onBecomePartner={() => setShowPartnerBenefits(true)} />
+    ),
     map: (
       <Suspense fallback={<div className="flex h-[50vh] items-center justify-center text-gray-400">Karte lädt...</div>}>
         <MapView companies={companies} onSelectCompany={(id: string) => { setSelectedCompanyId(id); setActiveTab('discover'); }} />
@@ -168,11 +206,35 @@ function App() {
   };
 
   return (
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-      {TABS[activeTab as keyof typeof TABS] || TABS.discover}
-      <InstallPrompt />
-    </Layout>
-  )
+    <>
+      <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+        {TABS[activeTab as keyof typeof TABS] || TABS.discover}
+        <InstallPrompt />
+      </Layout>
+
+      {showPartnerBenefits && (
+        <PartnerBenefits
+          onClose={() => setShowPartnerBenefits(false)}
+          onContact={() => {
+            const text = encodeURIComponent("Hallo WMK Connect Team, ich interessiere mich für eine Partnerschaft!");
+            window.open(`https://wa.me/4917612345678?text=${text}`, '_blank');
+          }}
+        />
+      )}
+
+      {showImpressum && (
+        <div className="fixed inset-0 z-[400] bg-white overflow-y-auto">
+          <Impressum onBack={() => setShowImpressum(false)} />
+        </div>
+      )}
+
+      {showDatenschutz && (
+        <div className="fixed inset-0 z-[400] bg-white overflow-y-auto">
+          <Datenschutz onBack={() => setShowDatenschutz(false)} />
+        </div>
+      )}
+    </>
+  );
 
 }
 

@@ -23,7 +23,8 @@ const premiumIcon = new L.Icon({
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+    shadowSize: [41, 41],
+    className: 'premium-pin'
 });
 
 const standardIcon = new L.Icon({
@@ -50,44 +51,49 @@ export const MapView: React.FC<Props> = ({ companies, onSelectCompany }) => {
                 zoom={15}
                 scrollWheelZoom={true}
                 className="h-full w-full"
+                preferCanvas={true}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    updateWhenIdle={true}
+                    keepBuffer={2}
                 />
-                {companies.map(company => (
-                    <Marker
-                        key={company.id}
-                        position={company.coordinates}
-                        icon={company.isPremium ? premiumIcon : standardIcon}
-                    >
-                        <Popup className="custom-popup">
-                            <div className="p-1">
-                                <span className="text-[10px] font-bold text-accent uppercase block mb-1">
-                                    {company.category}
-                                </span>
-                                <h4 className="font-extrabold text-sm">{company.name}</h4>
-                                <p className="text-xs text-gray-500 mb-3">{company.address}</p>
-                                <div className="grid grid-cols-2 gap-2 mt-3">
-                                    <button
-                                        onClick={() => onSelectCompany(company.id)}
-                                        className="text-center bg-accent text-white py-2 px-3 rounded-lg text-[10px] font-black uppercase tracking-tighter"
-                                    >
-                                        Details
-                                    </button>
-                                    <a
-                                        href={company.websiteUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-center bg-gray-900 text-white py-2 px-3 rounded-lg text-[10px] font-black uppercase tracking-tighter"
-                                    >
-                                        Website
-                                    </a>
+                {companies
+                    .filter(c => c.coordinates && c.coordinates[0] !== 0 && c.coordinates[1] !== 0)
+                    .map(company => (
+                        <Marker
+                            key={company.id}
+                            position={company.coordinates}
+                            icon={company.isPremium ? premiumIcon : standardIcon}
+                        >
+                            <Popup className="custom-popup">
+                                <div className="p-1">
+                                    <span className="text-[10px] font-bold text-accent uppercase block mb-1">
+                                        {company.category}
+                                    </span>
+                                    <h4 className="font-extrabold text-sm">{company.name}</h4>
+                                    <p className="text-xs text-gray-500 mb-3">{company.address}</p>
+                                    <div className="grid grid-cols-2 gap-2 mt-3">
+                                        <button
+                                            onClick={() => onSelectCompany(company.id)}
+                                            className="text-center bg-accent text-white py-2 px-3 rounded-lg text-[10px] font-black uppercase tracking-tighter"
+                                        >
+                                            Details
+                                        </button>
+                                        <a
+                                            href={company.websiteUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-center bg-gray-900 text-white py-2 px-3 rounded-lg text-[10px] font-black uppercase tracking-tighter"
+                                        >
+                                            Website
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        </Popup>
-                    </Marker>
-                ))}
+                            </Popup>
+                        </Marker>
+                    ))}
             </MapContainer>
         </div>
     );

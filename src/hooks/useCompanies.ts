@@ -35,6 +35,20 @@ export function useCompanies() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+
+  // Haversine formula to calculate distance between two coordinates in km
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const R = 6371; // Earth radius
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
 
   async function fetchCompanies() {
     try {
@@ -90,6 +104,49 @@ export function useCompanies() {
     return publicUrl;
   };
 
-  return { companies, isLoading, error, refresh: fetchCompanies, addCompany, updateCompany, deleteCompany, uploadFile };
+  const requestLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation wird von diesem Browser nicht unterstützt.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation([latitude, longitude]);
+
+        // Re-sort companies by distance immediately
+        setCompanies(prev => {
+          const withDistances = prev.map(c => ({
+            ...c,
+            distance: c.coordinates ? calculateDistance(latitude, longitude, c.coordinates[0], c.coordinates[1]) : Infinity
+          }));
+          return [...withDistances].sort((a, b) => {
+            // Keep premium first, then sort by distance
+            if (a.isPremium && !b.isPremium) return -1;
+            if (!a.isPremium && b.isPremium) return 1;
+            return (a.distance || 0) - (b.distance || 0);
+          });
+        });
+      },
+      (err) => {
+        console.error("Location error", err);
+        setError("Standortzugriff verweigert.");
+      }
+    );
+  };
+
+  return {
+    companies,
+    isLoading,
+    error,
+    userLocation,
+    requestLocation,
+    refresh: fetchCompanies,
+    addCompany,
+    updateCompany,
+    deleteCompany,
+    uploadFile
+  };
 }
 

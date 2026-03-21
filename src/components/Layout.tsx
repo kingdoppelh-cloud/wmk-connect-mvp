@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map as MapIcon, Compass, Heart } from 'lucide-react';
+import { Map as MapIcon, Compass, Heart, Briefcase } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -16,6 +16,25 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string, se
             {/* Main Content */}
             <main className="flex-1 w-full max-w-2xl mx-auto">
                 {children}
+
+                {/* Legal Footer */}
+                <footer className="mt-12 mb-8 px-6 text-center border-t border-slate-100 pt-8">
+                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-4">WMK Connect © 2024</p>
+                    <div className="flex justify-center gap-6">
+                        <button
+                            onClick={() => (window as any).showImpressum?.()}
+                            className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-accent transition-colors"
+                        >
+                            Impressum
+                        </button>
+                        <button
+                            onClick={() => (window as any).showDatenschutz?.()}
+                            className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-accent transition-colors"
+                        >
+                            Datenschutz
+                        </button>
+                    </div>
+                </footer>
             </main>
 
             {/* Bottom Navigation */}
@@ -29,6 +48,17 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string, se
                 >
                     <Compass size={24} strokeWidth={activeTab === 'discover' ? 2.5 : 2} />
                     <span className="text-[10px] font-medium uppercase tracking-wider">Entdecken</span>
+                </button>
+
+                <button
+                    onClick={() => setActiveTab('jobs')}
+                    className={cn(
+                        "flex flex-col items-center gap-1 transition-all duration-300",
+                        activeTab === 'jobs' ? "text-accent scale-110" : "text-gray-400"
+                    )}
+                >
+                    <Briefcase size={22} strokeWidth={activeTab === 'jobs' ? 2.5 : 2} />
+                    <span className="text-[10px] font-medium uppercase tracking-wider">Jobs</span>
                 </button>
 
                 <button

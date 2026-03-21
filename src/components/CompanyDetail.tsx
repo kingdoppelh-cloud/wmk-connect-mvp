@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-    ArrowLeft,
-    Phone,
-    Mail,
-    Globe,
-    MessageCircle,
-    MapPin,
-    Clock,
-    Star,
-    BadgeCheck,
-    BarChart2,
-    ArrowRight,
-    Briefcase
+    ArrowLeft, MapPin, Globe, Phone, Mail, BadgeCheck, Star,
+    MessageCircle, Briefcase, BarChart2, ArrowRight, Clock, Share2
 } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { LeadCaptureModal } from './LeadCaptureModal';
+import { useSEO } from '../hooks/useSEO';
+import { supabase } from '../utils/supabase';
+import { cn } from './Layout';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -31,7 +24,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-// Custom Premium Icon
+// Custom Icons
 const premiumIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
     shadowUrl: markerShadow,
@@ -53,19 +46,72 @@ const standardIcon = new L.Icon({
 interface Props {
     company: Company;
     onBack: () => void;
+    allCompanies?: Company[];
+    onSelectCompany?: (id: string) => void;
 }
 
-export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
+export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies = [], onSelectCompany }) => {
     const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
 
+    useSEO({
+        title: company.name,
+        description: company.description,
+        image: company.image
+    });
+
+    useEffect(() => {
+        const trackView = async () => {
+            try {
+                await supabase.from('analytics_events').insert([
+                    { company_id: company.id, event_type: 'profile_view' }
+                ]);
+            } catch (e) {
+                console.error('Analytics tracking failed', e);
+            }
+        };
+        trackView();
+    }, [company.id]);
+
+    const trackClick = async (eventType: string) => {
+        try {
+            await supabase.from('analytics_events').insert([
+                { company_id: company.id, event_type: eventType }
+            ]);
+        } catch (e) {
+            console.error('Analytics tracking failed', e);
+        }
+    };
+
     return (
-        <div className="bg-white min-h-screen animate-in fade-in slide-in-from-right duration-500 pb-20">
+        <div className="bg-white min-h-screen animate-in fade-in slide-in-from-right duration-500 pb-20 font-sans">
+            {/* Structured Data */}
+            <script type="application/ld+json">
+                {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "LocalBusiness",
+                    "name": company.name,
+                    "description": company.description,
+                    "image": company.image,
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": company.address
+                    },
+                    "telephone": company.phone,
+                    "url": company.websiteUrl
+                })}
+            </script>
+
             {/* Hero Image */}
             <div className="relative h-72 w-full overflow-hidden">
                 <img
                     src={company.image || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000"}
                     alt={company.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000';
+                    }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
@@ -80,62 +126,87 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                 {/* Header Info (Overlay) */}
                 <div className="absolute bottom-6 left-6 right-6 text-white">
                     <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2.5 py-1 bg-accent text-[10px] font-black uppercase tracking-widest rounded-md">
+                        <span className="px-2.5 py-1 bg-accent/90 backdrop-blur-md text-[10px] font-black uppercase tracking-widest rounded-md border border-white/20 shadow-lg">
                             {company.category}
                         </span>
                         {company.isPremium && (
-                            <div className="flex items-center gap-1 px-2.5 py-1 bg-premium text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-md">
-                                <Star size={10} className="fill-current" />
-                                Premium
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-premium/90 backdrop-blur-md text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-md shadow-lg border border-white/30">
+                                <BadgeCheck size={12} className="fill-gray-900" />
+                                Premium Partner
                             </div>
                         )}
                     </div>
-                    <h1 className="text-4xl font-black leading-tight drop-shadow-lg">{company.name}</h1>
+                    <h1 className="text-4xl sm:text-5xl font-black leading-[0.9] tracking-tighter uppercase italic drop-shadow-2xl">{company.name}</h1>
                 </div>
             </div>
 
             {/* Content Area */}
-            <div className="px-6 -mt-4 relative z-10">
+            <div className="px-6 -mt-8 relative z-10">
                 {/* Action Card */}
-                <div className="bg-white rounded-3xl shadow-2xl p-6 border border-gray-100 flex flex-wrap gap-4 justify-between items-center mb-8">
-                    <div className="flex -space-x-2 items-center">
-                        <div className="w-12 h-12 flex items-center justify-center bg-gray-50 text-gray-400 rounded-full border border-gray-100">
-                            <Star size={20} />
+                <div className="bg-white rounded-3xl shadow-2xl p-6 border border-gray-100 flex flex-wrap gap-4 justify-between items-center mb-8 relative overflow-hidden">
+                    {company.isPremium && (
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-premium via-amber-400 to-premium"></div>
+                    )}
+                    <div className="flex items-center gap-4">
+                        <div className={cn(
+                            "w-14 h-14 flex items-center justify-center rounded-2xl border transition-all",
+                            company.isPremium
+                                ? "bg-premium/10 text-premium border-premium/30"
+                                : "bg-gray-50 text-gray-400 border-gray-100"
+                        )}>
+                            {company.isPremium ? <BadgeCheck size={32} /> : <Star size={28} />}
                         </div>
-                        {!company.isPremium && (
-                            <button
-                                onClick={() => setIsClaimModalOpen(true)}
-                                className="ml-4 pl-4 text-sm font-bold text-accent hover:text-accent/80 transition-colors flex items-center gap-1.5"
-                            >
-                                <BadgeCheck size={16} />
-                                Profil übernehmen
-                            </button>
-                        )}
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                                {company.isPremium ? 'Verifizierter Gold-Partner' : 'Regionaler Partner'}
+                            </p>
+                            <h4 className="font-bold text-slate-900">WMK Connect Netzwerk</h4>
+                        </div>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-2">
                         <a
                             href={`tel:${company.phone}`}
-                            className="bg-accent text-white p-4 rounded-2xl shadow-lg shadow-accent/25 hover:scale-105 transition-all active:scale-95"
+                            onClick={() => trackClick('click_phone')}
+                            className="bg-accent text-white p-3.5 rounded-2xl shadow-lg shadow-accent/25 hover:scale-105 transition-all active:scale-95"
                         >
-                            <Phone size={24} />
+                            <Phone size={22} />
                         </a>
                         <a
                             href={company.websiteUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-slate-900 text-white p-4 rounded-2xl shadow-lg shadow-slate-900/25 hover:scale-105 transition-all active:scale-95"
+                            onClick={() => trackClick('click_website')}
+                            className="bg-slate-900 text-white p-3.5 rounded-2xl shadow-lg shadow-slate-900/25 hover:scale-105 transition-all active:scale-95"
                         >
-                            <Globe size={24} />
+                            <Globe size={22} />
                         </a>
                         <a
-                            href={`https://wa.me/${company.whatsapp}`}
+                            href={`https://wa.me/${company.whatsapp?.replace(/[^0-9]/g, '')}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-emerald-500 text-white p-4 rounded-2xl shadow-lg shadow-emerald-500/25 hover:scale-105 transition-all active:scale-95"
+                            onClick={() => trackClick('click_whatsapp')}
+                            className="bg-emerald-500 text-white p-3.5 rounded-2xl shadow-lg shadow-emerald-500/25 hover:scale-105 transition-all active:scale-95"
                         >
-                            <MessageCircle size={24} />
+                            <MessageCircle size={22} />
                         </a>
+                        <button
+                            onClick={() => {
+                                if (navigator.share) {
+                                    navigator.share({
+                                        title: company.name,
+                                        text: company.description,
+                                        url: window.location.href
+                                    }).catch(console.error);
+                                } else {
+                                    navigator.clipboard.writeText(window.location.href);
+                                    alert('Link in Zwischenablage kopiert! 📋');
+                                }
+                            }}
+                            className="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shadow-sm hover:bg-slate-200 transition-all active:scale-95 border border-slate-200"
+                        >
+                            <Share2 size={22} />
+                        </button>
                     </div>
                 </div>
 
@@ -181,7 +252,6 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                             Standort
                         </h3>
                         <p className="text-slate-600 mb-4 font-medium">{company.address}</p>
-                        {/* Placeholder for Map Mini-View */}
                         <div className="aspect-video bg-slate-200 rounded-2xl overflow-hidden relative border border-slate-200 z-0">
                             <MapContainer
                                 center={company.coordinates || [51.2721, 9.9834]}
@@ -214,7 +284,6 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                         <div className="space-y-2">
                             {Object.entries(company.openingHours).map(([day, hours]) => {
                                 const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-                                // The data uses 0 for Sunday
                                 const dayIdx = parseInt(day);
                                 const dayName = dayIdx === 0 ? "So" : days[dayIdx - 1];
 
@@ -241,7 +310,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                         <div className="grid grid-cols-2 gap-4">
                             {company.gallery.map((url, idx) => (
                                 <div key={idx} className="aspect-square rounded-3xl overflow-hidden border border-gray-100 shadow-sm transition-transform hover:scale-[1.02]">
-                                    <img src={url} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                                    <img src={url} alt={`Gallery ${idx}`} loading="lazy" className="w-full h-full object-cover" />
                                 </div>
                             ))}
                         </div>
@@ -251,7 +320,10 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                 {/* Swipe Jobs Trigger */}
                 {company.isPremium && (
                     <div
-                        onClick={() => window.dispatchEvent(new CustomEvent('open-swipe-jobs', { detail: company.id }))}
+                        onClick={() => {
+                            trackClick('open_swipe_jobs');
+                            window.dispatchEvent(new CustomEvent('open-swipe-jobs', { detail: company.id }));
+                        }}
                         className="bg-slate-900 rounded-[40px] p-8 shadow-2xl relative overflow-hidden mb-10 group cursor-pointer hover:shadow-accent/20 transition-all border border-slate-800"
                     >
                         <div className="relative z-10 flex items-center justify-between">
@@ -278,6 +350,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                         <div className="flex flex-col gap-3">
                             <a
                                 href={`mailto:${company.email || 'hello@wmk-connect.de'}`}
+                                onClick={() => trackClick('click_email')}
                                 className="flex items-center justify-center gap-3 bg-white text-slate-900 py-4 rounded-2xl font-black hover:bg-accent hover:text-white transition-all shadow-xl"
                             >
                                 <Mail size={20} />
@@ -285,6 +358,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                             </a>
                             <a
                                 href={`tel:${company.phone}`}
+                                onClick={() => trackClick('click_phone')}
                                 className="flex items-center justify-center gap-3 bg-white/10 backdrop-blur-md text-white py-4 rounded-2xl font-black hover:bg-white/20 transition-all border border-white/20"
                             >
                                 <Phone size={20} />
@@ -293,6 +367,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                             {company.isPremium && company.whatsapp && (
                                 <a
                                     href={`https://wa.me/${company.whatsapp.replace(/[^0-9]/g, '')}`}
+                                    onClick={() => trackClick('click_whatsapp')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center justify-center gap-3 bg-[#25D366] text-white py-4 rounded-2xl font-black hover:bg-[#128C7E] transition-all shadow-xl shadow-[#25D366]/20"
@@ -306,6 +381,52 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                     {/* Decorative star */}
                     <Star className="absolute -bottom-10 -right-10 text-white/5 rotate-12" size={160} />
                 </section>
+
+                {/* Nearby Partners Section */}
+                {allCompanies.length > 1 && (
+                    <section className="mt-12 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                        <div className="flex items-center gap-2 mb-6">
+                            <div className="p-2 bg-accent/10 rounded-xl text-accent">
+                                <MapPin size={20} />
+                            </div>
+                            <h2 className="text-xl font-black text-slate-900">Partner in der Nähe</h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4">
+                            {allCompanies
+                                .filter(c => c.id !== company.id)
+                                .sort((a, b) => (a.distance || 999) - (b.distance || 999))
+                                .slice(0, 3)
+                                .map(nearby => (
+                                    <div
+                                        key={nearby.id}
+                                        onClick={() => onSelectCompany?.(nearby.id)}
+                                        className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4 cursor-pointer hover:border-accent/30 transition-all active:scale-[0.98]"
+                                    >
+                                        <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border border-slate-50">
+                                            <img src={nearby.image} alt={nearby.name} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="font-bold text-slate-900 truncate">{nearby.name}</h4>
+                                            <p className="text-xs text-slate-400 truncate">{nearby.category}</p>
+                                            {nearby.distance !== undefined && nearby.distance < Infinity && (
+                                                <p className="text-[10px] font-black text-accent mt-1 flex items-center gap-1">
+                                                    <MapPin size={8} />
+                                                    {nearby.distance.toFixed(1)} km entfernt
+                                                </p>
+                                            )}
+                                        </div>
+                                        <ArrowRight size={16} className="text-slate-300 mr-2" />
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <p className="text-center text-[10px] text-slate-400 mt-6 uppercase tracking-widest font-bold">
+                            Entdecke mehr im WMK Connect Netzwerk
+                        </p>
+                    </section>
+                )}
             </div>
 
             <LeadCaptureModal
