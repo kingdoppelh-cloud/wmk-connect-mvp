@@ -31,6 +31,15 @@ function App() {
   const { companies, isLoading, error, addCompany, updateCompany, deleteCompany, uploadFile } = useCompanies();
 
   useEffect(() => {
+    const handleOpenMerchant = (e: any) => {
+      setSelectedCompanyId(e.detail);
+      setActiveTab('merchant');
+    };
+    window.addEventListener('open-merchant', handleOpenMerchant);
+    return () => window.removeEventListener('open-merchant', handleOpenMerchant);
+  }, []);
+
+  useEffect(() => {
     // Session state abholen
     supabase.auth.getSession().then(({ data: { session: initialSession } }: { data: { session: Session | null } }) => {
       setSession(initialSession);

@@ -8,7 +8,9 @@ import {
     MapPin,
     Clock,
     Star,
-    BadgeCheck
+    BadgeCheck,
+    BarChart2,
+    ArrowRight
 } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { LeadCaptureModal } from './LeadCaptureModal';
@@ -101,6 +103,28 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                         </a>
                     </div>
                 </div>
+
+                {/* Merchant Dashboard Preview Trigger (Demo) */}
+                {company.isPremium && (
+                    <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 shadow-xl border border-slate-700 mb-8 relative overflow-hidden group hover:shadow-2xl transition-all">
+                        <div className="relative z-10">
+                            <div className="bg-white/10 w-fit p-3 rounded-2xl backdrop-blur-md mb-4 border border-white/10 group-hover:bg-accent/20 transition-colors">
+                                <BarChart2 className="text-accent" size={24} />
+                            </div>
+                            <h3 className="font-black text-white text-xl">Merchant Dashboard</h3>
+                            <p className="text-sm text-slate-400 mt-2 mb-6 font-medium leading-relaxed">
+                                Verwalten Sie Ihr Profil, prüfen Sie Livestatistiken und posten Sie neue lokale Jobs.
+                            </p>
+                            <button
+                                onClick={() => window.dispatchEvent(new CustomEvent('open-merchant', { detail: company.id }))}
+                                className="w-full bg-accent text-white font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.2)] hover:bg-pink-600 transition-colors flex items-center justify-center gap-2"
+                            >
+                                Ansicht öffnen <ArrowRight size={18} />
+                            </button>
+                        </div>
+                        <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-accent/20 rounded-full blur-3xl transition-transform group-hover:scale-150 duration-700"></div>
+                    </div>
+                )}
 
                 {/* About Section */}
                 <section className="mb-10">
