@@ -15,11 +15,13 @@ const MapView = lazy(() => import('./components/MapView').then(module => ({ defa
 
 import { InstallPrompt } from './components/InstallPrompt';
 import { MerchantDashboard } from './components/MerchantDashboard';
+import { SwipeJobs } from './components/SwipeJobs';
 
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
 
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
+  const [showSwipeJobsId, setShowSwipeJobsId] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [session, setSession] = useState<Session | null>(null);
 
@@ -36,8 +38,15 @@ function App() {
       setSelectedCompanyId(e.detail);
       setActiveTab('merchant');
     };
+    const handleOpenSwipe = (e: any) => {
+      setShowSwipeJobsId(e.detail);
+    };
     window.addEventListener('open-merchant', handleOpenMerchant);
-    return () => window.removeEventListener('open-merchant', handleOpenMerchant);
+    window.addEventListener('open-swipe-jobs', handleOpenSwipe);
+    return () => {
+      window.removeEventListener('open-merchant', handleOpenMerchant);
+      window.removeEventListener('open-swipe-jobs', handleOpenSwipe);
+    };
   }, []);
 
   useEffect(() => {
@@ -131,6 +140,13 @@ function App() {
       return <MerchantDashboard company={selectedCompany} onClose={() => setActiveTab('discover')} />;
     }
     return <CompanyDetail company={selectedCompany} onBack={() => setSelectedCompanyId(null)} />;
+  }
+
+  if (showSwipeJobsId) {
+    const swipeCompany = companies.find(c => c.id === showSwipeJobsId);
+    if (swipeCompany) {
+      return <SwipeJobs company={swipeCompany} onClose={() => setShowSwipeJobsId(null)} />;
+    }
   }
 
   if (error) {
