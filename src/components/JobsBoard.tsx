@@ -4,6 +4,7 @@ import { useJobs } from '../hooks/useJobs';
 
 interface JobsBoardProps {
     onBecomePartner: () => void;
+    onCompanyClick?: (id: string | null) => void;
     userLocation?: [number, number] | null;
     onLocationRequest?: () => void;
 }
@@ -19,7 +20,7 @@ const getDistanceData = (lat1: number, lon1: number, lat2: number, lon2: number)
     return R * c;
 };
 
-export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner, userLocation, onLocationRequest }) => {
+export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner, onCompanyClick, userLocation, onLocationRequest }) => {
     const { jobs, isLoading } = useJobs();
     const [selectedRadius, setSelectedRadius] = useState<number>(9999);
 
@@ -156,11 +157,19 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner, userLocat
                                 </div>
                             </div>
                             <div className="absolute bottom-6 left-6 right-6 flex items-center gap-4">
-                                <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-white/50 shadow-lg bg-white shrink-0">
+                                <button
+                                    onClick={() => job.company_id && onCompanyClick?.(job.company_id)}
+                                    className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-white/50 shadow-lg bg-white shrink-0 hover:border-white transition-colors"
+                                >
                                     <img src={job.company?.image} className="w-full h-full object-cover" alt={job.company?.name} />
-                                </div>
+                                </button>
                                 <div className="min-w-0">
-                                    <p className="text-white/70 text-[10px] font-black uppercase tracking-widest truncate">{job.company?.name}</p>
+                                    <button
+                                        onClick={() => job.company_id && onCompanyClick?.(job.company_id)}
+                                        className="text-white/70 text-[10px] font-black uppercase tracking-widest truncate hover:text-white block"
+                                    >
+                                        {job.company?.name}
+                                    </button>
                                     <h3 className="text-white text-2xl font-black leading-none truncate uppercase italic">{job.title}</h3>
                                 </div>
                             </div>

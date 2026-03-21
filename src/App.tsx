@@ -21,6 +21,7 @@ import { PartnerBenefits } from './components/PartnerBenefits';
 import { Impressum } from './components/Impressum';
 import { Datenschutz } from './components/Datenschutz';
 import { PushOptIn } from './components/PushOptIn';
+import { ActivityFeed } from './components/ActivityFeed';
 
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
@@ -207,6 +208,12 @@ function App() {
         onBecomePartner={() => setShowPartnerBenefits(true)}
         userLocation={userLocation}
         onLocationRequest={requestLocation}
+        onCompanyClick={setSelectedCompanyId}
+      />
+    ),
+    feed: (
+      <ActivityFeed
+        onCompanyClick={setSelectedCompanyId}
       />
     ),
     map: (

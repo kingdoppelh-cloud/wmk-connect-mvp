@@ -8,6 +8,8 @@ import { LeadCaptureModal } from './LeadCaptureModal';
 import { useSEO } from '../hooks/useSEO';
 import { supabase } from '../utils/supabase';
 import { cn } from './Layout';
+import { useNews } from '../hooks/useNews';
+import { Sparkles } from 'lucide-react';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -243,6 +245,9 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                     </p>
                 </section>
 
+                {/* News & Updates Section */}
+                <CompanyNews companyId={company.id} />
+
                 {/* Details Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                     {/* Location */}
@@ -439,3 +444,53 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
         </div>
     );
 };
+
+const CompanyNews: React.FC<{ companyId: string }> = ({ companyId }) => {
+    const { posts, isLoading } = useNews();
+    const companyPosts = posts.filter(p => p.company_id === companyId);
+
+    if (isLoading || companyPosts.length === 0) return null;
+
+    return (
+        <section className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                    <span className="w-8 h-1 bg-accent rounded-full" />
+                    Aktuelles & Angebote
+                </h2>
+                <div className="flex items-center gap-1 text-accent animate-pulse">
+                    <Sparkles size={14} className="fill-current" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Live</span>
+                </div>
+            </div>
+
+            <div className="space-y-4">
+                {companyPosts.map(post => (
+                    <div
+                        key={post.id}
+                        className="bg-slate-50 rounded-[2rem] p-6 border border-slate-100 hover:border-accent/20 transition-all group"
+                    >
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className={cn(
+                                "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-[0.1em]",
+                                post.type === 'offer' ? "bg-amber-100 text-amber-700" :
+                                    post.type === 'event' ? "bg-purple-100 text-purple-700" :
+                                        post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
+                                            "bg-slate-200 text-slate-600"
+                            )}>
+                                {post.type}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-400 uppercase">
+                                • {new Date(post.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: 'short' })}
+                            </span>
+                        </div>
+                        <p className="text-slate-700 font-medium leading-relaxed whitespace-pre-wrap">
+                            {post.content}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+};
+

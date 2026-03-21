@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map as MapIcon, Compass, Heart, Briefcase } from 'lucide-react';
+import { Map as MapIcon, Compass, Heart, Briefcase, Newspaper } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -59,6 +59,17 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string, se
                 >
                     <Briefcase size={22} strokeWidth={activeTab === 'jobs' ? 2.5 : 2} />
                     <span className="text-[10px] font-medium uppercase tracking-wider">Jobs</span>
+                </button>
+
+                <button
+                    onClick={() => setActiveTab('feed')}
+                    className={cn(
+                        "flex flex-col items-center gap-1 transition-all duration-300",
+                        activeTab === 'feed' ? "text-accent scale-110" : "text-gray-400"
+                    )}
+                >
+                    <Newspaper size={24} strokeWidth={activeTab === 'feed' ? 2.5 : 2} />
+                    <span className="text-[10px] font-medium uppercase tracking-wider">Aktuelles</span>
                 </button>
 
                 <button

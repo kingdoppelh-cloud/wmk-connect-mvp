@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Eye, Phone, Send, Edit3, Camera, Briefcase, User, Plus, BarChart2, RefreshCw, X, BadgeCheck, Star } from 'lucide-react';
+import { Eye, Phone, Send, Edit3, Camera, Briefcase, User, Plus, BarChart2, RefreshCw, X, BadgeCheck, Star, Newspaper, Trash2 } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 import { useJobs, type Job } from '../hooks/useJobs';
+import { useNews, type NewsPost } from '../hooks/useNews';
 import type { Company } from '../data/companies';
 import { cn } from './Layout';
 
@@ -11,15 +12,17 @@ interface MerchantDashboardProps {
 }
 
 export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, onClose }) => {
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'jobs' | 'profile'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'jobs' | 'profile' | 'news'>('dashboard');
     const [stats, setStats] = useState({
         profileViews: 0,
         phoneClicks: 0,
         jobInquiries: 0
     });
     const [isLoading, setIsLoading] = useState(true);
-    const { jobs, isLoading: jobsLoading, addJob } = useJobs(company.id);
     const [isAddingJob, setIsAddingJob] = useState(false);
+    const [isAddingNews, setIsAddingNews] = useState(false);
+    const { posts, isLoading: newsLoading, addPost, deletePost } = useNews(company.id);
+    const [newPost, setNewPost] = useState({ content: '', type: 'news' as const });
 
     // Profile Edit State
     const [profileData, setProfileData] = useState({
@@ -123,6 +126,31 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             setNewJob({ title: '', category: company.category, description: '', salary_range: '', job_type: 'Vollzeit', image_url: company.image, is_featured: false });
         } catch (err) {
             alert('Fehler beim Speichern des Jobs');
+        }
+    };
+
+    const handleAddPost = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            await addPost({
+                company_id: company.id,
+                content: newPost.content,
+                type: newPost.type
+            });
+            setIsAddingNews(false);
+            setNewPost({ content: '', type: 'news' });
+            alert('Beitrag veröffentlicht!');
+        } catch (err) {
+            alert('Fehler beim Posten');
+        }
+    };
+
+    const handleDeletePost = async (id: string) => {
+        if (!confirm('Beitrag wirklich löschen?')) return;
+        try {
+            await deletePost(id);
+        } catch (err) {
+            alert('Fehler beim Löschen');
         }
     };
 
@@ -354,6 +382,69 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                     </section>
                 )}
 
+                {activeTab === 'news' && (
+                    <section className="space-y-5 animate-in fade-in duration-500">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-black text-slate-900">Deine News & Angebote</h2>
+                            <button onClick={() => setIsAddingNews(true)} className="text-accent text-sm font-bold flex items-center gap-2">
+                                <Plus size={16} /> Neu posten
+                            </button>
+                        </div>
+
+                        <div className="bg-gradient-to-br from-accent/5 to-transparent p-5 rounded-3xl border border-accent/10 mb-6">
+                            <p className="text-xs text-accent font-bold uppercase tracking-widest mb-1">Tipp</p>
+                            <p className="text-sm text-slate-600 leading-relaxed font-medium">Beiträge im Feed machen dein Profil lebendig und ziehen mehr Besucher an.</p>
+                        </div>
+
+                        <div className="space-y-4">
+                            {newsLoading ? (
+                                <div className="py-10 flex justify-center"><RefreshCw className="animate-spin text-slate-300" /></div>
+                            ) : posts.length > 0 ? (
+                                posts.map(post => (
+                                    <div key={post.id} className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/60 group relative hover:border-accent/20 transition-all text-left">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <span className={cn(
+                                                "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
+                                                post.type === 'offer' ? "bg-amber-100 text-amber-700" :
+                                                    post.type === 'event' ? "bg-purple-100 text-purple-700" :
+                                                        post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
+                                                            "bg-slate-100 text-slate-600"
+                                            )}>
+                                                {post.type}
+                                            </span>
+                                            <button
+                                                onClick={() => handleDeletePost(post.id)}
+                                                className="text-slate-300 hover:text-red-500 transition-colors p-1"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                        <p className="text-slate-700 font-medium leading-relaxed whitespace-pre-wrap">{post.content}</p>
+                                        <div className="mt-4 pt-4 border-t border-slate-50 flex items-center justify-between">
+                                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                                                {new Date(post.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: 'short' })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="bg-white rounded-3xl p-12 border border-dashed border-slate-200 flex flex-col items-center text-center space-y-3">
+                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300">
+                                        <Newspaper size={32} />
+                                    </div>
+                                    <p className="text-slate-400 text-sm font-medium">Bisher keine Beiträge im Feed.</p>
+                                    <button
+                                        onClick={() => setIsAddingNews(true)}
+                                        className="text-accent text-sm font-bold mt-2"
+                                    >
+                                        Ersten Beitrag erstellen
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+                )}
+
                 {activeTab === 'profile' && (
                     <section className="space-y-8 animate-in fade-in duration-500">
                         <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200/60 relative overflow-hidden">
@@ -473,7 +564,56 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 </button>
             )}
 
-            {/* Add Job Modal */}
+            {/* Add News Modal */}
+            {isAddingNews && (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center px-6">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsAddingNews(false)} />
+                    <div className="bg-white w-full max-w-md rounded-[32px] overflow-hidden shadow-2xl relative z-10 animate-in zoom-in-95 duration-200">
+                        <div className="px-8 pt-8 pb-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                            <h2 className="text-2xl font-black text-slate-900 text-left">Update posten</h2>
+                            <button onClick={() => setIsAddingNews(false)} className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <form onSubmit={handleAddPost} className="p-8 space-y-5">
+                            <div>
+                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Typ des Beitrags</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {['news', 'offer', 'event', 'special'].map((t) => (
+                                        <button
+                                            key={t}
+                                            type="button"
+                                            onClick={() => setNewPost({ ...newPost, type: t as any })}
+                                            className={cn(
+                                                "py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all",
+                                                newPost.type === t ? "border-accent bg-accent text-white" : "border-slate-100 bg-slate-50 text-slate-400 shadow-none"
+                                            )}
+                                        >
+                                            {t === 'news' ? 'Nachricht' : t === 'offer' ? 'Angebot' : t === 'event' ? 'Event' : 'Specials'}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Was gibt es Neues?</label>
+                                <textarea
+                                    required
+                                    rows={4}
+                                    value={newPost.content}
+                                    onChange={e => setNewPost({ ...newPost, content: e.target.value })}
+                                    placeholder="z.B. Unser Team ist bereit für das Wochenende! Kommt vorbei auf ein kühles Getränk..."
+                                    className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none resize-none text-slate-700 font-medium"
+                                />
+                            </div>
+                            <button className="w-full py-4 rounded-2xl font-black bg-accent text-white shadow-xl shadow-accent/20 transition-all active:scale-95 mt-2">
+                                Beitrag jetzt teilen
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Job Modal ... */}
             {isAddingJob && (
                 <div className="fixed inset-0 z-[200] flex items-center justify-center px-6">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsAddingJob(false)} />
@@ -594,6 +734,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 >
                     <Briefcase size={24} />
                     <span className="text-[9px] font-bold tracking-widest uppercase">Jobs</span>
+                </button>
+                <button
+                    onClick={() => setActiveTab('news')}
+                    className={cn(
+                        "flex flex-col items-center gap-1.5 transition-all duration-300 px-4 py-2 rounded-2xl",
+                        activeTab === 'news' ? "text-accent bg-accent/10" : "text-slate-400"
+                    )}
+                >
+                    <Newspaper size={24} />
+                    <span className="text-[9px] font-bold tracking-widest uppercase">Aktuelles</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('profile')}

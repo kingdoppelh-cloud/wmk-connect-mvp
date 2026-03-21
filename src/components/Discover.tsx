@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, Star, ArrowRight, Building2, Briefcase, MapPin } from 'lucide-react';
+import { Search, X, Star, ArrowRight, Building2, Briefcase, MapPin, Sparkles } from 'lucide-react';
+import { useNews } from '../hooks/useNews';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 import { SkeletonCard } from './SkeletonCard';
@@ -119,6 +120,9 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 )}
             </div>
 
+            {/* News Feed Preview */}
+            <NewsPreview onSelectCompany={onSelectCompany} />
+
             {/* Category Chips */}
             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-6 -mx-2 px-2">
                 <button
@@ -226,4 +230,59 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
         </div>
     );
 };
+
+const NewsPreview: React.FC<{ onSelectCompany: (id: string) => void }> = ({ onSelectCompany }) => {
+    const { posts, isLoading } = useNews();
+    const latestPosts = posts.slice(0, 5);
+
+    if (isLoading || latestPosts.length === 0) return null;
+
+    return (
+        <section className="mb-10 -mx-6">
+            <div className="px-6 mb-4 flex items-center justify-between">
+                <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+                    <div className="p-1.5 bg-accent/10 rounded-lg text-accent">
+                        <Sparkles size={18} className="fill-current" />
+                    </div>
+                    Live aus der Region
+                </h2>
+                <span className="text-[10px] font-black text-accent uppercase tracking-widest animate-pulse">Neu</span>
+            </div>
+
+            <div className="flex gap-4 overflow-x-auto no-scrollbar px-6 pb-2">
+                {latestPosts.map(post => (
+                    <div
+                        key={post.id}
+                        onClick={() => onSelectCompany(post.company_id)}
+                        className="min-w-[280px] bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:border-accent/20 transition-all active:scale-[0.98] cursor-pointer"
+                    >
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-8 h-8 rounded-xl overflow-hidden border border-slate-100">
+                                <img src={post.company?.image} className="w-full h-full object-cover" alt="" />
+                            </div>
+                            <div className="min-w-0">
+                                <h4 className="text-xs font-black text-slate-900 truncate">{post.company?.name}</h4>
+                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tight">
+                                    vor {Math.max(1, Math.floor((new Date().getTime() - new Date(post.created_at).getTime()) / (1000 * 60 * 60)))} Std.
+                                </p>
+                            </div>
+                        </div>
+                        <p className="text-slate-600 text-sm font-medium line-clamp-2 leading-relaxed mb-3">
+                            {post.content}
+                        </p>
+                        <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full">
+                                {post.type}
+                            </span>
+                            <div className="text-accent">
+                                <ArrowRight size={14} />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+};
+
 
