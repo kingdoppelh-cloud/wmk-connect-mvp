@@ -16,6 +16,40 @@ import {
 import { type Company } from '../data/companies';
 import { LeadCaptureModal } from './LeadCaptureModal';
 
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// Fix for Leaflet default icon issues in React
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: markerIcon2x,
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+});
+
+// Custom Premium Icon
+const premiumIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+    shadowUrl: markerShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+const standardIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: markerShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
 interface Props {
     company: Company;
     onBack: () => void;
@@ -148,10 +182,26 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                         </h3>
                         <p className="text-slate-600 mb-4 font-medium">{company.address}</p>
                         {/* Placeholder for Map Mini-View */}
-                        <div className="aspect-video bg-slate-200 rounded-2xl overflow-hidden relative">
-                            <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-xs text-center px-4 italic">
-                                Interaktive Karte folgt in Phase 2
-                            </div>
+                        <div className="aspect-video bg-slate-200 rounded-2xl overflow-hidden relative border border-slate-200 z-0">
+                            <MapContainer
+                                center={company.coordinates || [51.2721, 9.9834]}
+                                zoom={15}
+                                scrollWheelZoom={false}
+                                className="h-full w-full z-0"
+                            >
+                                <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                />
+                                <Marker
+                                    position={company.coordinates || [51.2721, 9.9834]}
+                                    icon={company.isPremium ? premiumIcon : standardIcon}
+                                >
+                                    <Popup>
+                                        <div className="text-center font-bold text-sm">{company.name}</div>
+                                    </Popup>
+                                </Marker>
+                            </MapContainer>
                         </div>
                     </div>
 
@@ -240,6 +290,17 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                                 <Phone size={20} />
                                 Jetzt anrufen
                             </a>
+                            {company.isPremium && company.whatsapp && (
+                                <a
+                                    href={`https://wa.me/${company.whatsapp.replace(/[^0-9]/g, '')}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-3 bg-[#25D366] text-white py-4 rounded-2xl font-black hover:bg-[#128C7E] transition-all shadow-xl shadow-[#25D366]/20"
+                                >
+                                    <MessageCircle className="fill-white" size={20} />
+                                    WhatsApp Chat starten
+                                </a>
+                            )}
                         </div>
                     </div>
                     {/* Decorative star */}

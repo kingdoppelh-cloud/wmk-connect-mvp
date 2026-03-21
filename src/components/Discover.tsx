@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, Star, ArrowRight, Building2 } from 'lucide-react';
+import { Search, X, Star, ArrowRight, Building2, Briefcase } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 import { SkeletonCard } from './SkeletonCard';
@@ -62,13 +62,29 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 <p className="text-slate-500 font-medium text-lg italic mb-6">
                     Ihre Region. Ihre Firmen. Ein Netzwerk.
                 </p>
-                <button
-                    onClick={() => setIsLeadModalOpen(true)}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-slate-700 rounded-full font-bold hover:bg-gray-50 hover:scale-105 transition-all shadow-sm"
-                >
-                    <Building2 size={18} />
-                    Firma kostenlos eintragen
-                </button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <button
+                        onClick={() => setIsLeadModalOpen(true)}
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white border border-slate-200 text-slate-700 rounded-full font-bold hover:bg-slate-50 hover:border-slate-300 transition-all hover:shadow-md w-full sm:w-auto"
+                    >
+                        <Building2 size={18} />
+                        Firma eintragen
+                    </button>
+                    <button
+                        onClick={() => {
+                            // Find the first premium company to showcase the swipe feature
+                            const premiumId = companies.find(c => c.isPremium)?.id;
+                            if (premiumId) {
+                                window.dispatchEvent(new CustomEvent('open-swipe-jobs', { detail: premiumId }));
+                            }
+                        }}
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 border border-slate-800 text-white rounded-full font-bold hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-xl shadow-slate-900/20 group w-full sm:w-auto overflow-hidden relative"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                        <Briefcase size={18} className="text-accent group-hover:rotate-12 transition-transform" />
+                        Swipe-Jobs entdecken
+                    </button>
+                </div>
             </div>
 
             {/* Search Bar */}
