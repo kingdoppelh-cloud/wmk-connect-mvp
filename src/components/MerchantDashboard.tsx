@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bell, Eye, Phone, Send, Edit3, Camera, ChefHat, User, Plus, Home, BarChart2, Briefcase } from 'lucide-react';
-import { Company } from '../data/companies';
+import type { Company } from '../data/companies';
 
 interface MerchantDashboardProps {
     company: Company;
