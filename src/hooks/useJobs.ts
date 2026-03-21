@@ -60,5 +60,11 @@ export function useJobs(companyId?: string) {
         await fetchJobs();
     };
 
-    return { jobs, isLoading, fetchJobs, addJob, updateJob };
+    const deleteJob = async (id: string) => {
+        const { error } = await supabase.from('jobs').delete().eq('id', id);
+        if (error) throw error;
+        await fetchJobs();
+    };
+
+    return { jobs, isLoading, fetchJobs, addJob, updateJob, deleteJob };
 }

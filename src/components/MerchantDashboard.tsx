@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Eye, Phone, Send, Edit3, Camera, Briefcase, User, Plus, BarChart2, RefreshCw, X, BadgeCheck, Star, Newspaper, Trash2 } from 'lucide-react';
+import { Eye, Phone, Send, Edit3, Camera, Briefcase, User, Plus, BarChart2, RefreshCw, X, BadgeCheck, Star, Newspaper, Trash2, Megaphone, Image as ImageIcon, QrCode as QrIcon, Download } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 import { useJobs, type Job } from '../hooks/useJobs';
-import { useNews, type NewsPost } from '../hooks/useNews';
+import { useNews } from '../hooks/useNews';
 import type { Company } from '../data/companies';
 import { cn } from './Layout';
 
@@ -12,7 +12,7 @@ interface MerchantDashboardProps {
 }
 
 export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, onClose }) => {
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'jobs' | 'profile' | 'news'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'jobs' | 'profile' | 'news' | 'marketing'>('dashboard');
     const [stats, setStats] = useState({
         profileViews: 0,
         phoneClicks: 0,
@@ -21,6 +21,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
     const [isLoading, setIsLoading] = useState(true);
     const [isAddingJob, setIsAddingJob] = useState(false);
     const [isAddingNews, setIsAddingNews] = useState(false);
+    const { jobs, isLoading: jobsLoading, addJob, deleteJob } = useJobs(company.id);
     const { posts, isLoading: newsLoading, addPost, deletePost } = useNews(company.id);
     const [newPost, setNewPost] = useState({ content: '', type: 'news' as const });
 
@@ -102,6 +103,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
     useEffect(() => {
         fetchStats();
     }, [company.id]);
+
+    const handleDeleteJob = async (id: string) => {
+        if (confirm('Möchten Sie dieses Stellenangebot wirklich löschen?')) {
+            try {
+                await deleteJob(id);
+            } catch (e) {
+                console.error('Error deleting job', e);
+            }
+        }
+    };
 
     const handleAddJob = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -370,7 +381,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                                 <p className="text-xs text-slate-400 font-medium">{job.job_type} • {job.salary_range}</p>
                                             </div>
                                         </div>
-                                        <span className="px-4 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-emerald-100 text-emerald-700">Aktiv</span>
+                                        <div className="flex items-center gap-3">
+                                            <button
+                                                onClick={() => handleDeleteJob(job.id)}
+                                                className="p-2 text-slate-300 hover:text-red-500 transition-colors"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
+                                            <span className="px-4 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-emerald-100 text-emerald-700">Aktiv</span>
+                                        </div>
                                     </div>
                                 ))
                             ) : (
@@ -441,6 +460,132 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                     </button>
                                 </div>
                             )}
+                        </div>
+                    </section>
+                )}
+
+                {activeTab === 'marketing' && (
+                    <section className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <header className="space-y-1">
+                            <p className="text-slate-500 text-xs font-bold tracking-widest uppercase">Marketing Toolkit</p>
+                            <h1 className="text-3xl font-black tracking-tight text-slate-900">Werbe-Material</h1>
+                        </header>
+
+                        <div className="grid grid-cols-1 gap-6">
+                            {/* QR Poster Card */}
+                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200/60 relative overflow-hidden group">
+                                <div className="relative z-10">
+                                    <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent mb-6">
+                                        <QrIcon size={24} />
+                                    </div>
+                                    <h3 className="text-xl font-black text-slate-900 mb-2">QR-Code Poster</h3>
+                                    <p className="text-slate-500 text-sm mb-8 leading-relaxed max-w-sm">
+                                        Drucken Sie ein professonelles Poster für Ihren Eingang oder Ihre Tische aus. Gäste gelangen per Scan direkt zu Ihrem Profil.
+                                    </p>
+
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                        <button
+                                            onClick={() => {
+                                                const printUrl = `https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=${encodeURIComponent(window.location.origin + '/?company=' + company.id)}&bgcolor=FFFFFF&color=0F172A`;
+                                                const printWindow = window.open('', '_blank');
+                                                if (printWindow) {
+                                                    printWindow.document.write(`
+                                                        <html>
+                                                            <head>
+                                                                <title>QR Poster - ${company.name}</title>
+                                                                <style>
+                                                                    body { font-family: sans-serif; text-align: center; padding: 50px; }
+                                                                    .poster { border: 20px solid #0F172A; padding: 60px; display: inline-block; border-radius: 40px; }
+                                                                    h1 { font-size: 48px; font-weight: 900; margin-bottom: 10px; }
+                                                                    p { font-size: 24px; color: #64748b; margin-bottom: 40px; }
+                                                                    img { width: 400px; height: 400px; }
+                                                                    .footer { margin-top: 40px; font-weight: bold; color: #0F172A; font-size: 20px; }
+                                                                </style>
+                                                            </head>
+                                                            <body>
+                                                                <div class="poster">
+                                                                    <h1>${company.name}</h1>
+                                                                    <p>Scannen & Entdecken auf WMK Connect</p>
+                                                                    <img src="${printUrl}" />
+                                                                    <div class="footer">www.wmk-connect.de</div>
+                                                                </div>
+                                                                <script>window.onload = () => { window.print(); }</script>
+                                                            </body>
+                                                        </html>
+                                                    `);
+                                                    printWindow.document.close();
+                                                }
+                                            }}
+                                            className="bg-slate-900 text-white px-6 py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 hover:bg-slate-800 transition-all hover:scale-[1.02] active:scale-95"
+                                        >
+                                            <Download size={18} />
+                                            Poster drucken (A4)
+                                        </button>
+                                    </div>
+                                </div>
+                                <QrIcon size={120} className="absolute -bottom-6 -right-6 text-slate-50 -z-0 rotate-12" />
+                            </div>
+
+                            {/* Social Media Asset */}
+                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200/60 relative overflow-hidden group">
+                                <div className="relative z-10">
+                                    <div className="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center text-pink-500 mb-6">
+                                        <ImageIcon size={24} />
+                                    </div>
+                                    <h3 className="text-xl font-black text-slate-900 mb-2">Social Media Asset</h3>
+                                    <p className="text-slate-500 text-sm mb-8 leading-relaxed max-w-sm">
+                                        Laden Sie eine Grafik herunter, die perfekt für Ihre Instagram-Story oder Facebook-Seite geeignet ist.
+                                    </p>
+
+                                    <button
+                                        onClick={() => {
+                                            const canvas = document.createElement('canvas');
+                                            canvas.width = 1080;
+                                            canvas.height = 1920;
+                                            const ctx = canvas.getContext('2d');
+                                            if (ctx) {
+                                                // Background
+                                                const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
+                                                gradient.addColorStop(0, '#0F172A');
+                                                gradient.addColorStop(1, '#1E293B');
+                                                ctx.fillStyle = gradient;
+                                                ctx.fillRect(0, 0, 1080, 1920);
+
+                                                // Accent Circle
+                                                ctx.beginPath();
+                                                ctx.arc(540, 960, 400, 0, Math.PI * 2);
+                                                ctx.fillStyle = 'rgba(56, 189, 248, 0.1)';
+                                                ctx.fill();
+
+                                                // Text
+                                                ctx.fillStyle = '#FFFFFF';
+                                                ctx.textAlign = 'center';
+                                                ctx.font = '900 80px sans-serif';
+                                                ctx.fillText(company.name.toUpperCase(), 540, 600);
+
+                                                ctx.fillStyle = '#38BDF8';
+                                                ctx.font = 'bold 40px sans-serif';
+                                                ctx.fillText('JETZT AUF WMK CONNECT', 540, 700);
+
+                                                ctx.fillStyle = '#94A3B8';
+                                                ctx.font = 'medium 30px sans-serif';
+                                                ctx.fillText('Jobs • News • Angebote', 540, 1400);
+
+                                                // "Download" as Image
+                                                const link = document.createElement('a');
+                                                link.download = `wmk-connect-${company.id}.png`;
+                                                link.href = canvas.toDataURL('image/png');
+                                                link.click();
+                                            }
+                                        }}
+                                        className="bg-white border-2 border-slate-200 text-slate-900 px-6 py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 hover:bg-slate-50 transition-all hover:scale-[1.02] active:scale-95"
+                                    >
+                                        <ImageIcon size={18} />
+                                        Story-Asset generieren
+                                    </button>
+                                </div>
+                                <ImageIcon size={120} className="absolute -bottom-6 -right-6 text-slate-50 -z-0 -rotate-12" />
+                            </div>
                         </div>
                     </section>
                 )}
@@ -744,6 +889,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 >
                     <Newspaper size={24} />
                     <span className="text-[9px] font-bold tracking-widest uppercase">Aktuelles</span>
+                </button>
+                <button
+                    onClick={() => setActiveTab('marketing')}
+                    className={cn(
+                        "flex flex-col items-center gap-1.5 transition-all duration-300 px-4 py-2 rounded-2xl",
+                        activeTab === 'marketing' ? "text-accent bg-accent/10" : "text-slate-400"
+                    )}
+                >
+                    <Megaphone size={24} />
+                    <span className="text-[9px] font-bold tracking-widest uppercase">Marketing</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('profile')}
