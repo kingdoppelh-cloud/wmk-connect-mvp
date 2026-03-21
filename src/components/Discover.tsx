@@ -1,20 +1,24 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, Star, ArrowRight } from 'lucide-react';
+import { Search, X, Star, ArrowRight, Building2 } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
+import { SkeletonCard } from './SkeletonCard';
+import { LeadCaptureModal } from './LeadCaptureModal';
 
 interface Props {
     companies: Company[];
     favorites: string[];
     onToggleFavorite: (id: string) => void;
     onSelectCompany: (id: string) => void;
+    isLoading?: boolean;
 }
 
 const CATEGORIES = ['Alle', 'Gastronomie', 'Friseure', 'Handwerk', 'Dienstleistung'];
 
-export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany }) => {
+export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany, isLoading }) => {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Alle');
+    const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
 
     const filteredCompanies = useMemo(() => {
         return companies
@@ -30,7 +34,7 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 if (!a.isPremium && b.isPremium) return 1;
                 return 0;
             });
-    }, [search, selectedCategory]);
+    }, [companies, search, selectedCategory]);
 
     return (
         <div className="px-6 pt-12 pb-10">
@@ -55,9 +59,16 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 <h1 className="text-4xl font-black tracking-tight text-slate-900 mb-2">
                     WMK <span className="text-accent underline decoration-4 underline-offset-8">Connect</span>
                 </h1>
-                <p className="text-slate-500 font-medium text-lg italic">
+                <p className="text-slate-500 font-medium text-lg italic mb-6">
                     Ihre Region. Ihre Firmen. Ein Netzwerk.
                 </p>
+                <button
+                    onClick={() => setIsLeadModalOpen(true)}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-slate-700 rounded-full font-bold hover:bg-gray-50 hover:scale-105 transition-all shadow-sm"
+                >
+                    <Building2 size={18} />
+                    Firma kostenlos eintragen
+                </button>
             </div>
 
             {/* Search Bar */}
@@ -126,13 +137,19 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
             {/* Results Label */}
             <div className="mb-4 flex items-center justify-between">
                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                    Ergebnisse ({filteredCompanies.length})
+                    Ergebnisse ({isLoading ? '...' : filteredCompanies.length})
                 </span>
             </div>
 
             {/* List */}
             <div className="pb-10">
-                {filteredCompanies.length > 0 ? (
+                {isLoading ? (
+                    <>
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                    </>
+                ) : filteredCompanies.length > 0 ? (
                     filteredCompanies.map(company => (
                         <CompanyCard
                             key={company.id}
@@ -148,6 +165,13 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                     </div>
                 )}
             </div>
+
+            <LeadCaptureModal
+                isOpen={isLeadModalOpen}
+                onClose={() => setIsLeadModalOpen(false)}
+                leadType="new_entry"
+            />
         </div>
     );
 };
+

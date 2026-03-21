@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     ArrowLeft,
     Phone,
@@ -7,9 +7,11 @@ import {
     MessageCircle,
     MapPin,
     Clock,
-    Star
+    Star,
+    BadgeCheck
 } from 'lucide-react';
 import { type Company } from '../data/companies';
+import { LeadCaptureModal } from './LeadCaptureModal';
 
 interface Props {
     company: Company;
@@ -17,6 +19,8 @@ interface Props {
 }
 
 export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
+    const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
+
     return (
         <div className="bg-white min-h-screen animate-in fade-in slide-in-from-right duration-500 pb-20">
             {/* Hero Image */}
@@ -57,10 +61,19 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
             <div className="px-6 -mt-4 relative z-10">
                 {/* Action Card */}
                 <div className="bg-white rounded-3xl shadow-2xl p-6 border border-gray-100 flex flex-wrap gap-4 justify-between items-center mb-8">
-                    <div className="flex -space-x-2">
-                        <button className="w-12 h-12 flex items-center justify-center bg-gray-50 text-gray-400 rounded-full border border-gray-100 cursor-not-allowed">
+                    <div className="flex -space-x-2 items-center">
+                        <div className="w-12 h-12 flex items-center justify-center bg-gray-50 text-gray-400 rounded-full border border-gray-100">
                             <Star size={20} />
-                        </button>
+                        </div>
+                        {!company.isPremium && (
+                            <button
+                                onClick={() => setIsClaimModalOpen(true)}
+                                className="ml-4 pl-4 text-sm font-bold text-accent hover:text-accent/80 transition-colors flex items-center gap-1.5"
+                            >
+                                <BadgeCheck size={16} />
+                                Profil übernehmen
+                            </button>
+                        )}
                     </div>
 
                     <div className="flex gap-3">
@@ -186,6 +199,14 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack }) => {
                     <Star className="absolute -bottom-10 -right-10 text-white/5 rotate-12" size={160} />
                 </section>
             </div>
+
+            <LeadCaptureModal
+                isOpen={isClaimModalOpen}
+                onClose={() => setIsClaimModalOpen(false)}
+                leadType="claim_profile"
+                prefilledCompanyName={company.name}
+                claimedCompanyId={company.id}
+            />
         </div>
     );
 };

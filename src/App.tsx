@@ -13,8 +13,11 @@ import type { Session } from '@supabase/supabase-js';
 
 const MapView = lazy(() => import('./components/MapView').then(module => ({ default: module.MapView })));
 
+import { InstallPrompt } from './components/InstallPrompt';
+
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
+
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [session, setSession] = useState<Session | null>(null);
@@ -117,16 +120,6 @@ function App() {
     return <CompanyDetail company={selectedCompany} onBack={() => setSelectedCompanyId(null)} />;
   }
 
-  // Loading-State anzeigen
-  if (isLoading) {
-    return (
-      <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-        <div className="flex h-[50vh] items-center justify-center text-gray-500 font-medium">Lade Firmen...</div>
-      </Layout>
-    );
-  }
-
-  // Error-State anzeigen
   if (error) {
     return (
       <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
@@ -136,7 +129,7 @@ function App() {
   }
 
   const TABS = {
-    discover: <Discover companies={companies} favorites={favorites} onToggleFavorite={toggleFavorite} onSelectCompany={setSelectedCompanyId} />,
+    discover: <Discover companies={companies} favorites={favorites} onToggleFavorite={toggleFavorite} onSelectCompany={setSelectedCompanyId} isLoading={isLoading} />,
     map: (
       <Suspense fallback={<div className="flex h-[50vh] items-center justify-center text-gray-400">Karte lädt...</div>}>
         <MapView companies={companies} onSelectCompany={(id: string) => { setSelectedCompanyId(id); setActiveTab('discover'); }} />
@@ -148,8 +141,10 @@ function App() {
   return (
     <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
       {TABS[activeTab as keyof typeof TABS] || TABS.discover}
+      <InstallPrompt />
     </Layout>
   )
+
 }
 
 export default App;
