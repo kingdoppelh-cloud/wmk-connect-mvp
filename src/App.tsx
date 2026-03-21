@@ -20,6 +20,7 @@ import { JobsBoard } from './components/JobsBoard';
 import { PartnerBenefits } from './components/PartnerBenefits';
 import { Impressum } from './components/Impressum';
 import { Datenschutz } from './components/Datenschutz';
+import { PushOptIn } from './components/PushOptIn';
 
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
@@ -61,6 +62,13 @@ function App() {
     supabase.auth.getSession().then(({ data: { session: initialSession } }: { data: { session: Session | null } }) => {
       setSession(initialSession);
     });
+
+    // Check for deep link
+    const params = new URLSearchParams(window.location.search);
+    const companyId = params.get('company');
+    if (companyId) {
+      setSelectedCompanyId(companyId);
+    }
 
     // Auth-Listener abonnieren
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, currentSession: Session | null) => {
@@ -195,7 +203,11 @@ function App() {
       onLocationRequest={requestLocation}
     />,
     jobs: (
-      <JobsBoard onBecomePartner={() => setShowPartnerBenefits(true)} />
+      <JobsBoard
+        onBecomePartner={() => setShowPartnerBenefits(true)}
+        userLocation={userLocation}
+        onLocationRequest={requestLocation}
+      />
     ),
     map: (
       <Suspense fallback={<div className="flex h-[50vh] items-center justify-center text-gray-400">Karte lädt...</div>}>
@@ -233,6 +245,8 @@ function App() {
           <Datenschutz onBack={() => setShowDatenschutz(false)} />
         </div>
       )}
+
+      <PushOptIn />
     </>
   );
 

@@ -17,6 +17,7 @@ export interface Job {
         name: string;
         image: string;
         whatsapp: string;
+        coordinates?: number[];
     }
 }
 
@@ -27,7 +28,7 @@ export function useJobs(companyId?: string) {
     const fetchJobs = async () => {
         setIsLoading(true);
         try {
-            let query = supabase.from('jobs').select('*, company:companies(name, image, whatsapp)').eq('is_active', true);
+            let query = supabase.from('jobs').select('*, company:companies(name, image, whatsapp, coordinates)').eq('is_active', true);
             if (companyId) {
                 query = query.eq('company_id', companyId);
             }

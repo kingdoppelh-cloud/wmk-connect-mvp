@@ -1,13 +1,52 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Briefcase, Euro, MapPin, Search, Heart, RefreshCw, Star, Info } from 'lucide-react';
 import { useJobs } from '../hooks/useJobs';
 
 interface JobsBoardProps {
     onBecomePartner: () => void;
+    userLocation?: [number, number] | null;
+    onLocationRequest?: () => void;
 }
 
-export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner }) => {
+const getDistanceData = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const R = 6371; // km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+};
+
+export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner, userLocation, onLocationRequest }) => {
     const { jobs, isLoading } = useJobs();
+    const [selectedRadius, setSelectedRadius] = useState<number>(9999);
+
+    const jobsWithDistance = useMemo(() => {
+        return jobs.map(job => {
+            let distance: number | undefined;
+            if (userLocation && job.company?.coordinates) {
+                const [lat, lon] = job.company.coordinates;
+                distance = getDistanceData(userLocation[0], userLocation[1], lat, lon);
+            }
+            return { ...job, distance };
+        });
+    }, [jobs, userLocation]);
+
+    const filteredJobs = useMemo(() => {
+        return jobsWithDistance.filter(job => {
+            if (userLocation && job.distance !== undefined) {
+                return job.distance <= selectedRadius;
+            }
+            return true;
+        }).sort((a, b) => {
+            if (userLocation && a.distance !== undefined && b.distance !== undefined) {
+                return a.distance - b.distance;
+            }
+            return 0; // Use default order if no location
+        });
+    }, [jobsWithDistance, selectedRadius, userLocation]);
 
     const handleApply = (job: any) => {
         if (!job.company?.whatsapp) return;
@@ -24,14 +63,22 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner }) => {
         );
     }
 
-    if (jobs.length === 0) {
+    if (filteredJobs.length === 0) {
         return (
             <div className="min-h-[80vh] flex flex-col items-center justify-center p-12 text-center bg-slate-50">
                 <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-8 shadow-xl">
                     <Search className="text-slate-300" size={48} />
                 </div>
                 <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tighter uppercase italic">Keine Jobs gefunden</h2>
-                <p className="text-slate-500 mb-10 max-w-sm">Aktuell sind keine offenen Stellen in der Region gemeldet. Schau bald wieder vorbei!</p>
+                <p className="text-slate-500 mb-10 max-w-sm">Aktuell sind keine offenen Stellen für diese Suchkriterien gemeldet.</p>
+                {userLocation && selectedRadius < 9999 && (
+                    <button
+                        onClick={() => setSelectedRadius(9999)}
+                        className="mb-8 font-bold text-accent px-4 py-2 bg-accent/10 rounded-full"
+                    >
+                        Suchradius aufheben
+                    </button>
+                )}
 
                 <div className="w-full bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100 flex flex-col items-center">
                     <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center mb-6">
@@ -52,7 +99,7 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner }) => {
 
     return (
         <div className="pb-10 pt-6 animate-in fade-in duration-700">
-            <header className="px-6 mb-8 mt-4">
+            <header className="px-6 mb-6 mt-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full mb-3">
                     <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
                     <span className="text-[10px] font-black uppercase tracking-widest text-accent">Live Recruiting</span>
@@ -61,10 +108,37 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner }) => {
                     Regionale <br /> <span className="text-accent">Chancen.</span>
                 </h1>
                 <p className="text-slate-500 font-medium mt-2">Finde deinen nächsten Job im WMK.</p>
+
+                <div className="mt-6 flex gap-2">
+                    <button
+                        onClick={onLocationRequest}
+                        className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 shadow-sm border flex items-center gap-1.5 ${userLocation
+                            ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20"
+                            : "bg-white text-slate-700 border-gray-100 hover:bg-gray-50"
+                            }`}
+                    >
+                        <MapPin size={14} className={userLocation ? "text-accent" : ""} />
+                        GPS verwenden
+                    </button>
+                    {userLocation && (
+                        <select
+                            value={selectedRadius}
+                            onChange={(e) => setSelectedRadius(Number(e.target.value))}
+                            className="bg-white border border-gray-100 text-slate-700 text-xs font-bold py-3 pl-4 pr-8 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/20 cursor-pointer appearance-none shrink-0"
+                            style={{ backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`, backgroundPosition: `right 10px center`, backgroundRepeat: `no-repeat`, backgroundSize: `14px 14px` }}
+                        >
+                            <option value={9999}>Überall</option>
+                            <option value={5}>Max. 5 km</option>
+                            <option value={15}>Max. 15 km</option>
+                            <option value={30}>Max. 30 km</option>
+                            <option value={50}>Max. 50 km</option>
+                        </select>
+                    )}
+                </div>
             </header>
 
             <div className="flex flex-col gap-6 px-4">
-                {jobs.map((job) => (
+                {filteredJobs.map((job) => (
                     <div
                         key={job.id}
                         className="group bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-100 active:scale-[0.98]"

@@ -20,6 +20,7 @@ const CATEGORIES = ['Alle', 'Gastronomie', 'Friseure', 'Handwerk', 'Dienstleistu
 export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany, isLoading, userLocation, onLocationRequest }) => {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Alle');
+    const [selectedRadius, setSelectedRadius] = useState<number>(9999);
     const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
 
     const filteredCompanies = useMemo(() => {
@@ -28,7 +29,11 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase()) ||
                     c.category.toLowerCase().includes(search.toLowerCase());
                 const matchesCategory = selectedCategory === 'Alle' || c.category === selectedCategory;
-                return matchesSearch && matchesCategory;
+
+                // Only enforce radius check if userLocation is active and distance exists
+                const matchesRadius = userLocation && c.distance !== undefined ? c.distance <= selectedRadius : true;
+
+                return matchesSearch && matchesCategory && matchesRadius;
             })
             .sort((a, b) => {
                 // Premium entries always first
@@ -41,7 +46,7 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 }
                 return 0;
             });
-    }, [companies, search, selectedCategory]);
+    }, [companies, search, selectedCategory, selectedRadius, userLocation]);
 
     return (
         <div className="px-6 pt-12 pb-10">
@@ -119,13 +124,27 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
                 <button
                     onClick={onLocationRequest}
                     className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 shadow-sm border flex items-center gap-1.5 ${userLocation
-                        ? "bg-emerald-500 text-white border-emerald-500 scale-105 shadow-emerald-200"
+                        ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20"
                         : "bg-white text-slate-700 border-gray-100 hover:bg-gray-50"
                         }`}
                 >
-                    <MapPin size={14} className={userLocation ? "animate-pulse" : ""} />
-                    {userLocation ? "In meiner Nähe" : "Nähe finden"}
+                    <MapPin size={14} className={userLocation ? "text-accent" : ""} />
+                    GPS verwenden
                 </button>
+                {userLocation && (
+                    <select
+                        value={selectedRadius}
+                        onChange={(e) => setSelectedRadius(Number(e.target.value))}
+                        className="bg-white border border-gray-100 text-slate-700 text-xs font-bold py-3 pl-4 pr-8 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/20 cursor-pointer appearance-none shrink-0"
+                        style={{ backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`, backgroundPosition: `right 10px center`, backgroundRepeat: `no-repeat`, backgroundSize: `14px 14px` }}
+                    >
+                        <option value={9999}>Überall</option>
+                        <option value={5}>Max. 5 km</option>
+                        <option value={15}>Max. 15 km</option>
+                        <option value={30}>Max. 30 km</option>
+                        <option value={50}>Max. 50 km</option>
+                    </select>
+                )}
                 {CATEGORIES.map(cat => (
                     <button
                         key={cat}

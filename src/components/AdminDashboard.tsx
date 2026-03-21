@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit2, Trash2, ArrowLeft, Search } from 'lucide-react';
+import { Plus, Edit2, Trash2, ArrowLeft, Search, QrCode, X, Download } from 'lucide-react';
 import { type Company } from '../data/companies';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 
 export const AdminDashboard: React.FC<Props> = ({ companies, onBack, onLogout, onEdit, onAdd, onDelete }) => {
     const [search, setSearch] = useState('');
+    const [showQrFor, setShowQrFor] = useState<Company | null>(null);
 
     const filtered = companies.filter(c =>
         c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -108,6 +109,13 @@ export const AdminDashboard: React.FC<Props> = ({ companies, onBack, onLogout, o
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-2">
                                             <button
+                                                onClick={() => setShowQrFor(company)}
+                                                className="p-2 text-slate-400 hover:text-accent hover:bg-white rounded-lg transition-all border border-transparent hover:border-accent/20"
+                                                title="QR-Code anzeigen"
+                                            >
+                                                <QrCode size={16} />
+                                            </button>
+                                            <button
                                                 onClick={() => onEdit(company)}
                                                 className="p-2 text-slate-400 hover:text-slate-900 hover:bg-white rounded-lg transition-all border border-transparent hover:border-slate-200"
                                             >
@@ -136,6 +144,50 @@ export const AdminDashboard: React.FC<Props> = ({ companies, onBack, onLogout, o
                     )}
                 </div>
             </div>
+
+            {/* QR Code Modal */}
+            {showQrFor && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+                    <div className="bg-white rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl relative">
+                        <button
+                            onClick={() => setShowQrFor(null)}
+                            className="absolute top-4 right-4 p-2 bg-slate-100 text-slate-400 hover:text-slate-900 hover:bg-slate-200 rounded-full transition-colors z-10"
+                        >
+                            <X size={20} />
+                        </button>
+                        <div className="p-8 text-center">
+                            <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-accent">
+                                <QrCode size={32} />
+                            </div>
+                            <h2 className="text-xl font-black text-slate-900 mb-1">Ihr Tischaufsteller</h2>
+                            <p className="text-sm text-slate-500 mb-6">Für "{showQrFor.name}"</p>
+
+                            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-6 flex justify-center">
+                                <img
+                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(window.location.origin + '/?company=' + showQrFor.id)}&bgcolor=FFFFFF&color=0F172A`}
+                                    alt="QR Code"
+                                    className="w-48 h-48 rounded-xl shadow-sm mix-blend-multiply"
+                                />
+                            </div>
+
+                            <p className="text-xs text-slate-400 mb-6 max-w-[260px] mx-auto leading-relaxed">
+                                Drucken Sie diesen QR-Code aus. Gäste können ihn scannen, um direkt auf Ihr Firmenprofil mit allen aktuellen Stellenanzeigen zu gelangen.
+                            </p>
+
+                            <button
+                                onClick={() => {
+                                    const url = `https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=${encodeURIComponent(window.location.origin + '/?company=' + showQrFor.id)}&bgcolor=FFFFFF&color=0F172A`;
+                                    window.open(url, '_blank');
+                                }}
+                                className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors"
+                            >
+                                <Download size={18} />
+                                In hoher Qualität speichern
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
