@@ -36,7 +36,14 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
         <div className="px-6 pt-12 pb-10">
             {/* Hero Section */}
             <div className="text-center mb-12 animate-in fade-in slide-in-from-top duration-700">
-                <div className="relative inline-block mb-6">
+                <div
+                    className="relative inline-block mb-6 cursor-default"
+                    onClick={(e) => {
+                        if (e.detail === 3) {
+                            (window as any).onAdminRequest?.();
+                        }
+                    }}
+                >
                     <img
                         src="/logo.png"
                         alt="WMK Connect Logo"

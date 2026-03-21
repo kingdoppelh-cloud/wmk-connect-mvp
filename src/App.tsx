@@ -3,7 +3,13 @@ import { Layout } from './components/Layout';
 import { Discover } from './components/Discover';
 import { Favorites } from './components/Favorites';
 import { CompanyDetail } from './components/CompanyDetail';
+import { AdminDashboard } from './components/AdminDashboard';
+import { CompanyForm } from './components/CompanyForm';
 import { useCompanies } from './hooks/useCompanies';
+import { type Company } from './data/companies';
+import { supabase } from './utils/supabase';
+import { Auth } from './components/Auth';
+import type { Session } from '@supabase/supabase-js';
 
 const MapView = lazy(() => import('./components/MapView').then(module => ({ default: module.MapView })));
 
@@ -11,10 +17,54 @@ function App() {
   const [activeTab, setActiveTab] = useState('discover');
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [session, setSession] = useState<Session | null>(null);
+
+  // Admin States
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [editingCompany, setEditingCompany] = useState<Company | null>(null);
+  const [isAddingCompany, setIsAddingCompany] = useState(false);
 
   // Echte Daten aus Supabase abrufen!
-  const { companies, isLoading, error } = useCompanies();
-  console.log('App state:', { activeTab, favoritesCount: favorites.length, companiesCount: companies.length, isLoading, error });
+  const { companies, isLoading, error, addCompany, updateCompany, deleteCompany, uploadFile } = useCompanies();
+
+  useEffect(() => {
+    // Session state abholen
+    supabase.auth.getSession().then(({ data: { session: initialSession } }: { data: { session: Session | null } }) => {
+      setSession(initialSession);
+    });
+
+    // Auth-Listener abonnieren
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, currentSession: Session | null) => {
+      setSession(currentSession);
+    });
+
+    // Hidden Admin Trigger (Double click Logo)
+    (window as any).onAdminRequest = () => setIsAdminMode(true);
+
+    return () => {
+      subscription.unsubscribe();
+      (window as any).onAdminRequest = null;
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsAdminMode(false);
+  };
+
+  const handleSaveCompany = async (data: Partial<Company>) => {
+    try {
+      if (editingCompany) {
+        await updateCompany(editingCompany.id, data);
+      } else {
+        await addCompany(data as Omit<Company, 'id'>);
+      }
+      setEditingCompany(null);
+      setIsAddingCompany(false);
+    } catch (err: any) {
+      alert('Fehler beim Speichern: ' + err.message);
+    }
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem('wmk_favorites');
@@ -33,6 +83,34 @@ function App() {
   };
 
   const selectedCompany = companies.find(c => c.id === selectedCompanyId);
+
+  // Admin Dashboard View
+  if (isAdminMode) {
+    if (!session) {
+      return <Auth onBack={() => setIsAdminMode(false)} />;
+    }
+
+    return (
+      <>
+        <AdminDashboard
+          companies={companies}
+          onBack={() => setIsAdminMode(false)}
+          onLogout={handleLogout}
+          onEdit={setEditingCompany}
+          onAdd={() => setIsAddingCompany(true)}
+          onDelete={deleteCompany}
+        />
+        {(editingCompany || isAddingCompany) && (
+          <CompanyForm
+            company={editingCompany || undefined}
+            onClose={() => { setEditingCompany(null); setIsAddingCompany(false); }}
+            onSave={handleSaveCompany}
+            onUpload={uploadFile}
+          />
+        )}
+      </>
+    );
+  }
 
   // Detailansicht hat Vorrang vor Tabs, wenn eine Firma ausgewählt ist
   if (selectedCompanyId && selectedCompany) {
