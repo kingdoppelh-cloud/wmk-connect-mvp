@@ -14,6 +14,7 @@ import type { Session } from '@supabase/supabase-js';
 const MapView = lazy(() => import('./components/MapView').then(module => ({ default: module.MapView })));
 
 import { InstallPrompt } from './components/InstallPrompt';
+import { MerchantDashboard } from './components/MerchantDashboard';
 
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
@@ -126,6 +127,9 @@ function App() {
 
   // Detailansicht hat Vorrang vor Tabs, wenn eine Firma ausgewählt ist
   if (selectedCompanyId && selectedCompany) {
+    if (activeTab === 'merchant') {
+      return <MerchantDashboard company={selectedCompany} onClose={() => setActiveTab('discover')} />;
+    }
     return <CompanyDetail company={selectedCompany} onBack={() => setSelectedCompanyId(null)} />;
   }
 
