@@ -31,16 +31,35 @@ VALUES
 ('44444444-4444-4444-4444-444444444444', 'Cafe am Markt', 'Gastronomie', 'Frischer Kuchen und Kaffeespezialitäten.', 'https://cafe-am-markt.de', '+4956524455', '4956524455', '[51.2718, 9.9820]', false, 'Marktplatz 1, 37242 Bad Sooden-Allendorf', 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80&w=1000')
 ON CONFLICT (id) DO NOTHING;
 
--- 6. Seed a sample job (linked to Gasthaus zum Schwan - assuming ID 1 exists or using Name link if we had a function)
--- Since we don't know the exact UUID of 'Gasthaus zum Schwan' in your DB, we'll try to find it.
+-- 6. Seed sample jobs
 DO $$
 DECLARE
     schwan_id UUID;
+    meyer_id UUID;
+    markt_id UUID;
 BEGIN
     SELECT id INTO schwan_id FROM public.companies WHERE name = 'Gasthaus zum Schwan' LIMIT 1;
+    SELECT id INTO meyer_id FROM public.companies WHERE name = 'Elektro Meyer' LIMIT 1;
+    SELECT id INTO markt_id FROM public.companies WHERE name = 'Cafe am Markt' LIMIT 1;
+
+    -- Job for Schwan
     IF schwan_id IS NOT NULL THEN
         INSERT INTO public.jobs (company_id, title, category, description, salary_range, job_type, is_active)
         VALUES (schwan_id, 'Servicemitarbeiter (m/w/d)', 'Gastronomie', 'Wir suchen Unterstützung für unser Team! Erfahrung erwünscht, aber kein Muss.', '2.500€ - 3.200€', 'Vollzeit', true)
+        ON CONFLICT DO NOTHING;
+    END IF;
+
+    -- Job for Elektro Meyer
+    IF meyer_id IS NOT NULL THEN
+        INSERT INTO public.jobs (company_id, title, category, description, salary_range, job_type, is_active, image_url)
+        VALUES (meyer_id, 'Elektroniker für Energie- & Gebäudetechnik', 'Handwerk', 'Werde Teil unseres Teams und arbeite an spannenden Projekten in der Region.', '3.500€ - 4.200€', 'Vollzeit', true, 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80')
+        ON CONFLICT DO NOTHING;
+    END IF;
+
+    -- Job for Cafe am Markt
+    IF markt_id IS NOT NULL THEN
+        INSERT INTO public.jobs (company_id, title, category, description, salary_range, job_type, is_active, image_url)
+        VALUES (markt_id, 'Barista / Servicekraft (m/w/d)', 'Gastronomie', 'Liebst du guten Kaffee? Wir suchen Verstärkung für unser Team am Marktplatz.', '14€ - 16€ / Std.', 'Teilzeit', true, 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80')
         ON CONFLICT DO NOTHING;
     END IF;
 END $$;
