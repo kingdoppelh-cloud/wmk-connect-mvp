@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../utils/supabase';
-import { LogIn, Mail, Lock, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { LogIn, Mail, ShieldCheck, ArrowLeft } from 'lucide-react';
 
 interface Props {
     onBack: () => void;
