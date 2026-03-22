@@ -1,22 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
-
-export interface Event {
-    id: string;
-    company_id: string;
-    title: string;
-    description: string;
-    event_date: string;
-    location_override?: string;
-    image_url?: string;
-    created_at: string;
-    company?: {
-        name: string;
-        image: string;
-    };
-    attendee_count?: number;
-    user_status?: 'attending' | 'none';
-}
+import type { Event } from '../types';
 
 export function useEvents(companyId?: string) {
     const [events, setEvents] = useState<Event[]>([]);

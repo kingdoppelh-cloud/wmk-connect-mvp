@@ -75,6 +75,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
             <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-gray-100 px-6 py-3 flex justify-around items-center">
                 <button
                     onClick={() => navigate('/')}
+                    aria-label="Entdecken"
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300",
                         activeTab === 'discover' ? "text-accent scale-110" : "text-gray-400"
@@ -86,6 +87,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
 
                 <button
                     onClick={() => navigate('/jobs')}
+                    aria-label="Jobs"
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300",
                         activeTab === 'jobs' ? "text-accent scale-110" : "text-gray-400"
@@ -97,6 +99,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
 
                 <button
                     onClick={() => navigate('/events')}
+                    aria-label="Events"
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300",
                         activeTab === 'events' ? "text-accent scale-110" : "text-gray-400"
@@ -108,6 +111,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
 
                 <button
                     onClick={() => navigate('/feed')}
+                    aria-label="Aktuelles"
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300",
                         activeTab === 'feed' ? "text-accent scale-110" : "text-gray-400"
@@ -119,6 +123,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
 
                 <button
                     onClick={() => navigate('/map')}
+                    aria-label="Karte"
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300",
                         activeTab === 'map' ? "text-accent scale-110" : "text-gray-400"
@@ -130,6 +135,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
 
                 <button
                     onClick={() => navigate('/favorites')}
+                    aria-label="Favoriten"
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300",
                         activeTab === 'favorites' ? "text-accent scale-110" : "text-gray-400"
@@ -141,6 +147,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
 
                 <button
                     onClick={() => setIsNotificationsOpen(true)}
+                    aria-label="Benachrichtigungen"
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300 relative",
                         isNotificationsOpen ? "text-accent scale-110" : "text-gray-400"

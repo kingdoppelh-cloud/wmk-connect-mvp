@@ -1,16 +1,5 @@
 import { supabase } from '../utils/supabase';
-
-export type AnalyticsEventType =
-    | 'profile_view'
-    | 'whatsapp_click'
-    | 'website_click'
-    | 'route_click'
-    | 'news_click'
-    | 'event_click'
-    | 'rsvp_action'
-    | 'click_phone'
-    | 'open_swipe_jobs'
-    | 'email_click';
+import type { AnalyticsEventType } from '../types';
 
 export function useAnalytics() {
     const sessionId = localStorage.getItem('wmk_session_id') || 'guest';

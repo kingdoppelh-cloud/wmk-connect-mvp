@@ -1,6 +1,6 @@
-﻿import { useState, useEffect } from 'react';
+﻿import { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase, hasSupabaseConfig } from '../utils/supabase';
-import { type Company } from '../data/companies';
+import type { Company } from '../types';
 
 // Helper to map DB snake_case to app camelCase
 const mapFromDb = (d: any): Company => ({
@@ -21,7 +21,6 @@ const mapFromDb = (d: any): Company => ({
   openingHours: d.opening_hours || d.openingHours || {}
 });
 
-// Helper to map app camelCase to DB snake_case
 const mapToDb = (c: Partial<Company>) => {
   const data: any = { ...c };
   if ('websiteUrl' in data) { data.website_url = data.websiteUrl; delete data.websiteUrl; }
@@ -37,8 +36,7 @@ export function useCompanies() {
   const [error, setError] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
-  // Haversine formula to calculate distance between two coordinates in km
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+  const calculateDistance = useCallback((lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371; // Earth radius
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -48,18 +46,16 @@ export function useCompanies() {
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
-  };
+  }, []);
 
-  async function fetchCompanies() {
+  const fetchCompanies = async () => {
     try {
       setIsLoading(true);
       if (!hasSupabaseConfig) throw new Error('Supabase fehlt');
       const { data, error: sbError } = await supabase.from('companies').select('*');
       if (sbError) throw new Error(sbError.message);
       if (data) {
-        const mapped = data.map(mapFromDb);
-        const sorted = mapped.sort((a: Company, b: Company) => (a.isPremium === b.isPremium ? 0 : a.isPremium ? -1 : 1));
-        setCompanies(sorted);
+        setCompanies(data.map(mapFromDb));
       }
     } catch (err: any) {
       console.error('Detailed fetch error:', err);
@@ -67,67 +63,37 @@ export function useCompanies() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchCompanies();
   }, []);
 
-  const addCompany = async (company: Omit<Company, 'id'>) => {
-    const { error } = await supabase.from('companies').insert([mapToDb(company)]);
-    if (error) throw error;
-    await fetchCompanies();
-  };
+  const sortedCompanies = useMemo(() => {
+    return [...companies].sort((a, b) => {
+      // 1. Premium priority
+      if (a.isPremium && !b.isPremium) return -1;
+      if (!a.isPremium && b.isPremium) return 1;
 
-  const updateCompany = async (id: string, updates: Partial<Company>) => {
-    const { error } = await supabase.from('companies').update(mapToDb(updates)).eq('id', id);
-    if (error) throw error;
-    await fetchCompanies();
-  };
-
-  const deleteCompany = async (id: string) => {
-    const { error } = await supabase.from('companies').delete().eq('id', id);
-    if (error) throw error;
-    await fetchCompanies();
-  };
-
-  const uploadFile = async (file: File, path: string) => {
-    const { data, error } = await supabase.storage
-      .from('company-images')
-      .upload(`${path}/${Date.now()}-${file.name}`, file);
-    if (error) throw error;
-
-    const { data: { publicUrl } } = supabase.storage
-      .from('company-images')
-      .getPublicUrl(data.path);
-
-    return publicUrl;
-  };
+      // 2. Distance sorting if location available
+      if (userLocation) {
+        const distA = a.coordinates ? calculateDistance(userLocation[0], userLocation[1], a.coordinates[0], a.coordinates[1]) : Infinity;
+        const distB = b.coordinates ? calculateDistance(userLocation[0], userLocation[1], b.coordinates[0], b.coordinates[1]) : Infinity;
+        return distA - distB;
+      }
+      return 0;
+    });
+  }, [companies, userLocation, calculateDistance]);
 
   const requestLocation = () => {
     if (!navigator.geolocation) {
       setError("Geolocation wird von diesem Browser nicht unterstützt.");
       return;
     }
-
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         setUserLocation([latitude, longitude]);
-
-        // Re-sort companies by distance immediately
-        setCompanies(prev => {
-          const withDistances = prev.map(c => ({
-            ...c,
-            distance: c.coordinates ? calculateDistance(latitude, longitude, c.coordinates[0], c.coordinates[1]) : Infinity
-          }));
-          return [...withDistances].sort((a, b) => {
-            // Keep premium first, then sort by distance
-            if (a.isPremium && !b.isPremium) return -1;
-            if (!a.isPremium && b.isPremium) return 1;
-            return (a.distance || 0) - (b.distance || 0);
-          });
-        });
       },
       (err) => {
         console.error("Location error", err);
@@ -137,16 +103,33 @@ export function useCompanies() {
   };
 
   return {
-    companies,
+    companies: sortedCompanies,
     isLoading,
     error,
     userLocation,
     requestLocation,
     refresh: fetchCompanies,
-    addCompany,
-    updateCompany,
-    deleteCompany,
-    uploadFile
+    addCompany: async (company: Omit<Company, 'id'>) => {
+      const { error } = await supabase.from('companies').insert([mapToDb(company)]);
+      if (error) throw error;
+      await fetchCompanies();
+    },
+    updateCompany: async (id: string, updates: Partial<Company>) => {
+      const { error } = await supabase.from('companies').update(mapToDb(updates)).eq('id', id);
+      if (error) throw error;
+      await fetchCompanies();
+    },
+    deleteCompany: async (id: string) => {
+      const { error } = await supabase.from('companies').delete().eq('id', id);
+      if (error) throw error;
+      await fetchCompanies();
+    },
+    uploadFile: async (file: File, path: string) => {
+      const { data, error } = await supabase.storage.from('company-images').upload(`${path}/${Date.now()}-${file.name}`, file);
+      if (error) throw error;
+      const { data: { publicUrl } } = supabase.storage.from('company-images').getPublicUrl(data.path);
+      return publicUrl;
+    }
   };
 }
 

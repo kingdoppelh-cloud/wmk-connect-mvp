@@ -1,71 +1,34 @@
-# WMK Connect - Regionales Firmenverzeichnis MVP
+# WMK Connect - Regionales Firmenverzeichnis v1.0
 
-Dieses Projekt ist ein voll funktionsfähiger Prototyp einer Progressive Web App (PWA) für das Firmenverzeichnis des Werra-Meißner-Kreises, speziell Bad Sooden-Allendorf.
+Dieses Projekt ist eine hochperformante Progressive Web App (PWA) für das Firmenverzeichnis des Werra-Meißner-Kreises. Es verbindet lokale Unternehmen mit Bürgern und bietet B2B-Tools für Händler.
 
-## 🚀 Features
+## 🚀 Kern-Features
 
-- **Entdecken-Seite**: Durchsuchen Sie lokale Unternehmen mit einer Echtzeit-Suche und Kategorie-Filtern.
-- **Premium-Listing**: Hervorgehobene Unternehmen mit speziellen Badges und Top-Platzierung.
-- **Interaktive Karte**: Basierend auf Leaflet, mit allen Firmenstandorten und speziellen Premium-Pins.
-- **Quick-Actions**: Direkte Verlinkung zu Websites, Telefon-Dialer und WhatsApp.
-- **Favoriten**: Speichern Sie Ihre liebsten Unternehmen lokal in Ihrem Browser.
-- **Geöffnet/Geschlossen Status**: Automatische Berechnung basierend auf den aktuellen Öffnungszeiten.
-- **Native Sharing**: Nutzen Sie die Web Share API, um Einträge zu teilen.
+- **Entdecken & Suche**: Echtzeit-Suche und Kategorie-Filter für lokale Firmen.
+- **Interaktive Karte**: GPS-basierte Entdeckung ("In der Nähe") mit benutzerdefinierten Pins.
+- **Merchant Dashboard**: Eigenes Profilmanagement für Unternehmen (News, Jobs, Events).
+- **Regionaler Jobmarkt**: Swipe-Interface für Stellenangebote mit WhatsApp-Direktbewerbung.
+- **Activity Feed**: "Live aus der Region" – Aktuelle News und Angebote von lokalen Partnern.
+- **Analytics**: Detaillierte Einblicke für Händler (Profilaufrufe, Klicks auf Tel/WA/Web).
+- **Gamified Onboarding**: Fortschrittsanzeige und Checklisten für Unternehmen.
 
 ## 🛠 Tech-Stack
 
-- **Frontend**: React 19 + TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS V4 (Modern CSS-first approach)
-- **Animationen**: Framer Motion
-- **Icons**: Lucide React
-- **Karten**: Leaflet + React-Leaflet
-- **PWA**: Vite-Plugin-PWA
+- **Frontend**: React 19 + TypeScript + Vite
+- **Backend/DB**: Supabase (PostgreSQL, Auth, Storage, Edge Functions)
+- **Styling**: Tailwind CSS V4 + Framer Motion (Animationen)
+- **Infrastruktur**: Vercel (Analytics & Speed Insights)
+- **PWA**: Vollständige Offline-Unterstützung und Installierbarkeit.
 
-## ⚙️ Installation & Start
+## ⚙️ Setup & Deployment
 
-1. **Abhängigkeiten installieren**:
-   ```bash
-   npm install --legacy-peer-deps
-   ```
-   *(Hinweis: --legacy-peer-deps ist aktuell für die PWA-Plugin-Kompatibilität mit Vite 8 erforderlich)*
+1. **Abhängigkeiten**: `npm install --legacy-peer-deps`
+2. **Umgebungsvariablen**: `.env.local` mit `VITE_SUPABASE_URL` und `VITE_SUPABASE_ANON_KEY` erstellen.
+3. **Datenbank**: SQL-Initialisierungsscripts in Supabase ausführen (siehe `supabase/` Ordner, falls vorhanden, oder über Repository-Historie).
+4. **Build**: `npm run build`
 
-2. **Entwicklungsserver starten**:
-   ```bash
-   npm run dev
-   ```
+## 📊 Live-Betrieb
 
-3. **Produktions-Build**:
-   ```bash
-   npm run build
-   ```
+Die App ist für den Einsatz im Werra-Meißner-Kreis optimiert. Unternehmen können sich via Magic Link einloggen, ihr Profil verwalten und Marketing-Materialien (QR-Codes) direkt im Dashboard generieren.
 
-## 📊 Eigene Daten verwenden
-
-Um die Dummy-Daten durch echte Unternehmensdaten zu ersetzen:
-
-1. Öffnen Sie `src/data/companies.ts`.
-2. Bearbeiten Sie das `companies`-Array oder laden Sie dort eine externe JSON-Datei.
-3. Die Struktur muss dem `Company`-Interface entsprechen:
-   ```typescript
-   interface Company {
-     id: string;
-     name: string;
-     category: string;
-     description: string;
-     websiteUrl: string;
-     phone: string;
-     whatsapp: string;
-     coordinates: [number, number];
-     openingHours: { [dayIndex: string]: string };
-     isPremium: boolean;
-     address: string;
-   }
-   ```
-
-## 🎨 Branding anpassen
-
-- Die **Akzentfarbe** kann in `src/index.css` im `@theme` Block unter `--color-accent` geändert werden.
-- Das **Logo** ist ein Platzhalter in `src/components/Layout.tsx`. Tauschen Sie das WMK-Div gegen ein `<img>` Tag aus.
-
-Entwickelt für den Werra-Meißner-Kreis. 🦅
+Entwickelt mit ❤️ für die Region. 🦅

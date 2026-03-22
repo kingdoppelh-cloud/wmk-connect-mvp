@@ -1,5 +1,5 @@
 {
-    "name": "WMK Connect",
+    "name": "WMK Connect - Werra-Meißner-Kreis",
     "short_name": "WMK Connect",
     "description": "Ihre Region. Ihre Firmen. Ein Netzwerk. Entdecke tolle Restaurants, Handwerker und Dienstleister im Werra-Meißner-Kreis.",
     "start_url": "/",
@@ -11,7 +11,13 @@
             "src": "/logo.png",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "any"
+        },
+        {
+            "src": "/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
         }
     ]
 }

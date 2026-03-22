@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { RefreshCw, X, Image as ImageIcon, Star, BadgeCheck } from 'lucide-react';
 import { supabase } from '../utils/supabase';
-import { useJobs, type Job } from '../hooks/useJobs';
+import { useJobs } from '../hooks/useJobs';
 import { useNews } from '../hooks/useNews';
 import { useEvents } from '../hooks/useEvents';
-import type { Company } from '../data/companies';
+import type { Company, Job, NewsPost, Event } from '../types';
 import { cn } from './Layout';
 
 // Sub-components
@@ -47,10 +47,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
     const { events, addEvent, deleteEvent } = useEvents(company.id);
 
     // Form States
-    const [newPost, setNewPost] = useState<{ content: string; type: 'news' | 'offer' | 'event' | 'special'; image_url?: string }>({ content: '', type: 'news' });
+    const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+    const [newPost, setNewPost] = useState<{ content: string; type: NewsPost['type']; image_url?: string }>({ content: '', type: 'news' });
     const [newsImageFile, setNewsImageFile] = useState<File | null>(null);
     const [isPosting, setIsPosting] = useState(false);
-    const [newEvent, setNewEvent] = useState({ title: '', description: '', event_date: '', location_override: '' });
+    const [newEvent, setNewEvent] = useState<Partial<Event>>({ title: '', description: '', event_date: '', location_override: '' });
     const [profileData, setProfileData] = useState({
         description: company.description,
         descriptionLong: company.descriptionLong || '',
@@ -68,6 +69,33 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
         image_url: company.image,
         is_featured: false
     });
+
+    const validateJob = () => {
+        const errors: Record<string, string> = {};
+        if (!newJob.title?.trim()) errors.title = 'Titel ist erforderlich';
+        if (!newJob.description?.trim()) errors.description = 'Beschreibung ist erforderlich';
+        if (newJob.description && newJob.description.length > 500) errors.description = 'Maximal 500 Zeichen';
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const validateEvent = () => {
+        const errors: Record<string, string> = {};
+        if (!newEvent.title?.trim()) errors.title = 'Titel ist erforderlich';
+        if (!newEvent.event_date) errors.event_date = 'Datum ist erforderlich';
+        if (newEvent.event_date && new Date(newEvent.event_date) < new Date()) errors.event_date = 'Datum muss in der Zukunft liegen';
+        if (!newEvent.description?.trim()) errors.description = 'Beschreibung ist erforderlich';
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const validatePost = () => {
+        const errors: Record<string, string> = {};
+        if (!newPost.content.trim()) errors.content = 'Inhalt ist erforderlich';
+        if (newPost.content.length > 1000) errors.content = 'Maximal 1000 Zeichen';
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
     const profileProgress = useMemo(() => {
         let score = 0;
@@ -120,8 +148,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
 
     useEffect(() => { fetchStats(); }, [company.id]);
 
+    useEffect(() => {
+        setFormErrors({});
+    }, [activeTab, isAddingJob, isAddingNews, isAddingEvent]);
+
     const handleAddJob = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validateJob()) return;
         try {
             if (newJob.is_featured) window.open('https://buy.stripe.com/8x2fZg5LybQYdyte7R6oo00', '_blank');
             await addJob({
@@ -137,11 +170,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             });
             setIsAddingJob(false);
             setNewJob({ title: '', category: company.category, description: '', salary_range: '', job_type: 'Vollzeit', image_url: company.image, is_featured: false });
+            setFormErrors({});
         } catch (err) { alert('Fehler beim Speichern des Jobs'); }
     };
 
     const handleAddPost = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validatePost()) return;
         setIsPosting(true);
         try {
             let finalImageUrl = '';
@@ -157,12 +192,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             setIsAddingNews(false);
             setNewPost({ content: '', type: 'news' });
             setNewsImageFile(null);
-            alert('Beitrag veröffentlicht!');
+            setFormErrors({});
         } catch (err) { alert('Fehler beim Posten'); } finally { setIsPosting(false); }
     };
 
     const handleAddEvent = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validateEvent()) return;
         try {
             await addEvent({
                 company_id: company.id,
@@ -174,12 +210,30 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             });
             setIsAddingEvent(false);
             setNewEvent({ title: '', description: '', event_date: '', location_override: '' });
-            alert('Event erfolgreich erstellt!');
+            setFormErrors({});
         } catch (err) { alert('Fehler beim Erstellen des Events'); }
+    };
+
+    const validateProfile = () => {
+        const errors: Record<string, string> = {};
+        if (!profileData.description?.trim()) errors.description = 'Kurzbeschreibung ist erforderlich';
+        if (!profileData.descriptionLong?.trim()) errors.descriptionLong = 'Ausführliche Beschreibung ist erforderlich';
+
+        if (profileData.websiteUrl) {
+            try {
+                new URL(profileData.websiteUrl.startsWith('http') ? profileData.websiteUrl : `https://${profileData.websiteUrl}`);
+            } catch (e) {
+                errors.websiteUrl = 'Ungültige URL (z.B. https://ihreseite.de)';
+            }
+        }
+
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
     };
 
     const handleUpdateProfile = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validateProfile()) return;
         try {
             const { error } = await supabase.from('companies').update({
                 description: profileData.description,
@@ -190,6 +244,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 email: profileData.email
             }).eq('id', company.id);
             if (error) throw error;
+            setFormErrors({});
             alert('Profil erfolgreich aktualisiert!');
         } catch (err) { alert('Fehler beim Aktualisieren des Profils'); }
     };
@@ -322,6 +377,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                 profileData={profileData}
                                 setProfileData={setProfileData}
                                 onUpdateProfile={handleUpdateProfile}
+                                formErrors={formErrors}
                             />
                         </div>
                     )}
@@ -331,8 +387,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             {/* Modals */}
             {isAddingJob && (
                 <div className="fixed inset-0 z-[200] flex items-center justify-center px-6">
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsAddingJob(false)} />
-                    <div className="bg-white w-full max-w-md rounded-[32px] overflow-hidden shadow-2xl relative z-10 animate-in zoom-in-95 duration-200">
+                    <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onClick={() => setIsAddingJob(false)} />
+                    <div className="glass w-full max-w-md rounded-[32px] overflow-hidden shadow-2xl relative z-10 animate-in zoom-in-95 duration-200">
                         <div className="px-8 pt-8 pb-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
                             <h2 className="text-2xl font-black text-slate-900">Job posten</h2>
                             <button onClick={() => setIsAddingJob(false)} className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400">
@@ -342,7 +398,20 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                         <form onSubmit={handleAddJob} className="p-8 space-y-4">
                             <div>
                                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Job-Titel</label>
-                                <input required value={newJob.title} onChange={e => setNewJob({ ...newJob, title: e.target.value })} placeholder="z.B. Koch (m/w/d)" className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-accent/20 outline-none" />
+                                <input
+                                    required
+                                    value={newJob.title}
+                                    onChange={e => {
+                                        setNewJob({ ...newJob, title: e.target.value });
+                                        if (formErrors.title) setFormErrors({ ...formErrors, title: '' });
+                                    }}
+                                    placeholder="z.B. Koch (m/w/d)"
+                                    className={cn(
+                                        "w-full bg-slate-50 border px-4 py-3 rounded-xl focus:ring-2 outline-none transition-colors",
+                                        formErrors.title ? "border-red-500 focus:ring-red-500/20" : "border-slate-100 focus:ring-accent/20"
+                                    )}
+                                />
+                                {formErrors.title && <p className="text-[10px] font-bold text-red-500 mt-1 uppercase tracking-wider">{formErrors.title}</p>}
                             </div>
                             <div className="grid grid-cols-2 gap-4 text-left">
                                 <div>
@@ -358,7 +427,35 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                             </div>
                             <div>
                                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label>
-                                <textarea required rows={3} value={newJob.description} onChange={e => setNewJob({ ...newJob, description: e.target.value })} placeholder="Kurze Beschreibung der Stelle..." className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none" />
+                                <textarea
+                                    required
+                                    rows={3}
+                                    value={newJob.description}
+                                    onChange={e => {
+                                        setNewJob({ ...newJob, description: e.target.value });
+                                        if (formErrors.description) setFormErrors({ ...formErrors, description: '' });
+                                    }}
+                                    placeholder="Kurze Beschreibung der Stelle..."
+                                    className={cn(
+                                        "w-full bg-slate-50 border px-4 py-3 rounded-xl focus:ring-2 outline-none resize-none transition-colors",
+                                        formErrors.description ? "border-red-500 focus:ring-red-500/20" : "border-slate-100 focus:ring-accent/20"
+                                    )}
+                                />
+                                <div className="flex justify-between mt-1">
+                                    {formErrors.description ? (
+                                        <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider">{formErrors.description}</p>
+                                    ) : (
+                                        <div />
+                                    )}
+                                    <span className={cn(
+                                        "text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full transition-colors",
+                                        (newJob.description?.length || 0) > 480 ? "bg-red-50 text-red-500" :
+                                            (newJob.description?.length || 0) > 400 ? "bg-amber-50 text-amber-500" :
+                                                "bg-slate-50 text-slate-400"
+                                    )}>
+                                        {newJob.description?.length || 0} / 500
+                                    </span>
+                                </div>
                             </div>
                             <div onClick={() => setNewJob({ ...newJob, is_featured: !newJob.is_featured })} className={cn("p-5 rounded-2xl border-2 transition-all cursor-pointer group relative overflow-hidden", newJob.is_featured ? "border-premium bg-premium/5" : "border-slate-100 bg-slate-50 hover:border-slate-200")}>
                                 <div className="flex items-center gap-4 relative z-10">
@@ -384,8 +481,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
 
             {isAddingNews && (
                 <div className="fixed inset-0 z-[200] flex items-center justify-center px-6">
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsAddingNews(false)} />
-                    <div className="bg-white w-full max-w-md rounded-[32px] overflow-hidden shadow-2xl relative z-10 animate-in zoom-in-95 duration-200">
+                    <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onClick={() => setIsAddingNews(false)} />
+                    <div className="glass w-full max-w-md rounded-[32px] overflow-hidden shadow-2xl relative z-10 animate-in zoom-in-95 duration-200">
                         <div className="px-8 pt-8 pb-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
                             <h2 className="text-2xl font-black text-slate-900 text-left">Update posten</h2>
                             <button onClick={() => setIsAddingNews(false)} className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400">
@@ -414,7 +511,35 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                             </div>
                             <div>
                                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Was gibt es Neues?</label>
-                                <textarea required rows={4} value={newPost.content} onChange={e => setNewPost({ ...newPost, content: e.target.value })} placeholder="z.B. Unser Team ist bereit..." className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none resize-none text-slate-700 font-medium" />
+                                <textarea
+                                    required
+                                    rows={4}
+                                    value={newPost.content}
+                                    onChange={e => {
+                                        setNewPost({ ...newPost, content: e.target.value });
+                                        if (formErrors.content) setFormErrors({ ...formErrors, content: '' });
+                                    }}
+                                    placeholder="z.B. Unser Team ist bereit..."
+                                    className={cn(
+                                        "w-full bg-slate-50 border px-4 py-3 rounded-2xl focus:ring-2 outline-none resize-none text-slate-700 font-medium transition-colors",
+                                        formErrors.content ? "border-red-500 focus:ring-red-500/20" : "border-slate-100 focus:ring-accent/20"
+                                    )}
+                                />
+                                <div className="flex justify-between mt-1.5">
+                                    {formErrors.content ? (
+                                        <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider">{formErrors.content}</p>
+                                    ) : (
+                                        <div />
+                                    )}
+                                    <span className={cn(
+                                        "text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full transition-colors",
+                                        newPost.content.length > 950 ? "bg-red-50 text-red-500" :
+                                            newPost.content.length > 800 ? "bg-amber-50 text-amber-500" :
+                                                "bg-slate-50 text-slate-400"
+                                    )}>
+                                        {newPost.content.length} / 1000
+                                    </span>
+                                </div>
                             </div>
                             <button disabled={isPosting} className={cn("w-full py-4 rounded-2xl font-black bg-accent text-white shadow-xl shadow-accent/20 transition-all active:scale-95 mt-2 flex items-center justify-center gap-2", isPosting && "opacity-50 cursor-not-allowed")}>
                                 {isPosting ? <RefreshCw className="animate-spin" size={20} /> : "Beitrag jetzt teilen"}
@@ -426,20 +551,82 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
 
             {isAddingEvent && (
                 <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsAddingEvent(false)} />
-                    <div className="relative bg-white rounded-[2.5rem] w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden">
+                    <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onClick={() => setIsAddingEvent(false)} />
+                    <div className="glass relative w-full max-w-md rounded-[2.5rem] shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden">
                         <div className="p-8">
                             <div className="flex justify-between items-center mb-6 text-left">
                                 <h3 className="text-xl font-black text-slate-900 uppercase italic">Event erstellen</h3>
                                 <button onClick={() => setIsAddingEvent(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors"><X size={20} /></button>
                             </div>
                             <form onSubmit={handleAddEvent} className="space-y-5">
-                                <div><label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Event-Titel</label><input required value={newEvent.title} onChange={e => setNewEvent({ ...newEvent, title: e.target.value })} placeholder="z.B. Sommerfest" className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none font-bold" /></div>
+                                <div>
+                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Event-Titel</label>
+                                    <input
+                                        required
+                                        value={newEvent.title}
+                                        onChange={e => {
+                                            setNewEvent({ ...newEvent, title: e.target.value });
+                                            if (formErrors.title) setFormErrors({ ...formErrors, title: '' });
+                                        }}
+                                        placeholder="z.B. Sommerfest"
+                                        className={cn(
+                                            "w-full bg-slate-50 border px-4 py-3 rounded-xl outline-none font-bold transition-colors",
+                                            formErrors.title ? "border-red-500" : "border-slate-100"
+                                        )}
+                                    />
+                                    {formErrors.title && <p className="text-[10px] font-bold text-red-500 mt-1 uppercase tracking-wider">{formErrors.title}</p>}
+                                </div>
                                 <div className="grid grid-cols-2 gap-4 text-left">
-                                    <div><label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Datum & Zeit</label><input required type="datetime-local" value={newEvent.event_date} onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })} className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none font-bold text-xs" /></div>
+                                    <div>
+                                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Datum & Zeit</label>
+                                        <input
+                                            required
+                                            type="datetime-local"
+                                            value={newEvent.event_date}
+                                            onChange={e => {
+                                                setNewEvent({ ...newEvent, event_date: e.target.value });
+                                                if (formErrors.event_date) setFormErrors({ ...formErrors, event_date: '' });
+                                            }}
+                                            className={cn(
+                                                "w-full bg-slate-50 border px-4 py-3 rounded-xl outline-none font-bold text-xs transition-colors",
+                                                formErrors.event_date ? "border-red-500" : "border-slate-100"
+                                            )}
+                                        />
+                                        {formErrors.event_date && <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-wider">{formErrors.event_date}</p>}
+                                    </div>
                                     <div><label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Ort</label><input value={newEvent.location_override} onChange={e => setNewEvent({ ...newEvent, location_override: e.target.value })} placeholder="Optional" className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none font-bold text-xs" /></div>
                                 </div>
-                                <div><label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label><textarea required rows={3} value={newEvent.description} onChange={e => setNewEvent({ ...newEvent, description: e.target.value })} className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none resize-none font-medium text-sm" /></div>
+                                <div>
+                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label>
+                                    <textarea
+                                        required
+                                        rows={3}
+                                        value={newEvent.description}
+                                        onChange={e => {
+                                            setNewEvent({ ...newEvent, description: e.target.value });
+                                            if (formErrors.description) setFormErrors({ ...formErrors, description: '' });
+                                        }}
+                                        className={cn(
+                                            "w-full bg-slate-50 border px-4 py-3 rounded-xl outline-none resize-none font-medium text-sm transition-colors",
+                                            formErrors.description ? "border-red-500" : "border-slate-100"
+                                        )}
+                                    />
+                                    <div className="flex justify-between mt-1">
+                                        {formErrors.description ? (
+                                            <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider">{formErrors.description}</p>
+                                        ) : (
+                                            <div />
+                                        )}
+                                        <span className={cn(
+                                            "text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full transition-colors",
+                                            (newEvent.description?.length || 0) > 450 ? "bg-red-50 text-red-500" :
+                                                (newEvent.description?.length || 0) > 400 ? "bg-amber-50 text-amber-500" :
+                                                    "bg-slate-50 text-slate-400"
+                                        )}>
+                                            {newEvent.description?.length || 0} / 500
+                                        </span>
+                                    </div>
+                                </div>
                                 <button className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl hover:scale-[1.02] active:scale-95 transition-all">Event veröffentlichen</button>
                             </form>
                         </div>

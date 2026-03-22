@@ -7,7 +7,7 @@ import { Favorites } from './components/Favorites';
 import { CompanyDetail } from './components/CompanyDetail';
 import { CompanyForm } from './components/CompanyForm';
 import { useCompanies } from './hooks/useCompanies';
-import { type Company } from './data/companies';
+import { type Company } from './types';
 import { Auth } from './components/Auth';
 import { useAuth } from './context/AuthContext';
 import { useUI } from './context/UIContext';
@@ -25,6 +25,7 @@ import { PushOptIn } from './components/PushOptIn';
 import { ActivityFeed } from './components/ActivityFeed';
 import { EventHub } from './components/EventHub';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { useSEO } from './hooks/useSEO';
 
 // Wrapper to handle company detail from URL
 function CompanyDetailWrapper({ companies }: { companies: Company[] }) {
@@ -73,6 +74,12 @@ function App() {
 
   // Echte Daten aus Supabase abrufen!
   const { companies, isLoading, error, addCompany, updateCompany, deleteCompany, uploadFile, userLocation, requestLocation } = useCompanies();
+
+  // Global SEO & Canonical Tag
+  useSEO({
+    description: "Entdecke Jobs, News und Events von Unternehmen aus dem Werra-Meißner-Kreis auf WMK Connect.",
+    image: "https://wmk-connect.vercel.app/logo.png"
+  });
 
   useEffect(() => {
     const handleOpenMerchant = (e: any) => {

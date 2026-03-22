@@ -1,25 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
-
-export interface Job {
-    id: string;
-    company_id: string;
-    title: string;
-    category: string;
-    description: string;
-    salary_range: string;
-    job_type: string;
-    image_url?: string;
-    created_at?: string;
-    is_active: boolean;
-    is_featured?: boolean;
-    company?: {
-        name: string;
-        image: string;
-        whatsapp: string;
-        coordinates?: number[];
-    }
-}
+import type { Job } from '../types';
 
 export function useJobs(companyId?: string) {
     const [jobs, setJobs] = useState<Job[]>([]);

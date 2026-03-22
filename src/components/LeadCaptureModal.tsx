@@ -78,10 +78,11 @@ export const LeadCaptureModal: React.FC<Props> = ({
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden relative max-h-[90vh] overflow-y-auto no-scrollbar"
+                    className="bg-white/95 backdrop-blur-xl rounded-[2.5rem] w-full max-w-lg shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2)] overflow-hidden relative max-h-[90vh] overflow-y-auto no-scrollbar border border-white/20"
                 >
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-6 sm:p-8 text-white relative">
+                    <div className="bg-slate-900 p-6 sm:p-8 text-white relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 blur-3xl -mr-16 -mt-16" />
                         <button
                             onClick={onClose}
                             className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors bg-white/10 rounded-full p-2 backdrop-blur-md"

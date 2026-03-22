@@ -10,7 +10,6 @@ import { ErrorBoundary } from './components/ErrorBoundary'; // Added import for 
 import './index.css'
 import App from './App.tsx'
 
-console.log('Mounting React application...');
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary> {/* Wrapped the entire application with ErrorBoundary */}
@@ -28,4 +27,3 @@ createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </StrictMode>,
 )
-console.log('Render called.');

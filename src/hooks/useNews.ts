@@ -1,21 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
-
-export interface NewsPost {
-    id: string;
-    company_id: string;
-    content: string;
-    image_url?: string;
-    likes_count: number;
-    type: 'news' | 'offer' | 'event' | 'special';
-    created_at: string;
-    expires_at?: string;
-    company?: {
-        name: string;
-        image: string;
-    };
-    is_liked?: boolean;
-}
+import type { NewsPost } from '../types';
 
 export function useNews(companyId?: string) {
     const [posts, setPosts] = useState<NewsPost[]>([]);

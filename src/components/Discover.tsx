@@ -112,6 +112,7 @@ export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoadin
                 <input
                     type="text"
                     placeholder="Firma oder Kategorie suchen..."
+                    aria-label="Unternehmen suchen"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="w-full bg-white border border-gray-100 py-4 pl-12 pr-12 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all text-sm font-medium"
@@ -222,8 +223,20 @@ export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoadin
                         />
                     ))
                 ) : (
-                    <div className="text-center py-20 bg-gray-50/50 rounded-3xl border border-dashed border-gray-200">
-                        <p className="text-gray-400 text-sm font-medium">Keine Ergebnisse gefunden.</p>
+                    <div className="text-center py-24 bg-slate-50/50 rounded-[2.5rem] border border-dashed border-slate-200 flex flex-col items-center">
+                        <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-slate-100/50">
+                            <Search className="text-slate-200" size={32} />
+                        </div>
+                        <h3 className="text-lg font-black text-slate-800 uppercase italic tracking-tight mb-2">Keine Treffer</h3>
+                        <p className="text-slate-400 text-sm font-medium max-w-[200px]">Probiere es mit einem anderen Suchbegriff oder einer anderen Kategorie.</p>
+                        {search && (
+                            <button
+                                onClick={() => setSearch('')}
+                                className="mt-8 text-accent font-bold text-xs uppercase tracking-widest bg-accent/10 px-6 py-3 rounded-xl hover:scale-105 transition-all"
+                            >
+                                Suche zurücksetzen
+                            </button>
+                        )}
                     </div>
                 )}
             </div>

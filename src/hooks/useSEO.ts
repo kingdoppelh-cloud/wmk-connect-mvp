@@ -33,7 +33,18 @@ export const useSEO = ({ title, description, image, url }: SEOProps) => {
         updateMeta('twitter:card', 'summary_large_image');
         updateMeta('twitter:title', fullTitle);
         updateMeta('twitter:description', description);
+        updateMeta('twitter:description', description);
         updateMeta('twitter:image', image);
+
+        // Canonical Tag - Robust Injection
+        let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+        if (!canonicalLink) {
+            canonicalLink = document.createElement('link');
+            canonicalLink.setAttribute('rel', 'canonical');
+            document.head.appendChild(canonicalLink);
+        }
+        const canonicalUrl = url || window.location.origin + window.location.pathname;
+        canonicalLink.href = canonicalUrl;
 
     }, [title, description, image, url]);
 };

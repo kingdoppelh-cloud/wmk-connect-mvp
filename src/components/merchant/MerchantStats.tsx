@@ -4,6 +4,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { cn } from '../Layout';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
+import type { AnalyticsEvent } from '../../types';
 
 interface MerchantStatsProps {
     stats: {
@@ -13,7 +14,7 @@ interface MerchantStatsProps {
         referrals: number;
         trendData: any[];
     };
-    activityLog: any[];
+    activityLog: AnalyticsEvent[];
 }
 
 export const MerchantStats: React.FC<MerchantStatsProps> = ({ stats, activityLog }) => {
@@ -103,15 +104,16 @@ export const MerchantStats: React.FC<MerchantStatsProps> = ({ stats, activityLog
                     {activityLog.map((log, idx) => (
                         <div key={idx} className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100/50">
                             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-accent shadow-sm">
-                                {log.action === 'favorite' ? <Heart size={16} className="fill-current" /> :
-                                    log.action === 'whatsapp' ? <MessageSquare size={16} /> :
+                                {log.event_type === 'rsvp_action' ? <Heart size={16} className="fill-current" /> :
+                                    log.event_type === 'whatsapp_click' ? <MessageSquare size={16} /> :
                                         <Eye size={16} />}
                             </div>
                             <div className="flex-1 min-w-0 text-left">
                                 <p className="text-xs font-bold text-slate-900">
-                                    {log.action === 'favorite' ? 'Zu Favoriten hinzugefügt' :
-                                        log.action === 'whatsapp' ? 'WhatsApp Anfrage gestartet' :
-                                            'Profil wurde aufgerufen'}
+                                    {log.event_type === 'rsvp_action' ? 'Event-Zusage (RSVP)' :
+                                        log.event_type === 'whatsapp_click' ? 'WhatsApp Anfrage gestartet' :
+                                            log.event_type === 'profile_view' ? 'Profil wurde aufgerufen' :
+                                                'Interaktion erfasst'}
                                 </p>
                                 <p className="text-[10px] text-slate-400 font-bold uppercase mt-0.5">
                                     {format(new Date(log.created_at), 'HH:mm', { locale: de })} Uhr • {format(new Date(log.created_at), 'dd. MMM', { locale: de })}
