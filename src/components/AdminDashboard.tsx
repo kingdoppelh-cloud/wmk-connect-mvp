@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Plus, Edit2, Trash2, ArrowLeft, Search, QrCode, X, Download } from 'lucide-react';
 import { type Company } from '../data/companies';
+import { useAuth } from '../context/AuthContext';
 
 interface Props {
     companies: Company[];
     onBack: () => void;
-    onLogout: () => void;
     onEdit: (company: Company) => void;
     onAdd: () => void;
     onDelete: (id: string) => Promise<void>;
 }
 
-export const AdminDashboard: React.FC<Props> = ({ companies, onBack, onLogout, onEdit, onAdd, onDelete }) => {
+export const AdminDashboard: React.FC<Props> = ({ companies, onBack, onEdit, onAdd, onDelete }) => {
+    const { signOut } = useAuth();
     const [search, setSearch] = useState('');
     const [showQrFor, setShowQrFor] = useState<Company | null>(null);
 
@@ -35,7 +36,7 @@ export const AdminDashboard: React.FC<Props> = ({ companies, onBack, onLogout, o
                     </div>
                     <div className="flex items-center gap-3">
                         <button
-                            onClick={onLogout}
+                            onClick={signOut}
                             className="text-slate-400 hover:text-red-500 font-black text-[10px] uppercase tracking-widest px-3 py-2 transition-colors"
                         >
                             Abmelden

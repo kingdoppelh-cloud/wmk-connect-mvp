@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Briefcase, Euro, MapPin, Search, Heart, RefreshCw, Star, Info } from 'lucide-react';
 import { useJobs } from '../hooks/useJobs';
+import { useUI } from '../context/UIContext';
 
 interface JobsBoardProps {
-    onBecomePartner: () => void;
     onCompanyClick?: (id: string | null) => void;
     userLocation?: [number, number] | null;
     onLocationRequest?: () => void;
@@ -20,7 +20,8 @@ const getDistanceData = (lat1: number, lon1: number, lat2: number, lon2: number)
     return R * c;
 };
 
-export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner, onCompanyClick, userLocation, onLocationRequest }) => {
+export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocation, onLocationRequest }) => {
+    const { setShowPartnerBenefits } = useUI();
     const { jobs, isLoading } = useJobs();
     const [selectedRadius, setSelectedRadius] = useState<number>(9999);
 
@@ -88,7 +89,7 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner, onCompany
                     <h3 className="text-xl font-black text-slate-900 mb-2">Du bist Unternehmer?</h3>
                     <p className="text-slate-500 text-sm mb-6">Präsentiere deine Stellenanzeigen dort, wo deine Zielgruppe sucht.</p>
                     <button
-                        onClick={onBecomePartner}
+                        onClick={() => setShowPartnerBenefits(true)}
                         className="w-full py-4 bg-slate-950 text-white rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-105 active:scale-95 transition-all"
                     >
                         Jetzt Job posten
@@ -225,7 +226,7 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onBecomePartner, onCompany
                         <h3 className="text-2xl font-black text-slate-950 mb-3 tracking-tighter uppercase italic">Hier inserieren.</h3>
                         <p className="text-slate-600 text-sm font-medium mb-6 leading-relaxed max-w-[220px]">Schalte jetzt deine Stellenanzeige und erreiche tausende lokale Nutzer.</p>
                         <button
-                            onClick={onBecomePartner}
+                            onClick={() => setShowPartnerBenefits(true)}
                             className="bg-accent text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all active:scale-95"
                         >
                             Angebot sichern

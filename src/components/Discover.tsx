@@ -5,13 +5,13 @@ import { useFollows } from '../hooks/useFollows';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
-import { SkeletonCard } from './SkeletonCard';
+import { Skeleton, CompanyCardSkeleton, NewsCardSkeleton } from './ui/Skeleton';
 import { LeadCaptureModal } from './LeadCaptureModal';
+
+import { useFavorites } from '../context/FavoritesContext';
 
 interface Props {
     companies: Company[];
-    favorites: string[];
-    onToggleFavorite: (id: string) => void;
     onSelectCompany: (id: string) => void;
     isLoading?: boolean;
     userLocation?: [number, number] | null;
@@ -20,7 +20,8 @@ interface Props {
 
 const CATEGORIES = ['Alle', 'Gastronomie', 'Friseure', 'Handwerk', 'Dienstleistung'];
 
-export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany, isLoading, userLocation, onLocationRequest }) => {
+export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoading, userLocation, onLocationRequest }) => {
+    const { favorites, toggleFavorite } = useFavorites();
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Alle');
     const [selectedRadius, setSelectedRadius] = useState<number>(9999);
@@ -205,18 +206,18 @@ export const Discover: React.FC<Props> = ({ companies, favorites, onToggleFavori
             {/* List */}
             <div className="pb-10">
                 {isLoading ? (
-                    <>
-                        <SkeletonCard />
-                        <SkeletonCard />
-                        <SkeletonCard />
-                    </>
+                    <div className="space-y-4">
+                        <CompanyCardSkeleton />
+                        <CompanyCardSkeleton />
+                        <CompanyCardSkeleton />
+                    </div>
                 ) : filteredCompanies.length > 0 ? (
                     filteredCompanies.map(company => (
                         <CompanyCard
                             key={company.id}
                             company={company}
                             isFavorite={favorites.includes(company.id)}
-                            onToggleFavorite={onToggleFavorite}
+                            onToggleFavorite={toggleFavorite}
                             onSelect={() => onSelectCompany(company.id)}
                         />
                     ))
@@ -243,7 +244,23 @@ const NewsPreview: React.FC<{ onSelectCompany: (id: string) => void }> = ({ onSe
     const followedPosts = posts.filter(p => followedIds.includes(p.company_id)).slice(0, 5);
     const globalPosts = posts.slice(0, 5);
 
-    if (isLoading || globalPosts.length === 0) return null;
+    if (!isLoading && globalPosts.length === 0) return null;
+
+    if (isLoading) {
+        return (
+            <div className="space-y-10">
+                <section className="-mx-6">
+                    <div className="px-6 mb-4">
+                        <Skeleton variant="text" className="h-6 w-48" />
+                    </div>
+                    <div className="flex gap-4 overflow-x-auto no-scrollbar px-6 pb-2">
+                        <NewsCardSkeleton />
+                        <NewsCardSkeleton />
+                    </div>
+                </section>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-10">
@@ -315,6 +332,7 @@ const NewsCard = ({ post, onClick }: { post: any, onClick: () => void }) => (
         </div>
     </div>
 );
+
 
 const PushOptIn = () => {
     const { permission, subscribe, isSubscribed } = usePushNotifications();

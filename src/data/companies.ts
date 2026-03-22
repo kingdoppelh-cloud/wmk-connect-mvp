@@ -14,6 +14,7 @@ export interface Company {
     isPremium: boolean;
     coordinates: [number, number];
     openingHours: { [key: string]: string };
+    offer?: string;
     distance?: number;
 }
 

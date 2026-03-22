@@ -2,15 +2,15 @@ import React from 'react';
 import { type Company } from '../data/companies';
 import { CompanyCard } from './CompanyCard';
 import { Heart } from 'lucide-react';
+import { useFavorites } from '../context/FavoritesContext';
 
 interface Props {
     companies: Company[];
-    favorites: string[];
-    onToggleFavorite: (id: string) => void;
     onSelectCompany: (id: string) => void;
 }
 
-export const Favorites: React.FC<Props> = ({ companies, favorites, onToggleFavorite, onSelectCompany }) => {
+export const Favorites: React.FC<Props> = ({ companies, onSelectCompany }) => {
+    const { favorites, toggleFavorite } = useFavorites();
     const favoriteCompanies = companies.filter(c => favorites.includes(c.id));
 
     return (
@@ -27,7 +27,7 @@ export const Favorites: React.FC<Props> = ({ companies, favorites, onToggleFavor
                             key={company.id}
                             company={company}
                             isFavorite={true}
-                            onToggleFavorite={onToggleFavorite}
+                            onToggleFavorite={toggleFavorite}
                             onSelect={() => onSelectCompany(company.id)}
                         />
                     ))
