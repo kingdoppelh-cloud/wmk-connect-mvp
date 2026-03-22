@@ -1,7 +1,12 @@
-import React from 'react';
-import { Map as MapIcon, Compass, Heart, Briefcase, Newspaper } from 'lucide-react';
+import React, { useState } from 'react';
+import { Map as MapIcon, Compass, Heart, Briefcase, Newspaper, Calendar, Bell } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useNotifications } from '../hooks/useNotifications';
+import { NotificationCenter } from './NotificationCenter';
+import { useRewards } from '../hooks/useRewards';
+import { RewardModal } from './RewardModal';
+import { Trophy } from 'lucide-react';
 
 /** Styling utility */
 export function cn(...inputs: ClassValue[]) {
@@ -10,8 +15,23 @@ export function cn(...inputs: ClassValue[]) {
 
 /** Layout Component with Bottom Navigation */
 export const Layout: React.FC<{ children: React.ReactNode, activeTab: string, setActiveTab: (tab: string) => void }> = ({ children, activeTab, setActiveTab }) => {
+    const [isRewardsOpen, setIsRewardsOpen] = useState(false);
+    const { unreadCount } = useNotifications();
+    const { points } = useRewards();
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
     return (
         <div className="flex flex-col min-h-screen pb-20 safe-bottom">
+            <NotificationCenter
+                isOpen={isNotificationsOpen}
+                onClose={() => setIsNotificationsOpen(false)}
+                onAction={setActiveTab}
+            />
+
+            <RewardModal
+                isOpen={isRewardsOpen}
+                onClose={() => setIsRewardsOpen(false)}
+            />
 
             {/* Main Content */}
             <main className="flex-1 w-full max-w-2xl mx-auto">
@@ -62,6 +82,17 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string, se
                 </button>
 
                 <button
+                    onClick={() => setActiveTab('events')}
+                    className={cn(
+                        "flex flex-col items-center gap-1 transition-all duration-300",
+                        activeTab === 'events' ? "text-accent scale-110" : "text-gray-400"
+                    )}
+                >
+                    <Calendar size={24} strokeWidth={activeTab === 'events' ? 2.5 : 2} />
+                    <span className="text-[10px] font-medium uppercase tracking-wider">Events</span>
+                </button>
+
+                <button
                     onClick={() => setActiveTab('feed')}
                     className={cn(
                         "flex flex-col items-center gap-1 transition-all duration-300",
@@ -93,7 +124,39 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string, se
                     <Heart size={24} strokeWidth={activeTab === 'favorites' ? 2.5 : 2} />
                     <span className="text-[10px] font-medium uppercase tracking-wider">Favoriten</span>
                 </button>
+
+                <button
+                    onClick={() => setIsNotificationsOpen(true)}
+                    className={cn(
+                        "flex flex-col items-center gap-1 transition-all duration-300 relative",
+                        isNotificationsOpen ? "text-accent scale-110" : "text-gray-400"
+                    )}
+                >
+                    <div className="relative">
+                        <Bell size={24} strokeWidth={isNotificationsOpen ? 2.5 : 2} />
+                        {unreadCount > 0 && (
+                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent border-2 border-white rounded-full"></span>
+                        )}
+                    </div>
+                    <span className="text-[10px] font-medium uppercase tracking-wider">Updates</span>
+                </button>
             </nav>
+
+            {/* Floating Points Badge */}
+            <div className="fixed top-6 left-6 z-[60] animate-in slide-in-from-left-8 duration-700">
+                <button
+                    onClick={() => setIsRewardsOpen(true)}
+                    className="bg-slate-900 text-white pl-4 pr-5 py-2.5 rounded-2xl flex items-center gap-3 shadow-2xl border border-white/10 hover:scale-105 transition-all group active:scale-95"
+                >
+                    <div className="w-8 h-8 rounded-xl bg-premium flex items-center justify-center shadow-inner group-hover:rotate-12 transition-transform">
+                        <Trophy size={16} className="text-slate-900" />
+                    </div>
+                    <div className="flex flex-col items-start leading-tight">
+                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Punkte</span>
+                        <span className="text-sm font-black text-white">{points}</span>
+                    </div>
+                </button>
+            </div>
         </div>
     );
 };

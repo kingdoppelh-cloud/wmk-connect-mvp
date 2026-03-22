@@ -1,16 +1,18 @@
+import React, { useState, useEffect } from 'react';
 import {
     ArrowLeft, MapPin, Globe, Phone, Mail, BadgeCheck, Star,
     MessageCircle, Briefcase, BarChart2, ArrowRight, Clock, Share2,
-    Bell, BellOff, UserPlus, Users
+    Bell, UserPlus, Users, Calendar, Sparkles, Heart
 } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { LeadCaptureModal } from './LeadCaptureModal';
 import { useSEO } from '../hooks/useSEO';
-import { supabase } from '../utils/supabase';
 import { cn } from './Layout';
 import { useNews } from '../hooks/useNews';
 import { useFollows } from '../hooks/useFollows';
-import { Sparkles } from 'lucide-react';
+import { useEvents } from '../hooks/useEvents';
+import { useAnalytics } from '../hooks/useAnalytics';
+import { useRewards } from '../hooks/useRewards';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -56,6 +58,7 @@ interface Props {
 export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies = [], onSelectCompany }) => {
     const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
     const { isFollowed, followerCount, toggleFollow } = useFollows(company.id);
+    const { earnPoints } = useRewards();
 
     useSEO({
         title: company.name,
@@ -63,28 +66,15 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
         image: company.image
     });
 
-    useEffect(() => {
-        const trackView = async () => {
-            try {
-                await supabase.from('analytics_events').insert([
-                    { company_id: company.id, event_type: 'profile_view' }
-                ]);
-            } catch (e) {
-                console.error('Analytics tracking failed', e);
-            }
-        };
-        trackView();
-    }, [company.id]);
+    const { trackEvent } = useAnalytics();
 
-    const trackClick = async (eventType: string) => {
-        try {
-            await supabase.from('analytics_events').insert([
-                { company_id: company.id, event_type: eventType }
-            ]);
-        } catch (e) {
-            console.error('Analytics tracking failed', e);
+    useEffect(() => {
+        if (company) {
+            trackEvent(company.id, 'profile_view');
+            // Award 1 point for visiting a profile
+            earnPoints(1, 'profile_view', company.id);
         }
-    };
+    }, [company?.id]);
 
     return (
         <div className="bg-white min-h-screen animate-in fade-in slide-in-from-right duration-500 pb-20 font-sans">
@@ -186,7 +176,10 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                         </button>
                         <a
                             href={`tel:${company.phone}`}
-                            onClick={() => trackClick('click_phone')}
+                            onClick={() => {
+                                trackEvent(company.id, 'click_phone');
+                                earnPoints(3, 'interaction', company.id);
+                            }}
                             className="bg-accent text-white p-3.5 rounded-2xl shadow-lg shadow-accent/25 hover:scale-105 transition-all active:scale-95"
                         >
                             <Phone size={22} />
@@ -195,7 +188,10 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                             href={company.websiteUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={() => trackClick('click_website')}
+                            onClick={() => {
+                                trackEvent(company.id, 'website_click');
+                                earnPoints(3, 'interaction', company.id);
+                            }}
                             className="bg-slate-900 text-white p-3.5 rounded-2xl shadow-lg shadow-slate-900/25 hover:scale-105 transition-all active:scale-95"
                         >
                             <Globe size={22} />
@@ -204,7 +200,10 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                             href={`https://wa.me/${company.whatsapp?.replace(/[^0-9]/g, '')}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={() => trackClick('click_whatsapp')}
+                            onClick={() => {
+                                trackEvent(company.id, 'whatsapp_click');
+                                earnPoints(3, 'interaction', company.id);
+                            }}
                             className="bg-emerald-500 text-white p-3.5 rounded-2xl shadow-lg shadow-emerald-500/25 hover:scale-105 transition-all active:scale-95"
                         >
                             <MessageCircle size={22} />
@@ -216,10 +215,13 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                                         title: company.name,
                                         text: company.description,
                                         url: window.location.href
+                                    }).then(() => {
+                                        earnPoints(10, 'social_share', company.id);
                                     }).catch(console.error);
                                 } else {
                                     navigator.clipboard.writeText(window.location.href);
-                                    alert('Link in Zwischenablage kopiert! 📋');
+                                    earnPoints(10, 'social_share', company.id);
+                                    alert('Link in Zwischenablage kopiert +10 Punkte! 📋');
                                 }
                             }}
                             className="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shadow-sm hover:bg-slate-200 transition-all active:scale-95 border border-slate-200"
@@ -343,7 +345,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                 {company.isPremium && (
                     <div
                         onClick={() => {
-                            trackClick('open_swipe_jobs');
+                            trackEvent(company.id, 'profile_view');
                             window.dispatchEvent(new CustomEvent('open-swipe-jobs', { detail: company.id }));
                         }}
                         className="bg-slate-900 rounded-[40px] p-8 shadow-2xl relative overflow-hidden mb-10 group cursor-pointer hover:shadow-accent/20 transition-all border border-slate-800"
@@ -364,6 +366,9 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                     </div>
                 )}
 
+                {/* Upcoming Events Section */}
+                <EventsSection companyId={company.id} />
+
                 {/* Contact Footer */}
                 <section className="bg-slate-900 text-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
                     <div className="relative z-10 text-center">
@@ -372,15 +377,15 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                         <div className="flex flex-col gap-3">
                             <a
                                 href={`mailto:${company.email || 'hello@wmk-connect.de'}`}
-                                onClick={() => trackClick('click_email')}
+                                onClick={() => trackEvent(company.id, 'email_click')}
                                 className="flex items-center justify-center gap-3 bg-white text-slate-900 py-4 rounded-2xl font-black hover:bg-accent hover:text-white transition-all shadow-xl"
                             >
                                 <Mail size={20} />
                                 E-Mail schreiben
                             </a>
                             <a
-                                href={`tel:${company.phone}`}
-                                onClick={() => trackClick('click_phone')}
+                                href={company.phone ? `tel:${company.phone}` : '#'}
+                                onClick={() => company.phone && trackEvent(company.id, 'click_phone')}
                                 className="flex items-center justify-center gap-3 bg-white/10 backdrop-blur-md text-white py-4 rounded-2xl font-black hover:bg-white/20 transition-all border border-white/20"
                             >
                                 <Phone size={20} />
@@ -389,7 +394,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                             {company.isPremium && company.whatsapp && (
                                 <a
                                     href={`https://wa.me/${company.whatsapp.replace(/[^0-9]/g, '')}`}
-                                    onClick={() => trackClick('click_whatsapp')}
+                                    onClick={() => trackEvent(company.id, 'whatsapp_click')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center justify-center gap-3 bg-[#25D366] text-white py-4 rounded-2xl font-black hover:bg-[#128C7E] transition-all shadow-xl shadow-[#25D366]/20"
@@ -463,7 +468,8 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
 };
 
 const CompanyNews: React.FC<{ companyId: string }> = ({ companyId }) => {
-    const { posts, isLoading } = useNews();
+    const { posts, isLoading, toggleLike } = useNews();
+    const { earnPoints } = useRewards();
     const companyPosts = posts.filter(p => p.company_id === companyId);
 
     if (isLoading || companyPosts.length === 0) return null;
@@ -485,25 +491,54 @@ const CompanyNews: React.FC<{ companyId: string }> = ({ companyId }) => {
                 {companyPosts.map(post => (
                     <div
                         key={post.id}
-                        className="bg-slate-50 rounded-[2rem] p-6 border border-slate-100 hover:border-accent/20 transition-all group"
+                        className="bg-slate-50 rounded-[2rem] overflow-hidden border border-slate-100 hover:border-accent/20 transition-all group"
                     >
-                        <div className="flex items-center gap-2 mb-3">
-                            <span className={cn(
-                                "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-[0.1em]",
-                                post.type === 'offer' ? "bg-amber-100 text-amber-700" :
-                                    post.type === 'event' ? "bg-purple-100 text-purple-700" :
-                                        post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
-                                            "bg-slate-200 text-slate-600"
-                            )}>
-                                {post.type}
-                            </span>
-                            <span className="text-[10px] font-bold text-slate-400 uppercase">
-                                • {new Date(post.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: 'short' })}
-                            </span>
+                        {post.image_url && (
+                            <div className="aspect-[21/9] w-full overflow-hidden bg-slate-200">
+                                <img
+                                    src={post.image_url}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    alt="News"
+                                />
+                            </div>
+                        )}
+                        <div className="p-6">
+                            <div className="flex items-center justify-between mb-3">
+                                <div className="flex items-center gap-2">
+                                    <span className={cn(
+                                        "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-[0.1em]",
+                                        post.type === 'offer' ? "bg-amber-100 text-amber-700" :
+                                            post.type === 'event' ? "bg-purple-100 text-purple-700" :
+                                                post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
+                                                    "bg-slate-200 text-slate-600"
+                                    )}>
+                                        {post.type}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase">
+                                        • {new Date(post.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: 'short' })}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleLike(post.id);
+                                    }}
+                                    className={cn(
+                                        "flex items-center gap-1.5 px-3 py-1 rounded-full transition-all active:scale-90",
+                                        post.is_liked ? "bg-rose-50 text-rose-500 font-bold" : "text-slate-400"
+                                    )}
+                                >
+                                    <Heart size={16} className={cn(post.is_liked && "fill-current")} />
+                                    <span className="text-[10px]">{post.likes_count || 0}</span>
+                                </button>
+                            </div>
+                            <p
+                                onClick={() => earnPoints(1, 'news_read', companyId)}
+                                className="text-slate-700 font-medium leading-relaxed whitespace-pre-wrap cursor-pointer"
+                            >
+                                {post.content}
+                            </p>
                         </div>
-                        <p className="text-slate-700 font-medium leading-relaxed whitespace-pre-wrap">
-                            {post.content}
-                        </p>
                     </div>
                 ))}
             </div>
@@ -511,3 +546,84 @@ const CompanyNews: React.FC<{ companyId: string }> = ({ companyId }) => {
     );
 };
 
+const EventsSection: React.FC<{ companyId: string }> = ({ companyId }) => {
+    const { events, isLoading, toggleRSVP } = useEvents(companyId);
+    const { earnPoints } = useRewards();
+
+    if (isLoading || events.length === 0) return null;
+
+    const upcomingEvents = events.filter(e => new Date(e.event_date) >= new Date());
+    if (upcomingEvents.length === 0) return null;
+
+    return (
+        <section className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
+                        <Calendar size={24} />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-black text-slate-900 uppercase italic">Anstehende Events</h3>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Dabei sein & Entdecken</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {upcomingEvents.map(event => (
+                    <div key={event.id} className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-xl shadow-slate-900/5 group hover:shadow-2xl transition-all duration-500 flex flex-col">
+                        <div className="flex-1">
+                            <h4 className="text-lg font-black text-slate-900 mb-2 group-hover:text-accent transition-colors">{event.title}</h4>
+                            <p className="text-slate-500 text-sm font-medium line-clamp-2 mb-6">{event.description}</p>
+
+                            <div className="space-y-2 mb-6">
+                                <div className="flex items-center gap-2 text-slate-600">
+                                    <Clock size={14} className="text-accent" />
+                                    <span className="text-xs font-bold uppercase tracking-tight">
+                                        {new Date(event.event_date).toLocaleDateString('de-DE', {
+                                            weekday: 'short',
+                                            day: '2-digit',
+                                            month: 'long',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })}
+                                    </span>
+                                </div>
+                                {event.location_override && (
+                                    <div className="flex items-center gap-2 text-slate-600">
+                                        <MapPin size={14} className="text-accent" />
+                                        <span className="text-xs font-bold uppercase tracking-tight">{event.location_override}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between mt-6 pt-6 border-t border-slate-50">
+                            <div className="flex items-center gap-1.5 text-slate-400">
+                                <Users size={14} />
+                                <span className="text-[10px] font-black uppercase tracking-widest">{event.attendee_count} Zusagen</span>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    const nextStatus = event.user_status === 'attending' ? 'none' : 'attending';
+                                    toggleRSVP(event.id, event.user_status || 'none');
+                                    if (nextStatus === 'attending') {
+                                        earnPoints(5, 'rsvp', companyId);
+                                    }
+                                }}
+                                className={cn(
+                                    "px-6 py-2.5 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all active:scale-95 shadow-sm",
+                                    event.user_status === 'attending'
+                                        ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                                        : "bg-slate-900 text-white shadow-slate-900/20"
+                                )}
+                            >
+                                {event.user_status === 'attending' ? "Zusage aktiv" : "Ich bin dabei"}
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+};

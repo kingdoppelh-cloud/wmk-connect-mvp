@@ -22,6 +22,7 @@ import { Impressum } from './components/Impressum';
 import { Datenschutz } from './components/Datenschutz';
 import { PushOptIn } from './components/PushOptIn';
 import { ActivityFeed } from './components/ActivityFeed';
+import { EventHub } from './components/EventHub';
 
 function App() {
   const [activeTab, setActiveTab] = useState('discover');
@@ -215,6 +216,9 @@ function App() {
       <ActivityFeed
         onCompanyClick={setSelectedCompanyId}
       />
+    ),
+    events: (
+      <EventHub />
     ),
     map: (
       <Suspense fallback={<div className="flex h-[50vh] items-center justify-center text-gray-400">Karte lädt...</div>}>

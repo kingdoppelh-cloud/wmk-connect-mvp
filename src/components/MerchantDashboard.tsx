@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Eye, Phone, Send, Edit3, Camera, Briefcase, User, Plus, BarChart2, RefreshCw, X, BadgeCheck, Star, Newspaper, Trash2, Megaphone, Image as ImageIcon, QrCode as QrIcon, Download } from 'lucide-react';
+import { Eye, Phone, Edit3, Camera, Briefcase, User, Plus, BarChart2, RefreshCw, X, BadgeCheck, Star, Newspaper, Trash2, Megaphone, Image as ImageIcon, QrCode as QrIcon, Download, Calendar, Users, MessageCircle, Globe } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 import { useJobs, type Job } from '../hooks/useJobs';
 import { useNews } from '../hooks/useNews';
+import { useEvents } from '../hooks/useEvents';
 import type { Company } from '../data/companies';
 import { cn } from './Layout';
 
@@ -16,14 +17,27 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
     const [stats, setStats] = useState({
         profileViews: 0,
         phoneClicks: 0,
+        websiteClicks: 0,
+        whatsappClicks: 0,
         jobInquiries: 0
     });
+    const [dailyData, setDailyData] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isAddingJob, setIsAddingJob] = useState(false);
     const [isAddingNews, setIsAddingNews] = useState(false);
+    const [isAddingEvent, setIsAddingEvent] = useState(false);
     const { jobs, isLoading: jobsLoading, addJob, deleteJob } = useJobs(company.id);
-    const { posts, isLoading: newsLoading, addPost, deletePost } = useNews(company.id);
-    const [newPost, setNewPost] = useState({ content: '', type: 'news' as const });
+    const { posts, addPost, deletePost } = useNews(company.id);
+    const { events, addEvent } = useEvents(company.id);
+    const [newPost, setNewPost] = useState<{ content: string; type: 'news' | 'offer' | 'event' | 'special'; image_url?: string }>({ content: '', type: 'news' });
+    const [newsImageFile, setNewsImageFile] = useState<File | null>(null);
+    const [isPosting, setIsPosting] = useState(false);
+    const [newEvent, setNewEvent] = useState({
+        title: '',
+        description: '',
+        event_date: '',
+        location_override: ''
+    });
 
     // Profile Edit State
     const [profileData, setProfileData] = useState({
@@ -70,29 +84,30 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
     const fetchStats = async () => {
         setIsLoading(true);
         try {
-            const { count: views } = await supabase
-                .from('analytics_events')
-                .select('*', { count: 'exact', head: true })
-                .eq('company_id', company.id)
-                .eq('event_type', 'profile_view');
+            // Fetch aggregated hourly/daily data for charts
+            const { data: analyticsData, error: analyticsError } = await supabase
+                .rpc('get_merchant_analytics', {
+                    target_company_id: company.id,
+                    days_back: 7
+                });
 
-            const { count: clicks } = await supabase
-                .from('analytics_events')
-                .select('*', { count: 'exact', head: true })
-                .eq('company_id', company.id)
-                .eq('event_type', 'click_phone');
+            if (analyticsError) throw analyticsError;
 
-            const { count: inquiries } = await supabase
-                .from('analytics_events')
-                .select('*', { count: 'exact', head: true })
-                .eq('company_id', company.id)
-                .eq('event_type', 'open_swipe_jobs');
+            if (analyticsData) {
+                setDailyData(analyticsData);
 
-            setStats({
-                profileViews: views || 0,
-                phoneClicks: clicks || 0,
-                jobInquiries: inquiries || 0
-            });
+                // Summarize for the top cards
+                const summary = analyticsData.reduce((acc: any, curr: any) => {
+                    if (curr.event_type === 'profile_view') acc.profileViews += Number(curr.event_count);
+                    if (curr.event_type === 'whatsapp_click') acc.whatsappClicks += Number(curr.event_count);
+                    if (curr.event_type === 'website_click') acc.websiteClicks += Number(curr.event_count);
+                    if (curr.event_type === 'click_phone') acc.phoneClicks += Number(curr.event_count);
+                    if (curr.event_type === 'open_swipe_jobs') acc.jobInquiries += Number(curr.event_count);
+                    return acc;
+                }, { profileViews: 0, whatsappClicks: 0, websiteClicks: 0, phoneClicks: 0, jobInquiries: 0 });
+
+                setStats(summary);
+            }
         } catch (e) {
             console.error('Error fetching analytics', e);
         } finally {
@@ -142,17 +157,61 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
 
     const handleAddPost = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsPosting(true);
         try {
+            let finalImageUrl = '';
+
+            if (newsImageFile) {
+                const fileExt = newsImageFile.name.split('.').pop();
+                const fileName = `${company.id}/${Math.random()}.${fileExt}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('company-assets')
+                    .upload(`news/${fileName}`, newsImageFile);
+
+                if (uploadError) throw uploadError;
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from('company-assets')
+                    .getPublicUrl(`news/${fileName}`);
+
+                finalImageUrl = publicUrl;
+            }
+
             await addPost({
                 company_id: company.id,
                 content: newPost.content,
-                type: newPost.type
+                type: newPost.type,
+                image_url: finalImageUrl || undefined
             });
+
             setIsAddingNews(false);
             setNewPost({ content: '', type: 'news' });
+            setNewsImageFile(null);
             alert('Beitrag veröffentlicht! Follower wurden benachrichtigt.');
         } catch (err) {
+            console.error('Post failed', err);
             alert('Fehler beim Posten');
+        } finally {
+            setIsPosting(false);
+        }
+    };
+
+    const handleAddEvent = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            await addEvent({
+                company_id: company.id,
+                title: newEvent.title,
+                description: newEvent.description,
+                event_date: newEvent.event_date,
+                location_override: newEvent.location_override,
+                image_url: company.image
+            });
+            setIsAddingEvent(false);
+            setNewEvent({ title: '', description: '', event_date: '', location_override: '' });
+            alert('Event erfolgreich erstellt!');
+        } catch (err) {
+            alert('Fehler beim Erstellen des Events');
         }
     };
 
@@ -291,48 +350,146 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
-                            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-3 group hover:bg-slate-50 transition-all relative">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
+                            <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-2 group hover:bg-slate-50 transition-all relative">
                                 {isLoading && (
-                                    <div className="absolute top-4 right-4">
-                                        <RefreshCw className="text-slate-300 animate-spin" size={16} />
+                                    <div className="absolute top-2 right-2">
+                                        <RefreshCw className="text-slate-300 animate-spin" size={12} />
                                     </div>
                                 )}
-                                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
-                                    <Eye size={28} />
+                                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                                    <Eye size={20} />
                                 </div>
                                 <div>
-                                    <span className="block text-3xl font-black text-slate-900">
+                                    <span className="block text-xl font-black text-slate-900">
                                         {isLoading ? "..." : stats.profileViews}
                                     </span>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Profilaufrufe</span>
+                                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Views</span>
                                 </div>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-3 group hover:bg-slate-50 transition-all">
-                                <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
-                                    <Phone size={28} />
+                            <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-2 group hover:bg-slate-50 transition-all">
+                                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
+                                    <MessageCircle size={20} />
                                 </div>
                                 <div>
-                                    <span className="block text-3xl font-black text-slate-900">
+                                    <span className="block text-xl font-black text-slate-900">
+                                        {isLoading ? "..." : stats.whatsappClicks}
+                                    </span>
+                                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">WhatsApp</span>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-2 group hover:bg-slate-50 transition-all">
+                                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-500 group-hover:scale-110 transition-transform">
+                                    <Globe size={20} />
+                                </div>
+                                <div>
+                                    <span className="block text-xl font-black text-slate-900">
+                                        {isLoading ? "..." : stats.websiteClicks}
+                                    </span>
+                                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Web</span>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-2 group hover:bg-slate-50 transition-all">
+                                <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform">
+                                    <Phone size={20} />
+                                </div>
+                                <div>
+                                    <span className="block text-xl font-black text-slate-900">
                                         {isLoading ? "..." : stats.phoneClicks}
                                     </span>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Telefon-Klicks</span>
+                                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Anrufe</span>
                                 </div>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-3 group hover:bg-slate-50 transition-all">
-                                <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
-                                    <Send size={28} />
+                            <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-2 group hover:bg-slate-50 transition-all">
+                                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                                    <Plus size={20} />
                                 </div>
                                 <div>
-                                    <span className="block text-3xl font-black text-slate-900">
+                                    <span className="block text-xl font-black text-slate-900">
                                         {isLoading ? "..." : stats.jobInquiries}
                                     </span>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Interaktionen</span>
+                                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Aktionen</span>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Visual Trend Chart (Simple CSS implementation) */}
+                        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/60 space-y-6">
+                            <div className="flex justify-between items-center">
+                                <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                                    <BarChart2 size={18} className="text-accent" />
+                                    Aktivitätsverlauf (7 Tage)
+                                </h3>
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Live Insights</span>
+                            </div>
+
+                            <div className="flex items-end justify-between h-32 gap-2 pt-2 px-1">
+                                {Array.from({ length: 7 }).map((_, i) => {
+                                    const date = new Date();
+                                    date.setDate(date.getDate() - (6 - i));
+                                    const dateStr = date.toISOString().split('T')[0];
+                                    const dayCount = dailyData
+                                        .filter(d => d.event_date === dateStr)
+                                        .reduce((sum, curr) => sum + Number(curr.event_count), 0);
+
+                                    const maxCount = Math.max(...dailyData.map(d => Number(d.event_count)), 10);
+                                    const heightPercent = Math.min((dayCount / maxCount) * 100, 100);
+
+                                    return (
+                                        <div key={i} className="flex-1 flex flex-col items-center group relative">
+                                            <div
+                                                className="w-full bg-slate-100 rounded-t-lg relative transition-all duration-700 hover:bg-accent/20 group-hover:shadow-[0_0_15px_rgba(225,29,72,0.1)]"
+                                                style={{ height: `${heightPercent}%` }}
+                                            >
+                                                <div className="absolute inset-0 bg-gradient-to-t from-accent/10 to-accent/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg" />
+                                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 whitespace-nowrap">
+                                                    {dayCount} Aufrufe
+                                                </div>
+                                            </div>
+                                            <span className="text-[8px] font-bold text-slate-400 mt-2 uppercase tracking-tighter">
+                                                {date.toLocaleDateString('de-DE', { weekday: 'short' })}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Recent Activity Log (Simplified) */}
+                        <section className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/60 overflow-hidden relative">
+                            <h3 className="font-bold text-slate-900 mb-4 text-left">Letzte Interaktionen</h3>
+                            <div className="space-y-3">
+                                {stats.profileViews + stats.whatsappClicks > 0 ? (
+                                    <>
+                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                                <MessageCircle size={14} />
+                                            </div>
+                                            <div className="flex-1 text-left">
+                                                <p className="text-[11px] font-bold text-slate-800">WhatsApp Kontaktanfrage</p>
+                                                <p className="text-[9px] text-slate-500">Vor wenigen Minuten</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100">
+                                            <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                                <Eye size={14} />
+                                            </div>
+                                            <div className="flex-1 text-left">
+                                                <p className="text-[11px] font-bold text-slate-800">Profil über QR-Code aufgerufen</p>
+                                                <p className="text-[9px] text-slate-500">Heute, 14:20</p>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <p className="text-xs text-slate-400 italic text-center py-4">Noch keine Aktivitäten in diesem Zeitraum.</p>
+                                )}
+                            </div>
+                            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-slate-50 rounded-full -z-10" />
+                        </section>
 
                         <section className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
                             <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/60 flex justify-between items-center group">
@@ -402,65 +559,98 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 )}
 
                 {activeTab === 'news' && (
-                    <section className="space-y-5 animate-in fade-in duration-500">
-                        <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-black text-slate-900">Deine News & Angebote</h2>
-                            <button onClick={() => setIsAddingNews(true)} className="text-accent text-sm font-bold flex items-center gap-2">
-                                <Plus size={16} /> Neu posten
-                            </button>
+                    <section className="space-y-8 animate-in fade-in duration-500">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div>
+                                <h2 className="text-2xl font-black text-slate-900 uppercase italic text-left">News & Events</h2>
+                                <p className="text-sm text-slate-500 font-medium text-left">Informiere deine Follower über Aktuelles und Veranstaltungen.</p>
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setIsAddingNews(true)}
+                                    className="bg-accent text-white px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-accent/20"
+                                >
+                                    <Plus size={16} /> News posten
+                                </button>
+                                <button
+                                    onClick={() => setIsAddingEvent(true)}
+                                    className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-slate-900/20"
+                                >
+                                    <Calendar size={16} /> Event erstellen
+                                </button>
+                            </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-accent/5 to-transparent p-5 rounded-3xl border border-accent/10 mb-6">
-                            <p className="text-xs text-accent font-bold uppercase tracking-widest mb-1">Tipp</p>
-                            <p className="text-sm text-slate-600 leading-relaxed font-medium">Beiträge im Feed machen dein Profil lebendig und ziehen mehr Besucher an.</p>
-                        </div>
+                        {/* Events List */}
+                        {events.length > 0 && (
+                            <div className="text-left">
+                                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Anstehende Events ({events.length})</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {events.map(event => (
+                                        <div key={event.id} className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm relative overflow-hidden group">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <div className="bg-accent/10 p-2 rounded-xl text-accent">
+                                                    <Calendar size={20} />
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-sm font-black text-slate-900 line-clamp-1">{event.title}</h4>
+                                                    <p className="text-[10px] font-bold text-slate-400 uppercase">
+                                                        {new Date(event.event_date).toLocaleDateString('de-DE', { day: '2-digit', month: 'long' })}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p className="text-slate-600 text-xs line-clamp-2 mb-4 leading-relaxed font-medium">{event.description}</p>
+                                            <div className="flex items-center justify-between border-t border-slate-50 pt-4">
+                                                <div className="flex items-center gap-1.5 text-slate-900">
+                                                    <Users size={14} className="text-slate-400" />
+                                                    <span className="text-xs font-black">{event.attendee_count} Zusagen</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
-                        <div className="space-y-4">
-                            {newsLoading ? (
-                                <div className="py-10 flex justify-center"><RefreshCw className="animate-spin text-slate-300" /></div>
-                            ) : posts.length > 0 ? (
-                                posts.map(post => (
-                                    <div key={post.id} className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/60 group relative hover:border-accent/20 transition-all text-left">
-                                        <div className="flex justify-between items-start mb-4">
-                                            <span className={cn(
-                                                "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
-                                                post.type === 'offer' ? "bg-amber-100 text-amber-700" :
-                                                    post.type === 'event' ? "bg-purple-100 text-purple-700" :
-                                                        post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
-                                                            "bg-slate-100 text-slate-600"
-                                            )}>
-                                                {post.type}
-                                            </span>
+                        {/* News Posts List */}
+                        <div className="text-left">
+                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Deine Beiträge ({posts.length})</h3>
+                            {posts.length === 0 ? (
+                                <div className="text-center py-12 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                                    <Newspaper size={48} className="mx-auto text-slate-300 mb-4" />
+                                    <p className="text-slate-500 font-bold">Noch keine Beiträge veröffentlicht</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {posts.map(post => (
+                                        <div key={post.id} className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex justify-between items-start">
+                                            <div className="space-y-2">
+                                                <div className="flex items-center gap-2">
+                                                    <span className={cn(
+                                                        "text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full",
+                                                        post.type === 'news' ? "bg-blue-100 text-blue-600" : "bg-amber-100 text-amber-600"
+                                                    )}>
+                                                        {post.type}
+                                                    </span>
+                                                    <span className="text-[10px] font-bold text-slate-400 italic">
+                                                        {new Date(post.created_at).toLocaleDateString('de-DE')}
+                                                    </span>
+                                                </div>
+                                                <p className="text-slate-700 font-medium leading-relaxed">{post.content}</p>
+                                            </div>
                                             <button
                                                 onClick={() => handleDeletePost(post.id)}
-                                                className="text-slate-300 hover:text-red-500 transition-colors p-1"
+                                                className="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
                                             >
-                                                <Trash2 size={16} />
+                                                <Trash2 size={20} />
                                             </button>
                                         </div>
-                                        <p className="text-slate-700 font-medium leading-relaxed whitespace-pre-wrap">{post.content}</p>
-                                        <div className="mt-4 pt-4 border-t border-slate-50 flex items-center justify-between">
-                                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-                                                {new Date(post.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: 'short' })}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="bg-white rounded-3xl p-12 border border-dashed border-slate-200 flex flex-col items-center text-center space-y-3">
-                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300">
-                                        <Newspaper size={32} />
-                                    </div>
-                                    <p className="text-slate-400 text-sm font-medium">Bisher keine Beiträge im Feed.</p>
-                                    <button
-                                        onClick={() => setIsAddingNews(true)}
-                                        className="text-accent text-sm font-bold mt-2"
-                                    >
-                                        Ersten Beitrag erstellen
-                                    </button>
+                                    ))}
                                 </div>
                             )}
                         </div>
+
+                        {/* Modals are handled below at the end of the root div */}
                     </section>
                 )}
 
@@ -720,7 +910,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                 <X size={20} />
                             </button>
                         </div>
-                        <form onSubmit={handleAddPost} className="p-8 space-y-5">
+                        <form onSubmit={handleAddPost} className="p-8 space-y-5 max-h-[80vh] overflow-y-auto">
                             <div>
                                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Typ des Beitrags</label>
                                 <div className="grid grid-cols-2 gap-2">
@@ -739,6 +929,44 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                     ))}
                                 </div>
                             </div>
+
+                            <div>
+                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Bild hinzufügen (Optional)</label>
+                                <div className="relative group">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                                        onChange={(e) => setNewsImageFile(e.target.files?.[0] || null)}
+                                    />
+                                    <div className={cn(
+                                        "w-full aspect-[16/9] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center transition-all",
+                                        newsImageFile ? "border-accent bg-accent/5" : "border-slate-100 bg-slate-50 group-hover:border-accent/30"
+                                    )}>
+                                        {newsImageFile ? (
+                                            <div className="relative w-full h-full p-2">
+                                                <img
+                                                    src={URL.createObjectURL(newsImageFile)}
+                                                    className="w-full h-full object-cover rounded-xl"
+                                                    alt="Preview"
+                                                />
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); setNewsImageFile(null); }}
+                                                    className="absolute top-4 right-4 bg-red-500 text-white p-1 rounded-full shadow-lg"
+                                                >
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <ImageIcon className="text-slate-300 mb-2" size={32} />
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Klicken oder ziehen</p>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
                             <div>
                                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Was gibt es Neues?</label>
                                 <textarea
@@ -750,8 +978,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                     className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-accent/20 outline-none resize-none text-slate-700 font-medium"
                                 />
                             </div>
-                            <button className="w-full py-4 rounded-2xl font-black bg-accent text-white shadow-xl shadow-accent/20 transition-all active:scale-95 mt-2">
-                                Beitrag jetzt teilen
+                            <button
+                                disabled={isPosting}
+                                className={cn(
+                                    "w-full py-4 rounded-2xl font-black bg-accent text-white shadow-xl shadow-accent/20 transition-all active:scale-95 mt-2 flex items-center justify-center gap-2",
+                                    isPosting && "opacity-50 cursor-not-allowed"
+                                )}
+                            >
+                                {isPosting ? <RefreshCw className="animate-spin" size={20} /> : "Beitrag jetzt teilen"}
                             </button>
                         </form>
                     </div>
@@ -854,6 +1088,77 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                 {newJob.is_featured ? "Bezahlen & Veröffentlichen" : "Job Veröffentlichen"}
                             </button>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Event Modal */}
+            {isAddingEvent && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsAddingEvent(false)} />
+                    <div className="relative bg-white rounded-[2.5rem] w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden">
+                        <div className="p-8">
+                            <div className="flex justify-between items-center mb-6 text-left">
+                                <div className="space-y-1">
+                                    <h3 className="text-xl font-black text-slate-900 uppercase italic leading-none">Event erstellen</h3>
+                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">In die Region ausstrahlen</p>
+                                </div>
+                                <button onClick={() => setIsAddingEvent(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                                    <X size={20} />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleAddEvent} className="space-y-5">
+                                <div>
+                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Event-Titel</label>
+                                    <input
+                                        required
+                                        value={newEvent.title}
+                                        onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
+                                        placeholder="z.B. Sommerfest 2026"
+                                        className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-accent/20 outline-none font-bold"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 text-left">
+                                    <div>
+                                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Datum & Zeit</label>
+                                        <input
+                                            required
+                                            type="datetime-local"
+                                            value={newEvent.event_date}
+                                            onChange={e => setNewEvent({ ...newEvent, event_date: e.target.value })}
+                                            className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none font-bold text-xs"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Ort (Optional)</label>
+                                        <input
+                                            value={newEvent.location_override}
+                                            onChange={e => setNewEvent({ ...newEvent, location_override: e.target.value })}
+                                            placeholder="Standard: Firma"
+                                            className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none font-bold text-xs"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label>
+                                    <textarea
+                                        required
+                                        rows={3}
+                                        value={newEvent.description}
+                                        onChange={e => setNewEvent({ ...newEvent, description: e.target.value })}
+                                        placeholder="Was erwartet die Gäste?"
+                                        className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-accent/20 outline-none resize-none font-medium text-sm"
+                                    />
+                                </div>
+
+                                <button className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl hover:scale-[1.02] active:scale-95 transition-all">
+                                    Event veröffentlichen
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}

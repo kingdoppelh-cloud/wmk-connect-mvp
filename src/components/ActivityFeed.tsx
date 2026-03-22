@@ -1,5 +1,5 @@
 import { useNews } from '../hooks/useNews';
-import { Newspaper, Sparkles, Clock, ExternalLink } from 'lucide-react';
+import { Newspaper, Sparkles, Clock, ExternalLink, Heart } from 'lucide-react';
 import { cn } from './Layout';
 
 interface ActivityFeedProps {
@@ -7,7 +7,7 @@ interface ActivityFeedProps {
 }
 
 export const ActivityFeed: React.FC<ActivityFeedProps> = ({ onCompanyClick }) => {
-    const { posts, isLoading } = useNews();
+    const { posts, isLoading, toggleLike } = useNews();
 
     if (isLoading) {
         return (
@@ -100,6 +100,22 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ onCompanyClick }) =>
                                 </p>
 
                                 <div className="pt-4 border-t border-slate-50 flex items-center justify-between">
+                                    <button
+                                        onClick={() => toggleLike(post.id)}
+                                        className={cn(
+                                            "flex items-center gap-2 px-4 py-2 rounded-xl transition-all active:scale-90",
+                                            post.is_liked
+                                                ? "bg-rose-50 text-rose-500 font-bold"
+                                                : "bg-slate-50 text-slate-400 hover:text-slate-600 font-bold"
+                                        )}
+                                    >
+                                        <Heart
+                                            size={20}
+                                            className={cn("transition-transform duration-300", post.is_liked && "fill-current scale-110")}
+                                        />
+                                        <span className="text-xs">{post.likes_count || 0}</span>
+                                    </button>
+
                                     <button
                                         onClick={() => onCompanyClick(post.company_id)}
                                         className="flex items-center gap-2 text-accent font-black uppercase text-[10px] tracking-widest group/btn"
