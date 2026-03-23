@@ -1,5 +1,6 @@
 import React from 'react';
-import { BarChart3, Rocket, Zap, Star, ArrowRight, ShieldCheck, X, Briefcase } from 'lucide-react';
+import { BarChart3, Rocket, Zap, Star, ArrowRight, ShieldCheck, X, Briefcase, MessageCircle } from 'lucide-react';
+import { WMK_WHATSAPP } from '../constants';
 
 interface PartnerBenefitsProps {
     onClose: () => void;
@@ -47,6 +48,15 @@ export const PartnerBenefits: React.FC<PartnerBenefitsProps> = ({ onClose, onCon
                         Jetzt Partner werden
                         <ArrowRight size={20} />
                     </button>
+                    <a
+                        href={`https://wa.me/${WMK_WHATSAPP.replace(/[^0-9]/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-5 bg-[#25D366] text-white rounded-[2rem] font-black uppercase text-sm tracking-widest shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                    >
+                        <MessageCircle size={20} className="fill-white" />
+                        Direkt per WhatsApp
+                    </a>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Keine Einrichtungsgebühr • Monatlich kündbar</p>
                 </div>
             </section>

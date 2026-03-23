@@ -1,36 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import {
-    ArrowLeft, MapPin, Globe, Phone, Mail, BadgeCheck, Star,
-    MessageCircle, Briefcase, BarChart2, ArrowRight, Clock, Share2,
-    Bell, UserPlus, Users, Calendar, Sparkles, Heart
-} from 'lucide-react';
+import { Phone, Mail, BarChart2, ArrowRight } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { LeadCaptureModal } from './LeadCaptureModal';
 import { useSEO } from '../hooks/useSEO';
-import { cn } from './Layout';
-import { useNews } from '../hooks/useNews';
-import { useFollows } from '../hooks/useFollows';
 import { useEvents } from '../hooks/useEvents';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { useRewards } from '../hooks/useRewards';
+import { useFollows } from '../hooks/useFollows';
 import { PublicTransportCheck } from './PublicTransportCheck';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// Fix for Leaflet default icon issues in React
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: markerIcon2x,
-    iconUrl: markerIcon,
-    shadowUrl: markerShadow,
-});
+// Sub-components
+import { CompanyHeader } from './company/CompanyHeader';
+import { CompanyContactInfo } from './company/CompanyContactInfo';
+import { CompanyJobsSection } from './company/CompanyJobsSection';
+import { CompanyNewsSection } from './company/CompanyNewsSection';
 
-// Custom Icons
+// Custom Icons for Map
 const premiumIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
     shadowUrl: markerShadow,
@@ -60,6 +49,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
     const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
     const { isFollowed, followerCount, toggleFollow } = useFollows(company.id);
     const { earnPoints } = useRewards();
+    const { trackEvent } = useAnalytics();
 
     useSEO({
         title: company.name,
@@ -67,12 +57,9 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
         image: company.image
     });
 
-    const { trackEvent } = useAnalytics();
-
     useEffect(() => {
         if (company) {
             trackEvent(company.id, 'profile_view');
-            // Award 1 point for visiting a profile
             earnPoints(1, 'profile_view', company.id);
         }
     }, [company?.id]);
@@ -96,146 +83,21 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                 })}
             </script>
 
-            {/* Hero Image */}
-            <div className="relative h-72 w-full overflow-hidden">
-                <img
-                    src={company.image || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000"}
-                    alt={company.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000';
-                    }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                {/* Back Button */}
-                <button
-                    onClick={onBack}
-                    className="absolute top-6 left-6 p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all border border-white/30"
-                >
-                    <ArrowLeft size={24} />
-                </button>
-
-                {/* Header Info (Overlay) */}
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2.5 py-1 bg-accent/90 backdrop-blur-md text-[10px] font-black uppercase tracking-widest rounded-md border border-white/20 shadow-lg">
-                            {company.category}
-                        </span>
-                        {company.isPremium && (
-                            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-premium/90 backdrop-blur-md text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-md shadow-lg border border-white/30">
-                                <BadgeCheck size={12} className="fill-gray-900" />
-                                Premium Partner
-                            </div>
-                        )}
-                    </div>
-                    <h1 className="text-4xl sm:text-5xl font-black leading-[0.9] tracking-tighter uppercase italic drop-shadow-2xl">{company.name}</h1>
-                </div>
-            </div>
+            <CompanyHeader
+                company={company}
+                onBack={onBack}
+                isFollowed={isFollowed}
+                followerCount={followerCount}
+                toggleFollow={toggleFollow}
+            />
 
             {/* Content Area */}
-            <div className="px-6 -mt-8 relative z-10">
-                {/* Action Card */}
-                <div className="bg-white rounded-3xl shadow-2xl p-6 border border-gray-100 flex flex-wrap gap-4 justify-between items-center mb-8 relative overflow-hidden">
-                    {company.isPremium && (
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-premium via-amber-400 to-premium"></div>
-                    )}
-                    <div className="flex items-center gap-4">
-                        <div className={cn(
-                            "w-14 h-14 flex items-center justify-center rounded-2xl border transition-all",
-                            company.isPremium
-                                ? "bg-premium/10 text-premium border-premium/30"
-                                : "bg-gray-50 text-gray-400 border-gray-100"
-                        )}>
-                            {company.isPremium ? <BadgeCheck size={32} /> : <Star size={28} />}
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                                {company.isPremium ? 'Verifizierter Gold-Partner' : 'Regionaler Partner'}
-                            </p>
-                            <h4 className="font-bold text-slate-900">WMK Connect Netzwerk</h4>
-                        </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => toggleFollow(company.id)}
-                            className={cn(
-                                "flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all active:scale-95 border shadow-lg shadow-slate-900/5",
-                                isFollowed
-                                    ? "bg-slate-900 text-white border-slate-900"
-                                    : "bg-white text-slate-900 border-slate-200 hover:border-slate-300"
-                            )}
-                        >
-                            {isFollowed ? <Bell size={20} /> : <UserPlus size={20} />}
-                            <span className="hidden sm:inline">{isFollowed ? 'Folge ich' : 'Folgen'}</span>
-                            {followerCount > 0 && (
-                                <span className="ml-1 opacity-60 font-medium">({followerCount})</span>
-                            )}
-                        </button>
-                        <a
-                            href={`tel:${company.phone}`}
-                            onClick={() => {
-                                trackEvent(company.id, 'click_phone');
-                                earnPoints(3, 'interaction', company.id);
-                            }}
-                            className="bg-accent text-white p-3.5 rounded-2xl shadow-lg shadow-accent/25 hover:scale-105 transition-all active:scale-95"
-                        >
-                            <Phone size={22} />
-                        </a>
-                        <a
-                            href={company.websiteUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => {
-                                trackEvent(company.id, 'website_click');
-                                earnPoints(3, 'interaction', company.id);
-                            }}
-                            className="bg-slate-900 text-white p-3.5 rounded-2xl shadow-lg shadow-slate-900/25 hover:scale-105 transition-all active:scale-95"
-                        >
-                            <Globe size={22} />
-                        </a>
-                        <a
-                            href={`https://wa.me/${company.whatsapp?.replace(/[^0-9]/g, '')}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => {
-                                trackEvent(company.id, 'whatsapp_click');
-                                earnPoints(3, 'interaction', company.id);
-                            }}
-                            className="bg-emerald-500 text-white p-3.5 rounded-2xl shadow-lg shadow-emerald-500/25 hover:scale-105 transition-all active:scale-95"
-                        >
-                            <MessageCircle size={22} />
-                        </a>
-                        <button
-                            onClick={() => {
-                                if (navigator.share) {
-                                    navigator.share({
-                                        title: company.name,
-                                        text: company.description,
-                                        url: window.location.href
-                                    }).then(() => {
-                                        earnPoints(10, 'social_share', company.id);
-                                    }).catch(console.error);
-                                } else {
-                                    navigator.clipboard.writeText(window.location.href);
-                                    earnPoints(10, 'social_share', company.id);
-                                    alert('Link in Zwischenablage kopiert +10 Punkte! 📋');
-                                }
-                            }}
-                            className="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shadow-sm hover:bg-slate-200 transition-all active:scale-95 border border-slate-200"
-                        >
-                            <Share2 size={22} />
-                        </button>
-                    </div>
-                </div>
+            <div className="px-6 mt-8 relative z-10">
 
                 {/* Merchant Dashboard Preview Trigger (Demo) */}
                 {company.isPremium && (
                     <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 shadow-xl border border-slate-700 mb-8 relative overflow-hidden group hover:shadow-2xl transition-all">
-                        <div className="relative z-10">
+                        <div className="relative z-10 text-left">
                             <div className="bg-white/10 w-fit p-3 rounded-2xl backdrop-blur-md mb-4 border border-white/10 group-hover:bg-accent/20 transition-colors">
                                 <BarChart2 className="text-accent" size={24} />
                             </div>
@@ -265,7 +127,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                 )}
 
                 {/* About Section */}
-                <section className="mb-10">
+                <section className="mb-10 text-left">
                     <h2 className="text-xl font-black text-slate-900 mb-4 flex items-center gap-2">
                         <span className="w-8 h-1 bg-accent rounded-full" />
                         Über uns
@@ -276,68 +138,20 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                 </section>
 
                 {/* News & Updates Section */}
-                <CompanyNews companyId={company.id} />
+                <CompanyNewsSection companyId={company.id} />
 
-                {/* Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                    {/* Location */}
-                    <div className="bg-gray-50 p-6 rounded-3xl border border-gray-100">
-                        <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2">
-                            <MapPin className="text-accent" size={20} />
-                            Standort
-                        </h3>
-                        <p className="text-slate-600 mb-4 font-medium">{company.address}</p>
-                        <div className="aspect-video bg-slate-200 rounded-2xl overflow-hidden relative border border-slate-200 z-0">
-                            <MapContainer
-                                center={company.coordinates || [51.2721, 9.9834]}
-                                zoom={15}
-                                scrollWheelZoom={false}
-                                className="h-full w-full z-0"
-                            >
-                                <TileLayer
-                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                />
-                                <Marker
-                                    position={company.coordinates || [51.2721, 9.9834]}
-                                    icon={company.isPremium ? premiumIcon : standardIcon}
-                                >
-                                    <Popup>
-                                        <div className="text-center font-bold text-sm">{company.name}</div>
-                                    </Popup>
-                                </Marker>
-                            </MapContainer>
-                        </div>
-                    </div>
-
-                    {/* Opening Hours */}
-                    <div className="bg-gray-50 p-6 rounded-3xl border border-gray-100">
-                        <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2">
-                            <Clock className="text-accent" size={20} />
-                            Öffnungszeiten
-                        </h3>
-                        <div className="space-y-2">
-                            {Object.entries(company.openingHours).map(([day, hours]) => {
-                                const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-                                const dayIdx = parseInt(day);
-                                const dayName = dayIdx === 0 ? "So" : days[dayIdx - 1];
-
-                                return (
-                                    <div key={day} className="flex justify-between text-sm">
-                                        <span className="font-bold text-slate-500">{dayName}</span>
-                                        <span className={`font-black ${hours === 'RUHETAG' ? 'text-accent' : 'text-slate-800'}`}>
-                                            {hours}
-                                        </span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </div>
+                {/* Details Grid (Contact & Hours) */}
+                <CompanyContactInfo
+                    company={company}
+                    trackEvent={trackEvent}
+                    earnPoints={earnPoints}
+                    premiumIcon={premiumIcon}
+                    standardIcon={standardIcon}
+                />
 
                 {/* Gallery */}
                 {company.gallery && company.gallery.length > 0 && (
-                    <section className="mb-10">
+                    <section className="mb-10 text-left">
                         <h2 className="text-xl font-black text-slate-900 mb-4 flex items-center gap-2">
                             <span className="w-8 h-1 bg-accent rounded-full" />
                             Impressionen
@@ -352,30 +166,8 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                     </section>
                 )}
 
-                {/* Swipe Jobs Trigger */}
-                {company.isPremium && (
-                    <div
-                        onClick={() => {
-                            trackEvent(company.id, 'profile_view');
-                            window.dispatchEvent(new CustomEvent('open-swipe-jobs', { detail: company.id }));
-                        }}
-                        className="bg-slate-900 rounded-[40px] p-8 shadow-2xl relative overflow-hidden mb-10 group cursor-pointer hover:shadow-accent/20 transition-all border border-slate-800"
-                    >
-                        <div className="relative z-10 flex items-center justify-between">
-                            <div>
-                                <div className="bg-white/10 w-fit p-3 rounded-2xl backdrop-blur-md mb-4 border border-white/10 text-white">
-                                    <Briefcase size={24} />
-                                </div>
-                                <h3 className="font-black text-white text-2xl mb-1">Wir stellen ein!</h3>
-                                <p className="text-slate-300 font-medium text-sm">Finde deinen Traumjob und bewirb dich mit einem Swipe.</p>
-                            </div>
-                            <div className="w-16 h-16 rounded-full bg-accent text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform shrink-0 ml-4">
-                                <ArrowRight size={28} />
-                            </div>
-                        </div>
-                        <div className="absolute -right-12 -top-12 w-48 h-48 bg-accent/30 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                    </div>
-                )}
+                {/* Swipe Jobs Section */}
+                <CompanyJobsSection company={company} trackEvent={trackEvent} />
 
                 {/* Upcoming Events Section */}
                 <EventsSection companyId={company.id} />
@@ -402,30 +194,16 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                                 <Phone size={20} />
                                 Jetzt anrufen
                             </a>
-                            {company.isPremium && company.whatsapp && (
-                                <a
-                                    href={`https://wa.me/${company.whatsapp.replace(/[^0-9]/g, '')}`}
-                                    onClick={() => trackEvent(company.id, 'whatsapp_click')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center justify-center gap-3 bg-[#25D366] text-white py-4 rounded-2xl font-black hover:bg-[#128C7E] transition-all shadow-xl shadow-[#25D366]/20"
-                                >
-                                    <MessageCircle className="fill-white" size={20} />
-                                    WhatsApp Chat starten
-                                </a>
-                            )}
                         </div>
                     </div>
-                    {/* Decorative star */}
-                    <Star className="absolute -bottom-10 -right-10 text-white/5 rotate-12" size={160} />
                 </section>
 
                 {/* Nearby Partners Section */}
                 {allCompanies.length > 1 && (
-                    <section className="mt-12 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                    <section className="mt-12 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300 text-left">
                         <div className="flex items-center gap-2 mb-6">
                             <div className="p-2 bg-accent/10 rounded-xl text-accent">
-                                <MapPin size={20} />
+                                <ArrowRight size={20} className="rotate-90" />
                             </div>
                             <h2 className="text-xl font-black text-slate-900">Partner in der Nähe</h2>
                         </div>
@@ -447,22 +225,12 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                                         <div className="flex-1 min-w-0">
                                             <h4 className="font-bold text-slate-900 truncate">{nearby.name}</h4>
                                             <p className="text-xs text-slate-400 truncate">{nearby.category}</p>
-                                            {nearby.distance !== undefined && nearby.distance < Infinity && (
-                                                <p className="text-[10px] font-black text-accent mt-1 flex items-center gap-1">
-                                                    <MapPin size={8} />
-                                                    {nearby.distance.toFixed(1)} km entfernt
-                                                </p>
-                                            )}
                                         </div>
                                         <ArrowRight size={16} className="text-slate-300 mr-2" />
                                     </div>
                                 ))
                             }
                         </div>
-
-                        <p className="text-center text-[10px] text-slate-400 mt-6 uppercase tracking-widest font-bold">
-                            Entdecke mehr im WMK Connect Netzwerk
-                        </p>
                     </section>
                 )}
             </div>
@@ -478,84 +246,9 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
     );
 };
 
-const CompanyNews: React.FC<{ companyId: string }> = ({ companyId }) => {
-    const { posts, isLoading, toggleLike } = useNews();
-    const { earnPoints } = useRewards();
-    const companyPosts = posts.filter(p => p.company_id === companyId);
-
-    if (isLoading || companyPosts.length === 0) return null;
-
-    return (
-        <section className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-                    <span className="w-8 h-1 bg-accent rounded-full" />
-                    Aktuelles & Angebote
-                </h2>
-                <div className="flex items-center gap-1 text-accent animate-pulse">
-                    <Sparkles size={14} className="fill-current" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Live</span>
-                </div>
-            </div>
-
-            <div className="space-y-4">
-                {companyPosts.map(post => (
-                    <div
-                        key={post.id}
-                        className="bg-slate-50 rounded-[2rem] overflow-hidden border border-slate-100 hover:border-accent/20 transition-all group"
-                    >
-                        {post.image_url && (
-                            <div className="aspect-[21/9] w-full overflow-hidden bg-slate-200">
-                                <img
-                                    src={post.image_url}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                    alt="News"
-                                />
-                            </div>
-                        )}
-                        <div className="p-6">
-                            <div className="flex items-center justify-between mb-3">
-                                <div className="flex items-center gap-2">
-                                    <span className={cn(
-                                        "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-[0.1em]",
-                                        post.type === 'offer' ? "bg-amber-100 text-amber-700" :
-                                            post.type === 'event' ? "bg-purple-100 text-purple-700" :
-                                                post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
-                                                    "bg-slate-200 text-slate-600"
-                                    )}>
-                                        {post.type}
-                                    </span>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase">
-                                        • {new Date(post.created_at).toLocaleDateString('de-DE', { day: '2-digit', month: 'short' })}
-                                    </span>
-                                </div>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        toggleLike(post.id);
-                                    }}
-                                    className={cn(
-                                        "flex items-center gap-1.5 px-3 py-1 rounded-full transition-all active:scale-90",
-                                        post.is_liked ? "bg-rose-50 text-rose-500 font-bold" : "text-slate-400"
-                                    )}
-                                >
-                                    <Heart size={16} className={cn(post.is_liked && "fill-current")} />
-                                    <span className="text-[10px]">{post.likes_count || 0}</span>
-                                </button>
-                            </div>
-                            <p
-                                onClick={() => earnPoints(1, 'news_read', companyId)}
-                                className="text-slate-700 font-medium leading-relaxed whitespace-pre-wrap cursor-pointer"
-                            >
-                                {post.content}
-                            </p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
-};
+// Internal sub-component for events (kept here or can be moved to its own file)
+import { Users, Clock, MapPin, Calendar } from 'lucide-react';
+import { cn } from './Layout';
 
 const EventsSection: React.FC<{ companyId: string }> = ({ companyId }) => {
     const { events, isLoading, toggleRSVP } = useEvents(companyId);
@@ -567,7 +260,7 @@ const EventsSection: React.FC<{ companyId: string }> = ({ companyId }) => {
     if (upcomingEvents.length === 0) return null;
 
     return (
-        <section className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+        <section className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200 text-left">
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
@@ -616,9 +309,8 @@ const EventsSection: React.FC<{ companyId: string }> = ({ companyId }) => {
                             </div>
                             <button
                                 onClick={() => {
-                                    const nextStatus = event.user_status === 'attending' ? 'none' : 'attending';
                                     toggleRSVP(event.id, event.user_status || 'none');
-                                    if (nextStatus === 'attending') {
+                                    if (event.user_status !== 'attending') {
                                         earnPoints(5, 'rsvp', companyId);
                                     }
                                 }}

@@ -127,6 +127,12 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
                                 Impressum
                             </button>
                             <button
+                                onClick={() => navigate('/admin')}
+                                className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-accent transition-colors"
+                            >
+                                Admin
+                            </button>
+                            <button
                                 onClick={() => setShowDatenschutz(true)}
                                 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-accent transition-colors"
                             >

@@ -96,20 +96,6 @@ function App() {
     };
   }, [navigate]);
 
-  useEffect(() => {
-    // Hidden Admin Trigger (Double click Logo)
-    (window as any).onAdminRequest = () => navigate('/admin');
-
-    // Legal Page triggers
-    (window as any).showImpressum = () => setShowImpressum(true);
-    (window as any).showDatenschutz = () => setShowDatenschutz(true);
-
-    return () => {
-      (window as any).onAdminRequest = null;
-      (window as any).showImpressum = null;
-      (window as any).showDatenschutz = null;
-    };
-  }, [navigate, setShowImpressum, setShowDatenschutz]);
 
   const handleSaveCompany = async (data: Partial<Company>) => {
     try {
