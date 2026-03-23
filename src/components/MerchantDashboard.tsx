@@ -266,10 +266,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             if (!file) return;
             try {
                 const fileExt = file.name.split('.').pop();
-                const fileName = `${company.id}/${Math.random()}.${fileExt}`;
-                const { error: uploadError } = await supabase.storage.from('company-assets').upload(`gallery/${fileName}`, file);
+                const fileName = `${company.id}-${Date.now()}.${fileExt}`;
+                const { error: uploadError } = await supabase.storage.from('company-images').upload(`gallery/${fileName}`, file);
                 if (uploadError) throw uploadError;
-                const { data: { publicUrl } } = supabase.storage.from('company-assets').getPublicUrl(`gallery/${fileName}`);
+                const { data: { publicUrl } } = supabase.storage.from('company-images').getPublicUrl(`gallery/${fileName}`);
                 const currentGallery = gallery || [];
                 const newGallery = [...currentGallery, publicUrl];
                 const { error: updateError } = await supabase.from('companies').update({ gallery: newGallery }).eq('id', company.id);
@@ -302,10 +302,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             try {
                 const fileExt = file.name.split('.').pop();
                 const fileName = `${company.id}/logo-${Math.random()}.${fileExt}`;
-                const { error: uploadError } = await supabase.storage.from('company-assets').upload(`logos/${fileName}`, file);
+                const { error: uploadError } = await supabase.storage
+                    .from('company-images')
+                    .upload(`logos/${fileName}`, file);
+
                 if (uploadError) throw uploadError;
-                const { data: { publicUrl } } = supabase.storage.from('company-assets').getPublicUrl(`logos/${fileName}`);
-                const { error: updateError } = await supabase.from('companies').update({ logo: publicUrl }).eq('id', company.id);
+
+                const { data: { publicUrl } } = supabase.storage.from('company-images').getPublicUrl(`logos/${fileName}`);
+                const { error: updateError } = await supabase.from('companies').update({ image: publicUrl }).eq('id', company.id);
                 if (updateError) throw updateError;
                 setLogo(publicUrl);
                 alert('Logo aktualisiert!');
