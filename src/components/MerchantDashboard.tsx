@@ -60,13 +60,21 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
         websiteUrl: company.websiteUrl,
         email: company.email || ''
     });
+    const [gallery, setGallery] = useState<string[]>(company.gallery || []);
+    const [logo, setLogo] = useState<string>(company.image || '');
+
+    // Sync local state if company prop changes (unlikely in current route but good practice)
+    useEffect(() => {
+        setGallery(company.gallery || []);
+        setLogo(company.image || '');
+    }, [company.id, company.gallery, company.image]);
     const [newJob, setNewJob] = useState<Partial<Job>>({
         title: '',
         category: company.category,
         description: '',
         salary_range: '',
         job_type: 'Vollzeit',
-        image_url: company.image,
+        image_url: company.image || '',
         is_featured: false
     });
 
@@ -262,9 +270,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 const { error: uploadError } = await supabase.storage.from('company-assets').upload(`gallery/${fileName}`, file);
                 if (uploadError) throw uploadError;
                 const { data: { publicUrl } } = supabase.storage.from('company-assets').getPublicUrl(`gallery/${fileName}`);
-                const currentGallery = company.gallery || [];
-                const { error: updateError } = await supabase.from('companies').update({ gallery: [...currentGallery, publicUrl] }).eq('id', company.id);
+                const currentGallery = gallery || [];
+                const newGallery = [...currentGallery, publicUrl];
+                const { error: updateError } = await supabase.from('companies').update({ gallery: newGallery }).eq('id', company.id);
                 if (updateError) throw updateError;
+                setGallery(newGallery);
                 alert('Bild hinzugefügt!');
             } catch (err) { alert('Upload fehlgeschlagen'); }
         };
@@ -274,9 +284,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
     const handleRemoveGalleryImage = async (urlToRemove: string) => {
         if (!confirm('Bild aus Galerie löschen?')) return;
         try {
-            const newGallery = (company.gallery || []).filter(url => url !== urlToRemove);
+            const newGallery = gallery.filter(url => url !== urlToRemove);
             const { error } = await supabase.from('companies').update({ gallery: newGallery }).eq('id', company.id);
             if (error) throw error;
+            setGallery(newGallery);
             // Optionally delete from storage too
         } catch (err) { alert('Löschen fehlgeschlagen'); }
     };
@@ -296,6 +307,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 const { data: { publicUrl } } = supabase.storage.from('company-assets').getPublicUrl(`logos/${fileName}`);
                 const { error: updateError } = await supabase.from('companies').update({ logo: publicUrl }).eq('id', company.id);
                 if (updateError) throw updateError;
+                setLogo(publicUrl);
                 alert('Logo aktualisiert!');
             } catch (err) { alert('Logo-Update fehlgeschlagen'); }
         };
@@ -368,7 +380,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                     {activeTab === 'profile' && (
                         <div className="space-y-6">
                             <MerchantMedia
-                                company={company}
+                                company={{ ...company, gallery, image: logo }}
                                 onAddGalleryImage={handleAddGalleryImage}
                                 onRemoveGalleryImage={handleRemoveGalleryImage}
                                 onUpdateLogo={handleUpdateLogo}

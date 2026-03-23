@@ -60,9 +60,9 @@ export const MerchantMedia: React.FC<MerchantMediaProps> = ({
                                 />
                                 <button
                                     onClick={() => onRemoveGalleryImage(img)}
-                                    className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                    className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full transition-all shadow-lg active:scale-90 z-20"
                                 >
-                                    <X size={12} />
+                                    <X size={14} />
                                 </button>
                             </div>
                         ))
