@@ -9,6 +9,8 @@ import { NotificationCenter } from './NotificationCenter';
 import { useRewards } from '../hooks/useRewards';
 import { RewardModal } from './RewardModal';
 import { useUI } from '../context/UIContext';
+import { ProfileEditor } from './ProfileEditor';
+import { User as UserIcon } from 'lucide-react';
 
 /** Styling utility */
 export function cn(...inputs: ClassValue[]) {
@@ -23,7 +25,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
     const { unreadCount } = useNotifications();
     const { points } = useRewards();
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-    const { setShowImpressum, setShowDatenschutz } = useUI();
+    const { setShowImpressum, setShowDatenschutz, showProfileEditor, setShowProfileEditor } = useUI();
 
     return (
         <div className="flex flex-col min-h-screen pt-14 pb-20 safe-bottom bg-slate-50/30">
@@ -37,6 +39,18 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
                 </div>
 
                 <div className="flex items-center gap-1">
+                    {/* Profile & Matching */}
+                    <button
+                        onClick={() => setShowProfileEditor(true)}
+                        aria-label="Mein KI-Profil"
+                        className={cn(
+                            "p-2 transition-all duration-300 rounded-xl",
+                            showProfileEditor ? "bg-accent/10 text-accent" : "text-slate-400 hover:text-slate-600"
+                        )}
+                    >
+                        <UserIcon size={20} />
+                    </button>
+
                     {/* Favorites */}
                     <button
                         onClick={() => navigate('/favorites')}
@@ -83,6 +97,11 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
             <RewardModal
                 isOpen={isRewardsOpen}
                 onClose={() => setIsRewardsOpen(false)}
+            />
+
+            <ProfileEditor
+                isOpen={showProfileEditor}
+                onClose={() => setShowProfileEditor(false)}
             />
 
             {/* Main Content with Transition */}

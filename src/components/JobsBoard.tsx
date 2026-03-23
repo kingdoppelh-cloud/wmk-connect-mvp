@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Briefcase, Euro, MapPin, Search, Heart, RefreshCw, Star, Info } from 'lucide-react';
 import { useJobs } from '../hooks/useJobs';
 import { useUI } from '../context/UIContext';
+import { MagicSearch } from './MagicSearch';
+import { TopMatches } from './TopMatches';
 
 interface JobsBoardProps {
     onCompanyClick?: (id: string | null) => void;
@@ -24,6 +26,7 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
     const { setShowPartnerBenefits } = useUI();
     const { jobs, isLoading } = useJobs();
     const [selectedRadius, setSelectedRadius] = useState<number>(9999);
+    const [magicResults, setMagicResults] = useState<any[] | null>(null);
 
     const jobsWithDistance = useMemo(() => {
         return jobs.map(job => {
@@ -37,6 +40,17 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
     }, [jobs, userLocation]);
 
     const filteredJobs = useMemo(() => {
+        if (magicResults) {
+            const resultIds = magicResults.map(r => r.id);
+            return jobsWithDistance
+                .filter(j => resultIds.includes(j.id))
+                .sort((a, b) => {
+                    const simA = magicResults.find(r => r.id === a.id)?.similarity || 0;
+                    const simB = magicResults.find(r => r.id === b.id)?.similarity || 0;
+                    return simB - simA;
+                });
+        }
+
         return jobsWithDistance.filter(job => {
             if (userLocation && job.distance !== undefined) {
                 return job.distance <= selectedRadius;
@@ -46,9 +60,9 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
             if (userLocation && a.distance !== undefined && b.distance !== undefined) {
                 return a.distance - b.distance;
             }
-            return 0; // Use default order if no location
+            return 0;
         });
-    }, [jobsWithDistance, selectedRadius, userLocation]);
+    }, [jobsWithDistance, magicResults, selectedRadius, userLocation]);
 
     const handleApply = (job: any) => {
         if (!job.company?.whatsapp) return;
@@ -111,7 +125,15 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
                 </h1>
                 <p className="text-slate-500 font-medium mt-2">Finde deinen nächsten Job im WMK.</p>
 
-                <div className="mt-6 flex gap-2">
+                <div className="mt-8">
+                    <MagicSearch
+                        type="jobs"
+                        onResults={(results) => setMagicResults(results)}
+                        onClear={() => setMagicResults(null)}
+                    />
+                </div>
+
+                <div className="mt-2 flex gap-2">
                     <button
                         onClick={onLocationRequest}
                         className={`whitespace-nowrap px-5 py-3 rounded-full text-xs font-bold transition-all duration-300 shadow-sm border flex items-center gap-1.5 ${userLocation
@@ -138,6 +160,10 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
                     )}
                 </div>
             </header>
+
+            <div className="px-6 mb-8">
+                <TopMatches onCompanyClick={onCompanyClick} />
+            </div>
 
             <div className="flex flex-col gap-6 px-4">
                 {filteredJobs.map((job) => (

@@ -43,6 +43,7 @@ export type AnalyticsEventType =
     | 'rsvp_action'
     | 'click_phone'
     | 'open_swipe_jobs'
+    | 'job_view'
     | 'email_click';
 
 export interface AnalyticsEvent {

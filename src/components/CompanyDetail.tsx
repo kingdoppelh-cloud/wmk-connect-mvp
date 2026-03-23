@@ -13,6 +13,7 @@ import { useFollows } from '../hooks/useFollows';
 import { useEvents } from '../hooks/useEvents';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { useRewards } from '../hooks/useRewards';
+import { PublicTransportCheck } from './PublicTransportCheck';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -250,6 +251,16 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                             </button>
                         </div>
                         <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-accent/20 rounded-full blur-3xl transition-transform group-hover:scale-150 duration-700"></div>
+                    </div>
+                )}
+
+                {/* NVV Public Transport Check */}
+                {company.coordinates && (
+                    <div className="mb-8">
+                        <PublicTransportCheck
+                            companyLat={company.coordinates[0]}
+                            companyLon={company.coordinates[1]}
+                        />
                     </div>
                 )}
 

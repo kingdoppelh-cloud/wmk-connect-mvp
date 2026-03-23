@@ -9,7 +9,7 @@ import { cn } from './Layout';
 
 // Sub-components
 import { MerchantHeader } from './merchant/MerchantHeader';
-import { MerchantStats } from './merchant/MerchantStats';
+import { MerchantIntelligence } from './merchant/MerchantIntelligence';
 import { MerchantOffers } from './merchant/MerchantOffers';
 import { MerchantJobs } from './merchant/MerchantJobs';
 import { MerchantNews } from './merchant/MerchantNews';
@@ -28,15 +28,7 @@ interface MerchantDashboardProps {
 
 export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, onClose }) => {
     const [activeTab, setActiveTab] = useState<'dashboard' | 'jobs' | 'profile' | 'news' | 'marketing'>('dashboard');
-    const [stats, setStats] = useState({
-        profileViews: 0,
-        phoneClicks: 0,
-        websiteClicks: 0,
-        whatsappClicks: 0,
-        jobInquiries: 0
-    });
-    const [dailyData, setDailyData] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [isAddingJob, setIsAddingJob] = useState(false);
     const [isAddingNews, setIsAddingNews] = useState(false);
     const [isAddingEvent, setIsAddingEvent] = useState(false);
@@ -126,35 +118,6 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
         if (jobs.length === 0) items.push({ id: 'job', label: 'Deinen ersten Job posten', tab: 'jobs' });
         return items;
     }, [profileData, company.gallery, jobs]);
-
-    const fetchStats = async () => {
-        setIsLoading(true);
-        try {
-            const { data: analyticsData, error: analyticsError } = await supabase.rpc('get_merchant_analytics', {
-                target_company_id: company.id,
-                days_back: 7
-            });
-            if (analyticsError) throw analyticsError;
-            if (analyticsData) {
-                setDailyData(analyticsData);
-                const summary = analyticsData.reduce((acc: any, curr: any) => {
-                    if (curr.event_type === 'profile_view') acc.profileViews += Number(curr.event_count);
-                    if (curr.event_type === 'whatsapp_click') acc.whatsappClicks += Number(curr.event_count);
-                    if (curr.event_type === 'website_click') acc.websiteClicks += Number(curr.event_count);
-                    if (curr.event_type === 'click_phone') acc.phoneClicks += Number(curr.event_count);
-                    if (curr.event_type === 'open_swipe_jobs') acc.jobInquiries += Number(curr.event_count);
-                    return acc;
-                }, { profileViews: 0, whatsappClicks: 0, websiteClicks: 0, phoneClicks: 0, jobInquiries: 0 });
-                setStats(summary);
-            }
-        } catch (e) {
-            console.error('Error fetching analytics', e);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => { fetchStats(); }, [company.id]);
 
     useEffect(() => {
         setFormErrors({});
@@ -341,16 +304,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 <ErrorBoundary>
                     {activeTab === 'dashboard' && (
                         <div className="space-y-6">
-                            <MerchantStats
-                                stats={{
-                                    views: stats.profileViews,
-                                    whatsapp: stats.whatsappClicks,
-                                    favorites: 0, // Placeholder if not in analytics
-                                    referrals: stats.websiteClicks,
-                                    trendData: dailyData
-                                }}
-                                activityLog={[]} // Placeholder
-                            />
+                            <MerchantIntelligence companyId={company.id} />
                             <MerchantOffers
                                 company={company}
                                 onEditOffer={() => setActiveTab('profile')}

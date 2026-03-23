@@ -3,6 +3,8 @@ import { SlidersHorizontal, Euro, MapPin, ArrowRight, Users, PartyPopper, Timer,
 import type { Company } from '../data/companies';
 import { useJobs } from '../hooks/useJobs';
 import { useSEO } from '../hooks/useSEO';
+import { useAnalytics } from '../hooks/useAnalytics';
+import { useRewards } from '../hooks/useRewards';
 
 interface SwipeJobsProps {
     company: Company;
@@ -13,8 +15,18 @@ export const SwipeJobs: React.FC<SwipeJobsProps> = ({ company, onClose }) => {
     const { jobs, isLoading } = useJobs(company.id);
     const [activeIndex, setActiveIndex] = useState(0);
     const [currentJobIndex, setCurrentJobIndex] = useState(0);
+    const { trackEvent } = useAnalytics();
+    const { earnPoints } = useRewards();
 
     const activeJob = jobs[currentJobIndex];
+
+    useEffect(() => {
+        if (activeJob) {
+            trackEvent(company.id, 'job_view', { job_id: activeJob.id, title: activeJob.title });
+            // Award 2 points for viewing a job detail
+            earnPoints(2, 'job_view', company.id);
+        }
+    }, [activeJob?.id]);
 
     useSEO({
         title: activeJob ? `${activeJob.title} bei ${company.name}` : `Jobs bei ${company.name}`,
