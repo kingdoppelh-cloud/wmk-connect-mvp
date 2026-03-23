@@ -26,7 +26,54 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
     const { setShowImpressum, setShowDatenschutz } = useUI();
 
     return (
-        <div className="flex flex-col min-h-screen pb-20 safe-bottom">
+        <div className="flex flex-col min-h-screen pt-14 pb-20 safe-bottom bg-slate-50/30">
+            {/* Top Utility Bar */}
+            <header className="fixed top-0 left-0 right-0 z-[60] glass border-b border-gray-100/50 px-6 py-3 flex justify-between items-center h-14">
+                <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-accent rounded-lg flex items-center justify-center shadow-sm">
+                        <Compass size={14} className="text-white" />
+                    </div>
+                    <h1 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-800">WMK Connect</h1>
+                </div>
+
+                <div className="flex items-center gap-1">
+                    {/* Favorites */}
+                    <button
+                        onClick={() => navigate('/favorites')}
+                        aria-label="Favoriten"
+                        className={cn(
+                            "p-2 transition-all duration-300 rounded-xl",
+                            activeTab === 'favorites' ? "bg-accent/10 text-accent" : "text-slate-400 hover:text-slate-600"
+                        )}
+                    >
+                        <Heart size={20} className={activeTab === 'favorites' ? "fill-accent" : ""} />
+                    </button>
+
+                    {/* Points Pill */}
+                    <button
+                        onClick={() => setIsRewardsOpen(true)}
+                        className="ml-1 bg-slate-900 text-white pl-2.5 pr-3 py-1.5 rounded-full flex items-center gap-2 shadow-sm border border-white/10 hover:scale-105 transition-all active:scale-95"
+                    >
+                        <div className="w-5 h-5 rounded-full bg-premium flex items-center justify-center shadow-inner">
+                            <Trophy size={10} className="text-slate-900" />
+                        </div>
+                        <span className="text-[11px] font-black tracking-tight">{points}</span>
+                    </button>
+
+                    {/* Notifications */}
+                    <button
+                        onClick={() => setIsNotificationsOpen(true)}
+                        aria-label="Updates"
+                        className="p-2 text-slate-400 hover:text-slate-600 transition-all relative rounded-xl"
+                    >
+                        <Bell size={20} />
+                        {unreadCount > 0 && (
+                            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-accent border-2 border-white rounded-full"></span>
+                        )}
+                    </button>
+                </div>
+            </header>
+
             <NotificationCenter
                 isOpen={isNotificationsOpen}
                 onClose={() => setIsNotificationsOpen(false)}
@@ -52,7 +99,7 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
 
                     {/* Legal Footer */}
                     <footer className="mt-12 mb-8 px-6 text-center border-t border-slate-100 pt-8">
-                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-4">WMK Connect © 2024</p>
+                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-4">WMK Connect © 2026</p>
                         <div className="flex justify-center gap-6">
                             <button
                                 onClick={() => setShowImpressum(true)}
@@ -71,113 +118,64 @@ export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> 
                 </motion.main>
             </AnimatePresence>
 
-            {/* Bottom Navigation */}
-            <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-gray-100 px-6 py-3 flex justify-around items-center">
+            {/* Bottom Navigation - Streamlined to 5 main items */}
+            <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-gray-100 px-4 py-3 flex justify-between items-center shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
                 <button
                     onClick={() => navigate('/')}
-                    aria-label="Entdecken"
                     className={cn(
-                        "flex flex-col items-center gap-1 transition-all duration-300",
-                        activeTab === 'discover' ? "text-accent scale-110" : "text-gray-400"
+                        "flex flex-col items-center gap-1 transition-all duration-300 flex-1",
+                        activeTab === 'discover' ? "text-accent scale-105" : "text-gray-400 hover:text-gray-600"
                     )}
                 >
                     <Compass size={24} strokeWidth={activeTab === 'discover' ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">Entdecken</span>
+                    <span className="text-[9px] font-bold uppercase tracking-tighter">Entdecken</span>
                 </button>
 
                 <button
                     onClick={() => navigate('/jobs')}
-                    aria-label="Jobs"
                     className={cn(
-                        "flex flex-col items-center gap-1 transition-all duration-300",
-                        activeTab === 'jobs' ? "text-accent scale-110" : "text-gray-400"
+                        "flex flex-col items-center gap-1 transition-all duration-300 flex-1",
+                        activeTab === 'jobs' ? "text-accent scale-105" : "text-gray-400 hover:text-gray-600"
                     )}
                 >
                     <Briefcase size={22} strokeWidth={activeTab === 'jobs' ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">Jobs</span>
+                    <span className="text-[9px] font-bold uppercase tracking-tighter">Jobs</span>
                 </button>
 
                 <button
                     onClick={() => navigate('/events')}
-                    aria-label="Events"
                     className={cn(
-                        "flex flex-col items-center gap-1 transition-all duration-300",
-                        activeTab === 'events' ? "text-accent scale-110" : "text-gray-400"
+                        "flex flex-col items-center gap-1 transition-all duration-300 flex-1",
+                        activeTab === 'events' ? "text-accent scale-105" : "text-gray-400 hover:text-gray-600"
                     )}
                 >
                     <Calendar size={24} strokeWidth={activeTab === 'events' ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">Events</span>
+                    <span className="text-[9px] font-bold uppercase tracking-tighter">Events</span>
                 </button>
 
                 <button
                     onClick={() => navigate('/feed')}
-                    aria-label="Aktuelles"
                     className={cn(
-                        "flex flex-col items-center gap-1 transition-all duration-300",
-                        activeTab === 'feed' ? "text-accent scale-110" : "text-gray-400"
+                        "flex flex-col items-center gap-1 transition-all duration-300 flex-1",
+                        activeTab === 'feed' ? "text-accent scale-105" : "text-gray-400 hover:text-gray-600"
                     )}
                 >
                     <Newspaper size={24} strokeWidth={activeTab === 'feed' ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">Aktuelles</span>
+                    <span className="text-[9px] font-bold uppercase tracking-tighter">Aktuelles</span>
                 </button>
 
                 <button
                     onClick={() => navigate('/map')}
-                    aria-label="Karte"
                     className={cn(
-                        "flex flex-col items-center gap-1 transition-all duration-300",
-                        activeTab === 'map' ? "text-accent scale-110" : "text-gray-400"
+                        "flex flex-col items-center gap-1 transition-all duration-300 flex-1",
+                        activeTab === 'map' ? "text-accent scale-105" : "text-gray-400 hover:text-gray-600"
                     )}
                 >
                     <MapIcon size={24} strokeWidth={activeTab === 'map' ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">Karte</span>
-                </button>
-
-                <button
-                    onClick={() => navigate('/favorites')}
-                    aria-label="Favoriten"
-                    className={cn(
-                        "flex flex-col items-center gap-1 transition-all duration-300",
-                        activeTab === 'favorites' ? "text-accent scale-110" : "text-gray-400"
-                    )}
-                >
-                    <Heart size={24} strokeWidth={activeTab === 'favorites' ? 2.5 : 2} />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">Favoriten</span>
-                </button>
-
-                <button
-                    onClick={() => setIsNotificationsOpen(true)}
-                    aria-label="Benachrichtigungen"
-                    className={cn(
-                        "flex flex-col items-center gap-1 transition-all duration-300 relative",
-                        isNotificationsOpen ? "text-accent scale-110" : "text-gray-400"
-                    )}
-                >
-                    <div className="relative">
-                        <Bell size={24} strokeWidth={isNotificationsOpen ? 2.5 : 2} />
-                        {unreadCount > 0 && (
-                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent border-2 border-white rounded-full"></span>
-                        )}
-                    </div>
-                    <span className="text-[10px] font-medium uppercase tracking-wider">Updates</span>
+                    <span className="text-[9px] font-bold uppercase tracking-tighter">Karte</span>
                 </button>
             </nav>
-
-            {/* Floating Points Badge */}
-            <div className="fixed top-6 left-6 z-[60] animate-in slide-in-from-left-8 duration-700">
-                <button
-                    onClick={() => setIsRewardsOpen(true)}
-                    className="bg-slate-900 text-white pl-4 pr-5 py-2.5 rounded-2xl flex items-center gap-3 shadow-2xl border border-white/10 hover:scale-105 transition-all group active:scale-95"
-                >
-                    <div className="w-8 h-8 rounded-xl bg-premium flex items-center justify-center shadow-inner group-hover:rotate-12 transition-transform">
-                        <Trophy size={16} className="text-slate-900" />
-                    </div>
-                    <div className="flex flex-col items-start leading-tight">
-                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Punkte</span>
-                        <span className="text-sm font-black text-white">{points}</span>
-                    </div>
-                </button>
-            </div>
         </div>
     );
+
 };
