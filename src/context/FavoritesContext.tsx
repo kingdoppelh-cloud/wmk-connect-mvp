@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface FavoritesContextType {
     favorites: string[];
@@ -9,18 +9,19 @@ interface FavoritesContextType {
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [favorites, setFavorites] = useState<string[]>([]);
-
-    useEffect(() => {
+    const [favorites, setFavorites] = useState<string[]>(() => {
         const saved = localStorage.getItem('wmk_favorites');
         if (saved) {
             try {
-                setFavorites(JSON.parse(saved));
+                return JSON.parse(saved);
             } catch (e) {
                 console.error('Failed to load favorites', e);
             }
         }
-    }, []);
+        return [];
+    });
+
+    // Removed useEffect for initial load as it's now handled in useState initializer
 
     const toggleFavorite = (id: string) => {
         setFavorites(prev => {
@@ -39,6 +40,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useFavorites = () => {
     const context = useContext(FavoritesContext);
     if (context === undefined) {

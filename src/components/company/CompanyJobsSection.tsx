@@ -5,7 +5,7 @@ import { type AnalyticsEventType } from '../../types';
 
 interface CompanyJobsSectionProps {
     company: Company;
-    trackEvent: (companyId: string, eventType: AnalyticsEventType, metadata?: any) => void;
+    trackEvent: (companyId: string, eventType: AnalyticsEventType, metadata?: Record<string, unknown>) => void;
 }
 
 export const CompanyJobsSection: React.FC<CompanyJobsSectionProps> = ({ company, trackEvent }) => {

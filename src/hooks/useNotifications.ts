@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 
 export interface Notification {
@@ -23,7 +23,7 @@ export function useNotifications() {
 
     const sessionId = localStorage.getItem('wmk_session_id') || 'guest';
 
-    const fetchNotifications = async () => {
+    const fetchNotifications = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('notifications')
@@ -43,7 +43,7 @@ export function useNotifications() {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [sessionId]);
 
     const markAsRead = async (id: string) => {
         try {
@@ -99,7 +99,7 @@ export function useNotifications() {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [fetchNotifications, sessionId]);
 
     return {
         notifications,

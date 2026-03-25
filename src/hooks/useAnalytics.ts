@@ -1,9 +1,10 @@
+import { useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 import type { AnalyticsEventType } from '../types';
 
 export function useAnalytics() {
 
-    const trackEvent = async (companyId: string, eventType: AnalyticsEventType, metadata: any = {}) => {
+    const trackEvent = useCallback(async (companyId: string, eventType: AnalyticsEventType, metadata: Record<string, unknown> = {}) => {
         try {
             const { error } = await supabase.from('analytics_events').insert([{
                 company_id: companyId,
@@ -18,7 +19,7 @@ export function useAnalytics() {
         } catch (err) {
             console.error('Analytics tracking failed:', err);
         }
-    };
+    }, []);
 
     return { trackEvent };
 }

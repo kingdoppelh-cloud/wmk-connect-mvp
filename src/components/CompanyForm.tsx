@@ -50,8 +50,8 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
             setIsUploading(true);
             const url = await onUpload(file, 'hero');
             setFormData({ ...formData, image: url });
-        } catch (err: any) {
-            alert('Upload fehlgeschlagen: ' + err.message);
+        } catch (err: unknown) {
+            alert('Upload fehlgeschlagen: ' + (err instanceof Error ? err.message : 'Unbekannter Fehler'));
         } finally {
             setIsUploading(false);
         }
@@ -65,8 +65,8 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
             setIsUploading(true);
             const urls = await Promise.all(files.map(f => onUpload(f, 'gallery')));
             setFormData({ ...formData, gallery: [...(formData.gallery || []), ...urls] });
-        } catch (err: any) {
-            alert('Galerie-Upload fehlgeschlagen: ' + err.message);
+        } catch (err: unknown) {
+            alert('Galerie-Upload fehlgeschlagen: ' + (err instanceof Error ? err.message : 'Unbekannter Fehler'));
         } finally {
             setIsUploading(false);
         }
@@ -310,7 +310,7 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                                             openingHours: {
                                                 ...formData.openingHours,
                                                 [day]: e.target.value
-                                            } as any
+                                            } as Company['openingHours']
                                         })}
                                         className="w-full bg-slate-50 border border-slate-100 px-2 py-2 rounded-lg text-xs font-bold text-slate-900"
                                     />

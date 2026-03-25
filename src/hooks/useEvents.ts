@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 import type { Event } from '../types';
 
@@ -6,7 +6,7 @@ export function useEvents(companyId?: string) {
     const [events, setEvents] = useState<Event[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchEvents = async () => {
+    const fetchEvents = useCallback(async () => {
         setIsLoading(true);
         try {
             let query = supabase
@@ -47,11 +47,11 @@ export function useEvents(companyId?: string) {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [companyId]);
 
     useEffect(() => {
         fetchEvents();
-    }, [companyId]);
+    }, [fetchEvents]);
 
     const addEvent = async (eventData: Partial<Event>) => {
         const { data, error } = await supabase

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Bus, Clock, MapPin, AlertCircle, RefreshCw } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 
@@ -19,7 +19,7 @@ export const PublicTransportCheck: React.FC<Props> = ({ companyLat, companyLon }
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const checkConnections = async () => {
+    const checkConnections = useCallback(async () => {
         setIsLoading(true);
         setError(null);
 
@@ -40,19 +40,20 @@ export const PublicTransportCheck: React.FC<Props> = ({ companyLat, companyLon }
 
             if (funcError) throw funcError;
             setInfo(data);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('NVV Check Error:', err);
-            setError(err.message === 'User denied Geolocation'
+            const message = err instanceof Error ? err.message : '';
+            setError(message === 'User denied Geolocation'
                 ? 'Standortzugriff erforderlich'
                 : 'Öffis-Daten aktuell nicht verfügbar');
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [companyLat, companyLon]);
 
     useEffect(() => {
         checkConnections();
-    }, [companyLat, companyLon]);
+    }, [checkConnections]);
 
     if (isLoading) {
         return (

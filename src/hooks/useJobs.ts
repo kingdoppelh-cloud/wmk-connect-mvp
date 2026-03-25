@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 import type { Job } from '../types';
 
@@ -6,7 +6,7 @@ export function useJobs(companyId?: string) {
     const [jobs, setJobs] = useState<Job[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchJobs = async () => {
+    const fetchJobs = useCallback(async () => {
         setIsLoading(true);
         try {
             let query = supabase.from('jobs').select('*, company:companies(name, image, whatsapp, coordinates)').eq('is_active', true);
@@ -22,11 +22,11 @@ export function useJobs(companyId?: string) {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [companyId]);
 
     useEffect(() => {
         fetchJobs();
-    }, [companyId]);
+    }, [fetchJobs]);
 
     const addJob = async (job: Omit<Job, 'id' | 'created_at'>) => {
         const { data, error } = await supabase.from('jobs').insert([job]).select();

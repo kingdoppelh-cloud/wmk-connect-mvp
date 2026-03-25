@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 
 export function useRewards() {
@@ -6,7 +6,7 @@ export function useRewards() {
     const [isLoading, setIsLoading] = useState(true);
     const sessionId = localStorage.getItem('wmk_session_id') || 'guest';
 
-    const fetchPoints = async () => {
+    const fetchPoints = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('user_points')
@@ -21,7 +21,7 @@ export function useRewards() {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [sessionId]);
 
     useEffect(() => {
         fetchPoints();
@@ -42,9 +42,9 @@ export function useRewards() {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [fetchPoints, sessionId]);
 
-    const earnPoints = async (amount: number, eventName: string, companyId?: string) => {
+    const earnPoints = useCallback(async (amount: number, eventName: string, companyId?: string) => {
         try {
             const { data, error } = await supabase.rpc('award_points', {
                 target_session_id: sessionId,
@@ -61,7 +61,7 @@ export function useRewards() {
             console.error('Failed to earn points', e);
             return null;
         }
-    };
+    }, [sessionId]);
 
     return { points, isLoading, earnPoints, refreshPoints: fetchPoints };
 }

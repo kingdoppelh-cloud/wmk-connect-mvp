@@ -26,7 +26,7 @@ export const SwipeJobs: React.FC<SwipeJobsProps> = ({ company, onClose }) => {
             // Award 2 points for viewing a job detail
             earnPoints(2, 'job_view', company.id);
         }
-    }, [activeJob?.id]);
+    }, [activeJob, company.id, earnPoints, trackEvent]);
 
     useSEO({
         title: activeJob ? `${activeJob.title} bei ${company.name}` : `Jobs bei ${company.name}`,

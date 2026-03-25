@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Map as MapIcon, Compass, Heart, Briefcase, Newspaper, Calendar, Bell, Trophy } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '../utils/cn';
 import { useNotifications } from '../hooks/useNotifications';
 import { NotificationCenter } from './NotificationCenter';
 import { useRewards } from '../hooks/useRewards';
@@ -12,10 +11,7 @@ import { useUI } from '../context/UIContext';
 import { ProfileEditor } from './ProfileEditor';
 import { User as UserIcon } from 'lucide-react';
 
-/** Styling utility */
-export function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs));
-}
+
 
 /** Layout Component with Bottom Navigation */
 export const Layout: React.FC<{ children: React.ReactNode, activeTab: string }> = ({ children, activeTab }) => {

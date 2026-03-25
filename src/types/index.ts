@@ -1,5 +1,10 @@
 import type { Company } from '../data/companies';
 
+export interface MagicResult {
+    id: string;
+    similarity: number;
+}
+
 export interface NewsPost {
     id: string;
     company_id: string;
@@ -51,7 +56,7 @@ export interface AnalyticsEvent {
     company_id: string;
     session_id: string;
     event_type: AnalyticsEventType;
-    metadata: any;
+    metadata: Record<string, unknown>;
     created_at: string;
 }
 

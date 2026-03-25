@@ -26,8 +26,9 @@ export const Auth: React.FC<Props> = ({ onBack }) => {
             });
             if (error) throw error;
             setSent(true);
-        } catch (err: any) {
-            setError(err.message || 'Versand fehlgeschlagen');
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Versand fehlgeschlagen';
+            setError(message);
         } finally {
             setLoading(false);
         }

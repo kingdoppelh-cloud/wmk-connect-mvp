@@ -8,7 +8,7 @@ import { type AnalyticsEventType } from '../../types';
 
 interface CompanyContactInfoProps {
     company: Company;
-    trackEvent: (companyId: string, eventType: AnalyticsEventType, metadata?: any) => void;
+    trackEvent: (companyId: string, eventType: AnalyticsEventType, metadata?: Record<string, unknown>) => void;
     earnPoints: (pts: number, reason: string, id: string) => void;
     premiumIcon: L.Icon;
     standardIcon: L.Icon;

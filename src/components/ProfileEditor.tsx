@@ -52,7 +52,7 @@ export const ProfileEditor: React.FC<Props> = ({ isOpen, onClose }) => {
         try {
             await updateProfile(formData);
             onClose();
-        } catch (err) {
+        } catch {
             alert('Fehler beim Speichern');
         } finally {
             setIsSaving(false);

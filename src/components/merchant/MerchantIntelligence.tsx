@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Phone, Globe, MessageSquare, TrendingUp, Award } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { supabase } from '../../utils/supabase';
@@ -7,11 +7,17 @@ interface MerchantIntelligenceProps {
     companyId: string;
 }
 
+interface IntelligenceData {
+    weekly_views: { date: string; views: number }[];
+    top_jobs: { title: string; views: number }[];
+    engagement: { calls: number; web_clicks: number; wa_clicks: number };
+}
+
 export const MerchantIntelligence: React.FC<MerchantIntelligenceProps> = ({ companyId }) => {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<IntelligenceData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             const { data: intelData, error } = await supabase.rpc('get_merchant_intelligence', {
                 target_company_id: companyId
@@ -23,11 +29,11 @@ export const MerchantIntelligence: React.FC<MerchantIntelligenceProps> = ({ comp
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [companyId]);
 
     useEffect(() => {
         fetchData();
-    }, [companyId]);
+    }, [fetchData]);
 
     if (isLoading) {
         return (
@@ -107,7 +113,7 @@ export const MerchantIntelligence: React.FC<MerchantIntelligenceProps> = ({ comp
 
                     <div className="space-y-4">
                         {top_jobs && top_jobs.length > 0 ? (
-                            top_jobs.map((job: any, idx: number) => (
+                            top_jobs.map((job, idx) => (
                                 <div key={idx} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors cursor-default">
                                     <div className="flex-1 min-w-0 mr-4">
                                         <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-0.5">Rank #{idx + 1}</p>

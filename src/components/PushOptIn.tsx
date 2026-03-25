@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, X, CheckCircle2 } from 'lucide-react';
+import { supabase } from '../utils/supabase';
 
 export const PushOptIn: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -27,6 +28,18 @@ export const PushOptIn: React.FC = () => {
             const permission = await Notification.requestPermission();
             setPermissionStatus(permission);
             if (permission === 'granted') {
+                // Register for push notifications
+                const registration = await navigator.serviceWorker.ready;
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY || '')
+                });
+
+                // Store subscription in Supabase
+                await supabase.from('push_subscriptions').insert([{
+                    subscription_json: subscription
+                }]);
+
                 setTimeout(() => setIsVisible(false), 2000); // Hide after success message
             } else {
                 setIsVisible(false);
@@ -36,6 +49,23 @@ export const PushOptIn: React.FC = () => {
             setIsVisible(false);
         }
     };
+
+    /** Helper to convert VAPID key */
+    function urlBase64ToUint8Array(base64String: string) {
+        if (!base64String) return new Uint8Array(0);
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
 
     if (!isVisible) return null;
 

@@ -25,6 +25,7 @@ import { PushOptIn } from './components/PushOptIn';
 import { ActivityFeed } from './components/ActivityFeed';
 import { EventHub } from './components/EventHub';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { Register } from './components/Register';
 import { useSEO } from './hooks/useSEO';
 
 // Wrapper to handle company detail from URL
@@ -82,11 +83,13 @@ function App() {
   });
 
   useEffect(() => {
-    const handleOpenMerchant = (e: any) => {
-      navigate(`/merchant/${e.detail}`);
+    const handleOpenMerchant = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      navigate(`/merchant/${detail}`);
     };
-    const handleOpenSwipe = (e: any) => {
-      setShowSwipeJobsId(e.detail);
+    const handleOpenSwipe = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      setShowSwipeJobsId(detail);
     };
     window.addEventListener('open-merchant', handleOpenMerchant);
     window.addEventListener('open-swipe-jobs', handleOpenSwipe);
@@ -106,8 +109,9 @@ function App() {
       }
       setEditingCompany(null);
       setIsAddingCompany(false);
-    } catch (err: any) {
-      alert('Fehler beim Speichern: ' + err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unbekannter Fehler';
+      alert('Fehler beim Speichern: ' + message);
     }
   };
 
@@ -170,6 +174,7 @@ function App() {
               <Favorites companies={companies} onSelectCompany={(id) => navigate(`/company/${id}`)} />
             } />
             <Route path="/company/:id" element={<CompanyDetailWrapper companies={companies} />} />
+            <Route path="/register" element={<Register onBack={() => navigate('/')} />} />
             <Route path="/merchant/:id" element={
               <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><RefreshCw className="animate-spin text-accent" /></div>}>
                 <MerchantDashboardWrapper companies={companies} />

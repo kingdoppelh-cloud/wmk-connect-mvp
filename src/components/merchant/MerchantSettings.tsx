@@ -4,10 +4,12 @@ interface MerchantSettingsProps {
     profileData: {
         description: string;
         descriptionLong: string;
+        phone: string;
         whatsapp: string;
         websiteUrl: string;
+        email: string;
     };
-    setProfileData: (data: any) => void;
+    setProfileData: React.Dispatch<React.SetStateAction<MerchantSettingsProps['profileData']>>;
     onUpdateProfile: (e: React.FormEvent) => void;
     formErrors: Record<string, string>;
 }

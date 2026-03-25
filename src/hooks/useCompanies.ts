@@ -3,30 +3,32 @@ import { supabase, hasSupabaseConfig } from '../utils/supabase';
 import type { Company } from '../types';
 
 // Helper to map DB snake_case to app camelCase
-const mapFromDb = (d: any): Company => ({
-  id: d.id,
-  name: d.name,
-  category: d.category,
-  address: d.address,
-  phone: d.phone,
-  whatsapp: d.whatsapp,
-  email: d.email,
-  websiteUrl: d.website_url || d.websiteUrl,
-  description: d.description,
-  descriptionLong: d.description_long || d.descriptionLong,
-  image: d.image,
-  gallery: d.gallery || [],
-  isPremium: d.is_premium ?? d.isPremium ?? false,
-  coordinates: d.coordinates || [0, 0],
-  openingHours: d.opening_hours || d.openingHours || {}
+const mapFromDb = (d: Record<string, unknown>): Company => ({
+  id: d.id as string,
+  name: d.name as string,
+  category: d.category as string,
+  address: d.address as string,
+  phone: d.phone as string,
+  whatsapp: d.whatsapp as string,
+  email: d.email as string,
+  websiteUrl: (d.website_url || d.websiteUrl) as string,
+  description: d.description as string,
+  descriptionLong: (d.description_long || d.descriptionLong) as string | undefined,
+  image: d.image as string,
+  gallery: (d.gallery as string[]) || [],
+  isPremium: (d.is_premium ?? d.isPremium ?? false) as boolean,
+  coordinates: (d.coordinates as [number, number]) || [0, 0],
+  openingHours: (d.opening_hours || d.openingHours || {}) as Record<string, string>,
+  ownerId: d.owner_id as string | undefined
 });
 
 const mapToDb = (c: Partial<Company>) => {
-  const data: any = { ...c };
+  const data: Record<string, unknown> = { ...c };
   if ('websiteUrl' in data) { data.website_url = data.websiteUrl; delete data.websiteUrl; }
   if ('descriptionLong' in data) { data.description_long = data.descriptionLong; delete data.descriptionLong; }
   if ('isPremium' in data) { data.is_premium = data.isPremium; delete data.isPremium; }
   if ('openingHours' in data) { data.opening_hours = data.openingHours; delete data.openingHours; }
+  if ('ownerId' in data) { data.owner_id = data.ownerId; delete data.ownerId; }
   return data;
 };
 
@@ -55,11 +57,11 @@ export function useCompanies() {
       const { data, error: sbError } = await supabase.from('companies').select('*');
       if (sbError) throw new Error(sbError.message);
       if (data) {
-        setCompanies(data.map(mapFromDb));
+        setCompanies((data as Record<string, unknown>[]).map(mapFromDb));
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Detailed fetch error:', err);
-      setError(err.message || 'Unbekannter Fehler');
+      setError(err instanceof Error ? err.message : 'Unbekannter Fehler');
     } finally {
       setIsLoading(false);
     }

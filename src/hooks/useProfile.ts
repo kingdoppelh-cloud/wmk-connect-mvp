@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 import { useAuth } from '../context/AuthContext';
 
@@ -18,7 +18,7 @@ export function useProfile() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchProfile = async () => {
+    const fetchProfile = useCallback(async () => {
         if (!user) {
             setProfile(null);
             setIsLoading(false);
@@ -50,13 +50,13 @@ export function useProfile() {
                 if (createError) throw createError;
                 setProfile(newProfile);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Error fetching profile:', err);
-            setError(err.message);
+            setError(err instanceof Error ? err.message : 'Unbekannter Fehler');
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [user]);
 
     const updateProfile = async (updates: Partial<Profile>) => {
         if (!user) return;
@@ -69,7 +69,7 @@ export function useProfile() {
 
             if (updateError) throw updateError;
             await fetchProfile();
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Error updating profile:', err);
             throw err;
         }
@@ -77,7 +77,7 @@ export function useProfile() {
 
     useEffect(() => {
         fetchProfile();
-    }, [user?.id]);
+    }, [fetchProfile]);
 
     return { profile, isLoading, error, updateProfile, refresh: fetchProfile };
 }

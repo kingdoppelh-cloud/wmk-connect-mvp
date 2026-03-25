@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '../utils/supabase';
 
 export function usePushNotifications() {
-    const [permission, setPermission] = useState<NotificationPermission>('default');
+    const [permission, setPermission] = useState<NotificationPermission>(() => {
+        if (typeof window !== 'undefined' && 'Notification' in window) {
+            return Notification.permission;
+        }
+        return 'default';
+    });
     const [isSubscribed, setIsSubscribed] = useState(false);
 
-    useEffect(() => {
-        if ('Notification' in window) {
-            setPermission(Notification.permission);
-        }
-    }, []);
+    // Removed useEffect for initial load as it's now handled in useState initializer
 
     const subscribe = async () => {
         if (!('serviceWorker' in navigator) || !('PushManager' in window)) {

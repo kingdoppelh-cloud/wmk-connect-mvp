@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Sparkles, Search, X, Loader2 } from 'lucide-react';
+import { Sparkles, X, Loader2 } from 'lucide-react';
 import { useSemanticSearch } from '../hooks/useSemanticSearch';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface MagicSearchProps {
-    onResults: (results: any[]) => void;
+    onResults: (results: { id: string; similarity: number }[]) => void;
     onClear: () => void;
     type: 'jobs' | 'companies';
 }

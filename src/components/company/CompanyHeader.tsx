@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, BadgeCheck, Bell, UserPlus } from 'lucide-react';
+import { ArrowLeft, BadgeCheck, Bell, UserPlus, Share2 } from 'lucide-react';
 import { type Company } from '../../data/companies';
 import { cn } from '../Layout';
 
@@ -18,6 +18,25 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
     followerCount,
     toggleFollow
 }) => {
+    const handleShare = async () => {
+        const shareData = {
+            title: company.name,
+            text: `Schau dir ${company.name} auf WMK Connect an!`,
+            url: window.location.href,
+        };
+
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Link in die Zwischenablage kopiert!');
+            }
+        } catch (err) {
+            console.error('Fehler beim Teilen:', err);
+        }
+    };
+
     return (
         <div className="relative h-72 w-full overflow-hidden">
             <img
@@ -38,6 +57,14 @@ export const CompanyHeader: React.FC<CompanyHeaderProps> = ({
                 className="absolute top-6 left-6 p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all border border-white/30"
             >
                 <ArrowLeft size={24} />
+            </button>
+
+            {/* Share Button (Top Right) */}
+            <button
+                onClick={handleShare}
+                className="absolute top-6 right-6 p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all border border-white/30"
+            >
+                <Share2 size={24} />
             </button>
 
             {/* Header Info (Overlay) */}

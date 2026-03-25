@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Download, X } from 'lucide-react';
 
 export const InstallPrompt: React.FC = () => {
-    const [isIOS, setIsIOS] = useState(false);
-    const [isStandalone, setIsStandalone] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
+    const [deviceInfo, setDeviceInfo] = useState({
+        isIOS: false,
+        isStandalone: false,
+        isVisible: false
+    });
 
     useEffect(() => {
         // Detect iOS
         const userAgent = window.navigator.userAgent.toLowerCase();
         const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
-        setIsIOS(isIOSDevice);
 
         // Detect if app is already installed (standalone mode)
         const isDisplayStandalone = window.matchMedia('(display-mode: standalone)').matches;
         // Also check iOS specific standalone
-        const isIOSStandalone = (window.navigator as any).standalone === true;
+        const isIOSStandalone = (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
 
-        setIsStandalone(isDisplayStandalone || isIOSStandalone);
+        const isStandaloneDevice = isDisplayStandalone || isIOSStandalone;
 
         // Show prompt if on mobile and not installed, and user hasn't dismissed it recently
         const dismissedStr = localStorage.getItem('wmk_install_dismissed');
@@ -33,15 +34,29 @@ export const InstallPrompt: React.FC = () => {
             }
         }
 
-        if ((isIOSDevice || /android/.test(userAgent)) && !(isDisplayStandalone || isIOSStandalone) && !dismissedRecently) {
-            // Slight delay so it doesn't pop up instantly and aggressively
-            const timer = setTimeout(() => setIsVisible(true), 3000);
-            return () => clearTimeout(timer);
-        }
+        const shouldShow = (isIOSDevice || /android/.test(userAgent)) && !isStandaloneDevice && !dismissedRecently;
+
+        // Wrap in setTimeout to ensure it's not synchronous in the effect
+        setTimeout(() => {
+            setDeviceInfo({
+                isIOS: isIOSDevice,
+                isStandalone: isStandaloneDevice,
+                isVisible: false // Initial false, then timer sets to true
+            });
+
+            if (shouldShow) {
+                // Slight delay so it doesn't pop up instantly and aggressively
+                setTimeout(() => {
+                    setDeviceInfo(prev => ({ ...prev, isVisible: true }));
+                }, 3000);
+            }
+        }, 0);
     }, []);
 
+    const { isIOS, isStandalone, isVisible } = deviceInfo;
+
     const handleDismiss = () => {
-        setIsVisible(false);
+        setDeviceInfo(prev => ({ ...prev, isVisible: false }));
         localStorage.setItem('wmk_install_dismissed', Date.now().toString());
     };
 

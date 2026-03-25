@@ -62,7 +62,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
             trackEvent(company.id, 'profile_view');
             earnPoints(1, 'profile_view', company.id);
         }
-    }, [company?.id]);
+    }, [company, earnPoints, trackEvent]);
 
     return (
         <div className="bg-white min-h-screen animate-in fade-in slide-in-from-right duration-500 pb-20 font-sans">
@@ -248,7 +248,7 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
 
 // Internal sub-component for events (kept here or can be moved to its own file)
 import { Users, Clock, MapPin, Calendar } from 'lucide-react';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 
 const EventsSection: React.FC<{ companyId: string }> = ({ companyId }) => {
     const { events, isLoading, toggleRSVP } = useEvents(companyId);

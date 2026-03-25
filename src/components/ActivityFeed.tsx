@@ -1,6 +1,8 @@
+import React from 'react';
 import { useNews } from '../hooks/useNews';
 import { Newspaper, Sparkles, Clock, ExternalLink, Heart } from 'lucide-react';
 import { cn } from './Layout';
+import { NewsCardSkeleton } from './ui/Skeleton';
 
 interface ActivityFeedProps {
     onCompanyClick: (id: string) => void;
@@ -11,11 +13,19 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ onCompanyClick }) =>
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-accent/20 border-t-accent rounded-full animate-spin" />
-                    <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Feed wird geladen...</p>
-                </div>
+            <div className="min-h-screen bg-slate-50 pb-32">
+                <header className="bg-white px-6 pt-16 pb-8 border-b border-slate-100">
+                    <div className="max-w-xl mx-auto space-y-2">
+                        <div className="h-4 w-32 bg-slate-100 rounded-full animate-pulse" />
+                        <div className="h-10 w-48 bg-slate-100 rounded-xl animate-pulse" />
+                        <div className="h-4 w-full bg-slate-100 rounded-lg animate-pulse" />
+                    </div>
+                </header>
+                <main className="max-w-xl mx-auto px-4 py-8 space-y-6">
+                    <NewsCardSkeleton />
+                    <NewsCardSkeleton />
+                    <NewsCardSkeleton />
+                </main>
             </div>
         );
     }

@@ -2,13 +2,19 @@ import React from 'react';
 import { X, Plus } from 'lucide-react';
 import type { Company } from '../../data/companies';
 
+interface ChecklistItem {
+    id: string;
+    tab: 'dashboard' | 'jobs' | 'profile' | 'news' | 'marketing';
+    label: string;
+}
+
 interface MerchantHeaderProps {
     company: Company;
     activeTab: string;
     onClose: () => void;
-    setActiveTab: (tab: any) => void;
+    setActiveTab: (tab: 'dashboard' | 'jobs' | 'profile' | 'news' | 'marketing') => void;
     profileProgress: number;
-    checklist: any[];
+    checklist: ChecklistItem[];
 }
 
 export const MerchantHeader: React.FC<MerchantHeaderProps> = ({
@@ -62,10 +68,10 @@ export const MerchantHeader: React.FC<MerchantHeaderProps> = ({
                                 <div className="mt-6 pt-6 border-t border-slate-100 space-y-3">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Nächste Schritte</p>
                                     <div className="space-y-2">
-                                        {checklist.map((item: any) => (
+                                        {checklist.map((item) => (
                                             <button
                                                 key={item.id}
-                                                onClick={() => setActiveTab(item.tab as any)}
+                                                onClick={() => setActiveTab(item.tab)}
                                                 className="w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-accent/30 hover:bg-white transition-all group"
                                             >
                                                 <span className="text-xs font-bold text-slate-700">{item.label}</span>

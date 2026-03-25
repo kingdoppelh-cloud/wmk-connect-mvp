@@ -28,7 +28,7 @@ interface MerchantDashboardProps {
 
 export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, onClose }) => {
     const [activeTab, setActiveTab] = useState<'dashboard' | 'jobs' | 'profile' | 'news' | 'marketing'>('dashboard');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading] = useState(false);
     const [isAddingJob, setIsAddingJob] = useState(false);
     const [isAddingNews, setIsAddingNews] = useState(false);
     const [isAddingEvent, setIsAddingEvent] = useState(false);
@@ -142,7 +142,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             setIsAddingJob(false);
             setNewJob({ title: '', category: company.category, description: '', salary_range: '', job_type: 'Vollzeit', image_url: company.image, is_featured: false });
             setFormErrors({});
-        } catch (err) { alert('Fehler beim Speichern des Jobs'); }
+        } catch { alert('Fehler beim Speichern des Jobs'); }
     };
 
     const handleAddPost = async (e: React.FormEvent) => {
@@ -164,7 +164,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             setNewPost({ content: '', type: 'news' });
             setNewsImageFile(null);
             setFormErrors({});
-        } catch (err) { alert('Fehler beim Posten'); } finally { setIsPosting(false); }
+        } catch { alert('Fehler beim Posten'); } finally { setIsPosting(false); }
     };
 
     const handleAddEvent = async (e: React.FormEvent) => {
@@ -182,7 +182,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             setIsAddingEvent(false);
             setNewEvent({ title: '', description: '', event_date: '', location_override: '' });
             setFormErrors({});
-        } catch (err) { alert('Fehler beim Erstellen des Events'); }
+        } catch { alert('Fehler beim Erstellen des Events'); }
     };
 
     const validateProfile = () => {
@@ -193,7 +193,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
         if (profileData.websiteUrl) {
             try {
                 new URL(profileData.websiteUrl.startsWith('http') ? profileData.websiteUrl : `https://${profileData.websiteUrl}`);
-            } catch (e) {
+            } catch {
                 errors.websiteUrl = 'Ungültige URL (z.B. https://ihreseite.de)';
             }
         }
@@ -217,15 +217,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             if (error) throw error;
             setFormErrors({});
             alert('Profil erfolgreich aktualisiert!');
-        } catch (err) { alert('Fehler beim Aktualisieren des Profils'); }
+        } catch { alert('Fehler beim Aktualisieren des Profils'); }
     };
 
     const handleAddGalleryImage = async () => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
-        input.onchange = async (e: any) => {
-            const file = e.target.files?.[0];
+        input.onchange = async (e: globalThis.Event) => {
+            const target = e.target as HTMLInputElement;
+            const file = target.files?.[0];
             if (!file) return;
             try {
                 const fileExt = file.name.split('.').pop();
@@ -239,7 +240,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 if (updateError) throw updateError;
                 setGallery(newGallery);
                 alert('Bild hinzugefügt!');
-            } catch (err) { alert('Upload fehlgeschlagen'); }
+            } catch { alert('Upload fehlgeschlagen'); }
         };
         input.click();
     };
@@ -252,15 +253,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
             if (error) throw error;
             setGallery(newGallery);
             // Optionally delete from storage too
-        } catch (err) { alert('Löschen fehlgeschlagen'); }
+        } catch { alert('Löschen fehlgeschlagen'); }
     };
 
     const handleUpdateLogo = async () => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
-        input.onchange = async (e: any) => {
-            const file = e.target.files?.[0];
+        input.onchange = async (e: globalThis.Event) => {
+            const target = e.target as HTMLInputElement;
+            const file = target.files?.[0];
             if (!file) return;
             try {
                 const fileExt = file.name.split('.').pop();
@@ -276,7 +278,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 if (updateError) throw updateError;
                 setLogo(publicUrl);
                 alert('Logo aktualisiert!');
-            } catch (err) { alert('Logo-Update fehlgeschlagen'); }
+            } catch { alert('Logo-Update fehlgeschlagen'); }
         };
         input.click();
     };
@@ -464,7 +466,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Typ des Beitrags</label>
                                 <div className="grid grid-cols-2 gap-2">
                                     {['news', 'offer', 'event', 'special'].map((t) => (
-                                        <button key={t} type="button" onClick={() => setNewPost({ ...newPost, type: t as any })} className={cn("py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all", newPost.type === t ? "border-accent bg-accent text-white" : "border-slate-100 bg-slate-50 text-slate-400")}>
+                                        <button key={t} type="button" onClick={() => setNewPost({ ...newPost, type: t as NewsPost['type'] })} className={cn("py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all", newPost.type === t ? "border-accent bg-accent text-white" : "border-slate-100 bg-slate-50 text-slate-400")}>
                                             {t === 'news' ? 'Nachricht' : t === 'offer' ? 'Angebot' : t === 'event' ? 'Event' : 'Specials'}
                                         </button>
                                     ))}
@@ -615,7 +617,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                 ].map((t) => (
                     <button
                         key={t.tab}
-                        onClick={() => setActiveTab(t.tab as any)}
+                        onClick={() => setActiveTab(t.tab as 'dashboard' | 'jobs' | 'profile' | 'news' | 'marketing')}
                         className={cn(
                             "flex flex-col items-center gap-1.5 transition-all duration-300 px-4 py-2 rounded-2xl",
                             activeTab === t.tab ? "text-accent bg-accent/10" : "text-slate-400"

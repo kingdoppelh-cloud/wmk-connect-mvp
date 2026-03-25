@@ -1,15 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Briefcase, Euro, MapPin, Search, Heart, RefreshCw, Star, Info } from 'lucide-react';
-import { useJobs } from '../hooks/useJobs';
+import { Briefcase, Euro, MapPin, Search, Heart, Star, Info } from 'lucide-react';
+import { type Job, type MagicResult } from '../types'; import { useJobs } from '../hooks/useJobs';
 import { useUI } from '../context/UIContext';
 import { MagicSearch } from './MagicSearch';
 import { TopMatches } from './TopMatches';
-
-interface JobsBoardProps {
-    onCompanyClick?: (id: string | null) => void;
-    userLocation?: [number, number] | null;
-    onLocationRequest?: () => void;
-}
+import { CompanyCardSkeleton } from './ui/Skeleton';
 
 const getDistanceData = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371; // km
@@ -22,11 +17,17 @@ const getDistanceData = (lat1: number, lon1: number, lat2: number, lon2: number)
     return R * c;
 };
 
+interface JobsBoardProps {
+    onCompanyClick?: (id: string | null) => void;
+    userLocation?: [number, number] | null;
+    onLocationRequest?: () => void;
+}
+
 export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocation, onLocationRequest }) => {
     const { setShowPartnerBenefits } = useUI();
     const { jobs, isLoading } = useJobs();
     const [selectedRadius, setSelectedRadius] = useState<number>(9999);
-    const [magicResults, setMagicResults] = useState<any[] | null>(null);
+    const [magicResults, setMagicResults] = useState<MagicResult[] | null>(null);
 
     const jobsWithDistance = useMemo(() => {
         return jobs.map(job => {
@@ -64,7 +65,7 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
         });
     }, [jobsWithDistance, magicResults, selectedRadius, userLocation]);
 
-    const handleApply = (job: any) => {
+    const handleApply = (job: Job) => {
         if (!job.company?.whatsapp) return;
         const text = encodeURIComponent(`Hallo ${job.company.name}, ich habe Ihre Anzeige für "${job.title}" in der WMK Connect App gesehen und interessiere mich für die Stelle!`);
         window.open(`https://wa.me/${job.company.whatsapp.replace(/[^0-9]/g, '')}?text=${text}`, '_blank');
@@ -72,9 +73,17 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
 
     if (isLoading) {
         return (
-            <div className="min-h-[80vh] flex flex-col items-center justify-center p-8 text-center">
-                <RefreshCw className="text-accent animate-spin mb-4" size={48} />
-                <p className="text-lg font-bold text-slate-700">Jobs werden geladen...</p>
+            <div className="space-y-8">
+                <header className="px-6 mb-6 mt-4">
+                    <div className="h-4 w-32 bg-slate-100 rounded-full mb-3 animate-pulse" />
+                    <div className="h-10 w-48 bg-slate-100 rounded-xl mb-2 animate-pulse" />
+                    <div className="h-4 w-64 bg-slate-100 rounded-lg animate-pulse" />
+                </header>
+                <div className="flex flex-col gap-6 px-4">
+                    <CompanyCardSkeleton />
+                    <CompanyCardSkeleton />
+                    <CompanyCardSkeleton />
+                </div>
             </div>
         );
     }

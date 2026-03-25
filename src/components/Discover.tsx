@@ -3,7 +3,7 @@ import { Search, Star, ArrowRight, MapPin, Sparkles, Heart, Bell } from 'lucide-
 import { useNews } from '../hooks/useNews';
 import { useFollows } from '../hooks/useFollows';
 import { usePushNotifications } from '../hooks/usePushNotifications';
-import { type Company } from '../data/companies';
+import { type Company, type MagicResult } from '../types';
 import { CompanyCard } from './CompanyCard';
 import { Skeleton, CompanyCardSkeleton, NewsCardSkeleton } from './ui/Skeleton';
 import { LeadCaptureModal } from './LeadCaptureModal';
@@ -22,10 +22,12 @@ interface Props {
 
 const CATEGORIES = ['Alle', 'Gastronomie', 'Friseure', 'Handwerk', 'Dienstleistung'];
 
+// No local MagicResult definition needed
+
 export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoading, userLocation, onLocationRequest }) => {
     const { favorites, toggleFavorite } = useFavorites();
     const [search, setSearch] = useState('');
-    const [magicResults, setMagicResults] = useState<any[] | null>(null);
+    const [magicResults, setMagicResults] = useState<MagicResult[] | null>(null);
     const [selectedCategory, setSelectedCategory] = useState('Alle');
     const [selectedRadius, setSelectedRadius] = useState<number>(9999);
     const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
@@ -98,8 +100,8 @@ export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoadin
                 <button
                     onClick={onLocationRequest}
                     className={`whitespace - nowrap px - 5 py - 3 rounded - full text - xs font - bold transition - all duration - 300 shadow - sm border flex items - center gap - 1.5 ${userLocation
-                            ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20"
-                            : "bg-white text-slate-700 border-gray-100 hover:bg-gray-50"
+                        ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20"
+                        : "bg-white text-slate-700 border-gray-100 hover:bg-gray-50"
                         } `}
                 >
                     <MapPin size={14} className={userLocation ? "text-accent" : ""} />
@@ -124,8 +126,8 @@ export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoadin
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
                         className={`whitespace - nowrap px - 5 py - 3 rounded - full text - xs font - bold transition - all duration - 300 shadow - sm border ${selectedCategory === cat
-                                ? "bg-accent text-white border-accent scale-105 shadow-accent/20"
-                                : "bg-white text-gray-500 border-gray-100 hover:bg-gray-50"
+                            ? "bg-accent text-white border-accent scale-105 shadow-accent/20"
+                            : "bg-white text-gray-500 border-gray-100 hover:bg-gray-50"
                             } `}
                     >
                         {cat}
@@ -166,6 +168,9 @@ export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoadin
                     Ergebnisse ({isLoading ? '...' : filteredCompanies.length})
                 </span>
             </div>
+
+            {/* Push Notification CTA */}
+            <PushOptIn />
 
             {/* List */}
             <div className="pb-10">
@@ -279,7 +284,19 @@ const NewsPreview: React.FC<{ onSelectCompany: (id: string) => void }> = ({ onSe
     );
 };
 
-const NewsCard = ({ post, onClick }: { post: any, onClick: () => void }) => (
+interface NewsPost {
+    id: string;
+    company_id: string;
+    company?: {
+        name: string;
+        image: string;
+    };
+    created_at: string;
+    content: string;
+    type: string;
+}
+
+const NewsCard = ({ post, onClick }: { post: NewsPost, onClick: () => void }) => (
     <div
         onClick={onClick}
         className="min-w-[280px] bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:border-accent/20 transition-all active:scale-[0.98] cursor-pointer"

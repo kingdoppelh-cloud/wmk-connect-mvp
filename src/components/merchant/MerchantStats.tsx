@@ -12,7 +12,7 @@ interface MerchantStatsProps {
         whatsapp: number;
         favorites: number;
         referrals: number;
-        trendData: any[];
+        trendData: { date: string; views: number }[];
     };
     activityLog: AnalyticsEvent[];
 }

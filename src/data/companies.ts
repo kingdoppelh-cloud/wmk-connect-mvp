@@ -16,6 +16,7 @@ export interface Company {
     openingHours: { [key: string]: string };
     offer?: string;
     distance?: number;
+    ownerId?: string;
 }
 
 export const companies: Company[] = [

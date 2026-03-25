@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/supabase';
 import type { NewsPost } from '../types';
 
@@ -7,7 +7,7 @@ export function useNews(companyId?: string) {
     const [isLoading, setIsLoading] = useState(true);
     const sessionId = localStorage.getItem('wmk_session_id') || 'guest';
 
-    const fetchPosts = async () => {
+    const fetchPosts = useCallback(async () => {
         setIsLoading(true);
         try {
             // 1. Fetch posts
@@ -41,11 +41,11 @@ export function useNews(companyId?: string) {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [companyId, sessionId]);
 
     useEffect(() => {
         fetchPosts();
-    }, [companyId]);
+    }, [fetchPosts]);
 
     const toggleLike = async (postId: string) => {
         const post = posts.find(p => p.id === postId);

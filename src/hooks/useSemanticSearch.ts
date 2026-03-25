@@ -5,8 +5,39 @@ export function useSemanticSearch() {
     const [isSearching, setIsSearching] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const performFullTextSearch = async (query: string, type: 'jobs' | 'companies') => {
+        if (!query.trim()) return [];
+        setIsSearching(true);
+        setError(null);
+
+        try {
+            const table = type === 'jobs' ? 'jobs' : 'companies';
+            const { data, error: searchError } = await supabase
+                .from(table)
+                .select('*')
+                .textSearch('fts', query, {
+                    config: 'german',
+                    type: 'websearch'
+                });
+
+            if (searchError) throw searchError;
+            return data || [];
+        } catch (err: unknown) {
+            console.error('Full-text search error:', err);
+            setError(err instanceof Error ? err.message : 'Unknown error');
+            return [];
+        } finally {
+            setIsSearching(false);
+        }
+    };
+
     const performSearch = async (query: string, type: 'jobs' | 'companies') => {
         if (!query.trim()) return [];
+
+        // For short queries or exact names, FTS is often better
+        if (query.length < 10) {
+            return performFullTextSearch(query, type);
+        }
 
         setIsSearching(true);
         setError(null);
@@ -30,11 +61,16 @@ export function useSemanticSearch() {
 
             if (rpcError) throw rpcError;
 
+            // If semantic search returns nothing, fallback to FTS
+            if (!data || data.length === 0) {
+                return performFullTextSearch(query, type);
+            }
+
             return data || [];
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Semantic search error:', err);
-            setError(err.message);
-            return [];
+            // Fallback to FTS on error
+            return performFullTextSearch(query, type);
         } finally {
             setIsSearching(false);
         }
