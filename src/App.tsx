@@ -79,7 +79,7 @@ function App() {
   // Global SEO & Canonical Tag
   useSEO({
     description: "Entdecke Jobs, News und Events von Unternehmen aus dem Werra-Meißner-Kreis auf WMK Connect.",
-    image: "https://wmk-connect.vercel.app/logo.png"
+    image: "https://wmk-connect-mvp.vercel.app/logo.png"
   });
 
   useEffect(() => {
