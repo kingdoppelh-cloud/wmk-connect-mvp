@@ -28,13 +28,14 @@ export const useSEO = ({ title, description, image, url }: SEOProps) => {
         updateMeta('description', description);
         updateMeta('og:title', fullTitle, true);
         updateMeta('og:description', description, true);
-        updateMeta('og:image', image, true);
+        updateMeta('og:image', image || '/logo.png', true);
         updateMeta('og:url', url || window.location.href, true);
+        updateMeta('og:type', 'website', true);
         updateMeta('twitter:card', 'summary_large_image');
         updateMeta('twitter:title', fullTitle);
         updateMeta('twitter:description', description);
-        updateMeta('twitter:description', description);
-        updateMeta('twitter:image', image);
+        updateMeta('twitter:image', image || '/logo.png');
+        updateMeta('twitter:site', '@wmkconnect');
 
         // Canonical Tag - Robust Injection
         let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;

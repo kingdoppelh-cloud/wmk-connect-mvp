@@ -73,12 +73,14 @@ export const Auth: React.FC<Props> = ({ onBack }) => {
                 <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
                     <form onSubmit={handleLogin} className="space-y-6">
                         <div className="space-y-2 text-left">
-                            <label className="text-xs font-black text-slate-400 uppercase tracking-tighter ml-1">E-Mail Adresse</label>
+                            <label htmlFor="email" className="text-xs font-black text-slate-400 uppercase tracking-tighter ml-1">E-Mail Adresse</label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                 <input
+                                    id="email"
                                     required
                                     type="email"
+                                    autoComplete="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="firma@beispiel.de"

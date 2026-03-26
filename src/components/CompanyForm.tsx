@@ -159,8 +159,9 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                         <h3 className="text-[10px] font-black text-accent uppercase tracking-widest text-left">Basis-Informationen</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5 col-span-2">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Name des Unternehmens</label>
+                                <label htmlFor="companyName" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Name des Unternehmens</label>
                                 <input
+                                    id="companyName"
                                     required
                                     type="text"
                                     value={formData.name}
@@ -169,8 +170,9 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Kategorie</label>
+                                <label htmlFor="companyCategory" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Kategorie</label>
                                 <select
+                                    id="companyCategory"
                                     value={formData.category}
                                     onChange={e => setFormData({ ...formData, category: e.target.value })}
                                     className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all font-bold text-slate-900"
@@ -203,10 +205,11 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                         <h3 className="text-[10px] font-black text-accent uppercase tracking-widest text-left">Kontakt & Standort</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5 col-span-2">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Adresse</label>
+                                <label htmlFor="companyAddress" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Adresse</label>
                                 <div className="relative">
                                     <MapPin size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                                     <input
+                                        id="companyAddress"
                                         required
                                         type="text"
                                         value={formData.address}
@@ -216,10 +219,11 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                                 </div>
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Website URL</label>
+                                <label htmlFor="companyWebsite" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Website URL</label>
                                 <div className="relative">
                                     <Globe size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                                     <input
+                                        id="companyWebsite"
                                         type="url"
                                         value={formData.websiteUrl}
                                         onChange={e => setFormData({ ...formData, websiteUrl: e.target.value })}
@@ -228,10 +232,11 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                                 </div>
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Telefon</label>
+                                <label htmlFor="companyPhone" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Telefon</label>
                                 <div className="relative">
                                     <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                                     <input
+                                        id="companyPhone"
                                         type="tel"
                                         value={formData.phone}
                                         onChange={e => setFormData({ ...formData, phone: e.target.value })}
@@ -240,10 +245,11 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                                 </div>
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">WhatsApp (ohne +)</label>
+                                <label htmlFor="companyWhatsapp" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">WhatsApp (ohne +)</label>
                                 <div className="relative">
                                     <MessageCircle size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                                     <input
+                                        id="companyWhatsapp"
                                         type="text"
                                         value={formData.whatsapp}
                                         onChange={e => setFormData({ ...formData, whatsapp: e.target.value })}
@@ -252,10 +258,11 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                                 </div>
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">E-Mail</label>
+                                <label htmlFor="companyEmail" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">E-Mail</label>
                                 <div className="relative">
                                     <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                                     <input
+                                        id="companyEmail"
                                         type="email"
                                         value={formData.email}
                                         onChange={e => setFormData({ ...formData, email: e.target.value })}
@@ -271,8 +278,9 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                         <h3 className="text-[10px] font-black text-accent uppercase tracking-widest text-left">Texte & Beschreibungen</h3>
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Kurzbeschreibung (Liste)</label>
+                                <label htmlFor="companyDescShort" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Kurzbeschreibung (Liste)</label>
                                 <textarea
+                                    id="companyDescShort"
                                     required
                                     rows={2}
                                     value={formData.description}
@@ -281,8 +289,9 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Ausführliche Beschreibung (Detail Ansicht)</label>
+                                <label htmlFor="companyDescLong" className="text-xs font-black text-slate-400 uppercase tracking-tighter block text-left">Ausführliche Beschreibung (Detail Ansicht)</label>
                                 <textarea
+                                    id="companyDescLong"
                                     rows={4}
                                     value={formData.descriptionLong}
                                     onChange={e => setFormData({ ...formData, descriptionLong: e.target.value })}
@@ -301,8 +310,9 @@ export const CompanyForm: React.FC<Props> = ({ company, onClose, onSave, onUploa
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             {Object.keys(formData.openingHours || {}).map(day => (
                                 <div key={day} className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase text-left block">{day}</label>
+                                    <label htmlFor={`hours-${day}`} className="text-[10px] font-black text-slate-400 uppercase text-left block">{day}</label>
                                     <input
+                                        id={`hours-${day}`}
                                         type="text"
                                         value={formData.openingHours?.[day as keyof typeof formData.openingHours]}
                                         onChange={e => setFormData({
