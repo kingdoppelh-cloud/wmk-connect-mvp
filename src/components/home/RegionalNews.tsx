@@ -24,9 +24,9 @@ export const RegionalNews: React.FC = () => {
                 <div className="bg-white rounded-xl overflow-hidden shadow-sm flex flex-col">
                     <div className="h-64 overflow-hidden relative">
                         <img
-                            alt="Regional networking event"
-                            className="w-full h-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvP9lv3ax36UzQp8Zx5PWlKQ7fKFTIJQhMLSdc9-va1IHrEDneaFJQT0j8iuXz4NeNKYj_DgKn0x5tUArVuPuLt0ovcaL6-Nzfk7K3eL1IuMktctpdJZRIEB8UfRJWKc7XIw7dMv_LoRuUJ3sMj4eu8mRA6_Ut0Mw3me0FCazMxBnNg0xKfav-Hzp0uXonUiCbsUmSQzM6I3t1mXJDRFYkQ5g46q6xiwH2JajaUizuZlEErh0AKASf8qoeAaRCcnYGJOBxdbdXQDo"
+                            alt="Digitalisierung im Handwerk"
+                            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200"
                         />
                         <span className="absolute top-4 left-4 bg-secondary text-white px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest">
                             Top News
@@ -52,8 +52,8 @@ export const RegionalNews: React.FC = () => {
                 {/* Secondary News List */}
                 <div className="space-y-6">
                     <div className="flex gap-6 items-center group cursor-pointer bg-surface-container-low/50 p-4 rounded-xl hover:bg-surface-container-low transition-colors" onClick={() => navigate('/news')}>
-                        <div className="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
-                            <img alt="Education center" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCziUFfcFNCMumvoWAhbF0gdPVV1vM4O7RJAjOSsOWEByt277Uk18S9gIhHjxztqjyCTE4uKecS4iNwpxbuZA212OIvbOhHs1F8G1ACnKGCA80t1z6iHkQE4XRCHvyqobqURz9fwvEOwnZLvDXcOpFHB5T6J1UnRd0bXPzzzgFEHVuTRBAtYIGXwlkoYg6733kvYHrCgizY3c9oYVfRI59EAbX4j8jNnNTAQLmz1hb8-0-ct4mucrHuUK5pbRIpmaNLgd-_3PgbNhc" />
+                        <div className="w-32 h-24 shrink-0 rounded-lg overflow-hidden border border-slate-200">
+                            <img alt="Gründerzentrum" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=400" />
                         </div>
                         <div>
                             <time className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">08. OKT 2026</time>
@@ -61,8 +61,8 @@ export const RegionalNews: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex gap-6 items-center group cursor-pointer bg-surface-container-low/50 p-4 rounded-xl hover:bg-surface-container-low transition-colors" onClick={() => navigate('/news')}>
-                        <div className="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
-                            <img alt="Business team" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX7m3lI9pD8xY5kMG-rMQ50msHZVsCNXUhaL_oR9kUYrVbZ-BbrniLcW55n-n-oI1xFgNI_cW1F_Scu4luNDAlPPhWpvSsxlA9dcyh6ScQb2lix0kgf-9-sbq7dXn82tOqhnoBxWg_W6Em141jN746NdjGmcI3MXxpNzf4FLZH1gK-7Y2KqMrSxryGowbfRTJe_buG2FEbi7o4T5lHZJ_EwBDHVfXmXWIRC3FT-YsbHTZn77xfiYIQNclptyFoOmjUKTDSK-t2RLg" />
+                        <div className="w-32 h-24 shrink-0 rounded-lg overflow-hidden border border-slate-200">
+                            <img alt="Fachkräftemangel" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=400" />
                         </div>
                         <div>
                             <time className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">05. OKT 2026</time>
@@ -70,8 +70,8 @@ export const RegionalNews: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex gap-6 items-center group cursor-pointer bg-surface-container-low/50 p-4 rounded-xl hover:bg-surface-container-low transition-colors" onClick={() => navigate('/news')}>
-                        <div className="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
-                            <img alt="Office workspace" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1iPnUwvMUY1zi21N2X3RxjvMNvDk2a3mN2M0J-lnUFxKKj8X2hR-Tk-YsD4B5TIuio5U51qYEhsC1wHV_By-LtFD8IkFqXk8rurPV-HuZefREPkA6EaUmi7NW9h_GCTLmAyeaoTF_19u5xUEZiWQKREXZycNfxkDF97ky17gSfQvT5Eeulc7UPQTmp07dEwG5rIE_7wvFSptLHi8r2HNRPNAI3g9JP0gEJdH-Zb4r-SUahpOZGa3n12uVC5c8hWidKpssV2NnpTM" />
+                        <div className="w-32 h-24 shrink-0 rounded-lg overflow-hidden border border-slate-200">
+                            <img alt="Remote Work" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=400" />
                         </div>
                         <div>
                             <time className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">01. OKT 2026</time>

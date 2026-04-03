@@ -23,9 +23,9 @@ export const HeroSwipe: React.FC = () => {
             <section className="relative group overflow-hidden rounded-xl h-[500px] flex items-end">
                 <div className="absolute inset-0 z-0">
                     <img
-                        alt="Modern office workplace"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN3hYYJGprA9e8T3TljgFWd_et5WYMD1q_ELMCGehT35PSw2CWG4JCUzDwId8VKrPckmHrxeC4O6i90GwqiaLXMP6jUOlUopleCpfksKjjJdlAnrV9T96TD3qT8hpNYkORhjQAjbNdyBBkoXKXT2nNlmvTc0k-OIrYDyRf6xgQD1ePytBECVBYQl1nenu9qLgP8Mxjelptqcrh6js5Z3mT7pzwy8O0Y_Vi5H71jYzXO4vwDdvVB4v7HPA4mY6Q8yxIFjGU7IAgUSk"
+                        alt="Modernes Büro-Ambiente"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
                 </div>
