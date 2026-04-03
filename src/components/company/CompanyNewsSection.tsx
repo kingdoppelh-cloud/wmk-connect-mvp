@@ -2,7 +2,7 @@ import React from 'react';
 import { Sparkles, Heart } from 'lucide-react';
 import { useNews } from '../../hooks/useNews';
 import { useRewards } from '../../hooks/useRewards';
-import { cn } from '../Layout';
+import { cn } from '../../utils/cn';
 
 interface CompanyNewsSectionProps {
     companyId: string;

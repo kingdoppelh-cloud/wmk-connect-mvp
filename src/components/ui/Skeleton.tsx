@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '../Layout';
+import { cn } from '../../utils/cn';
 
 interface SkeletonProps {
     className?: string;

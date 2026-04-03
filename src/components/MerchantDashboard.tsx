@@ -5,7 +5,7 @@ import { useJobs } from '../hooks/useJobs';
 import { useNews } from '../hooks/useNews';
 import { useEvents } from '../hooks/useEvents';
 import type { Company, Job, NewsPost, Event } from '../types';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 
 // Sub-components
 import { MerchantHeader } from './merchant/MerchantHeader';
@@ -111,7 +111,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
     }, [profileData, company.gallery]);
 
     const checklist = useMemo(() => {
-        const items = [];
+        const items: Array<{ id: string; label: string; tab: 'dashboard' | 'jobs' | 'profile' | 'news' | 'marketing'; }> = [];
         if (!profileData.descriptionLong) items.push({ id: 'desc', label: 'Ausführliche Beschreibung hinzufügen', tab: 'profile' });
         if (!profileData.whatsapp) items.push({ id: 'wa', label: 'WhatsApp Kontakt hinterlegen', tab: 'profile' });
         if (!company.gallery || company.gallery.length < 3) items.push({ id: 'gal', label: 'Mind. 3 Galeriebilder hochladen', tab: 'profile' });

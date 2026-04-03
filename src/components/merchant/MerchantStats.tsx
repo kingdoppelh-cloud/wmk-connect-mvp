@@ -1,7 +1,7 @@
 import React from 'react';
 import { Eye, MessageSquare, Heart, CornerUpRight, Clock } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { cn } from '../Layout';
+import { cn } from '../../utils/cn';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import type { AnalyticsEvent } from '../../types';

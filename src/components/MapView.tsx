@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { Compass, Target, Info } from 'lucide-react';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { type Company } from '../data/companies';

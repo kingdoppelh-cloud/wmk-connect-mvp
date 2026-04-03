@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, BadgeCheck, Bell, UserPlus, Share2 } from 'lucide-react';
 import { type Company } from '../../data/companies';
-import { cn } from '../Layout';
+import { cn } from '../../utils/cn';
 
 interface CompanyHeaderProps {
     company: Company;

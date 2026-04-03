@@ -2,7 +2,7 @@ import React from 'react';
 import { Heart, Share2, Star, Phone, MessageCircle, ExternalLink, MapPin } from 'lucide-react';
 import type { Company } from '../data/companies';
 import { getStatusLabel, isOpen } from '../utils/timeUtils';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 
 interface Props {

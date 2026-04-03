@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Briefcase, Plus, Save, Sparkles, RefreshCw } from 'lucide-react';
 import { useProfile, type Profile } from '../hooks/useProfile';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 
 interface Props {
     isOpen: boolean;

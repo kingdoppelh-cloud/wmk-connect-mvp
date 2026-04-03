@@ -2,7 +2,7 @@ import React from 'react';
 import { Bell, X, Calendar, Newspaper, CheckCircle2, ArrowRight, Ghost } from 'lucide-react';
 import { useNotifications } from '../hooks/useNotifications';
 import type { Notification } from '../hooks/useNotifications';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 
 interface Props {
     isOpen: boolean;

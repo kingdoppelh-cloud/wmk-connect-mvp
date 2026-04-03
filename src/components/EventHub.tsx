@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, MapPin, Users, Sparkles } from 'lucide-react';
 import { useEvents } from '../hooks/useEvents';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 import { CompanyCardSkeleton } from './ui/Skeleton';
 
 export const EventHub: React.FC = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Newspaper, Calendar, Trash2, Plus, MessageSquare } from 'lucide-react';
-import { cn } from '../Layout';
+import { cn } from '../../utils/cn';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { type NewsPost, type Event } from '../../types';

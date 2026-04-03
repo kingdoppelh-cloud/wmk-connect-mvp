@@ -2,7 +2,7 @@ import { useState, useEffect, Suspense, lazy } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { Routes, Route, useNavigate, useParams, useLocation, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { Discover } from './components/Discover';
+import { Home } from './components/Home';
 import { Favorites } from './components/Favorites';
 import { CompanyDetail } from './components/CompanyDetail';
 import { CompanyForm } from './components/CompanyForm';
@@ -14,7 +14,6 @@ import { useUI } from './context/UIContext';
 
 const MapView = lazy(() => import('./components/MapView').then(module => ({ default: module.MapView })));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard').then(module => ({ default: module.AdminDashboard })));
-const MerchantDashboard = lazy(() => import('./components/MerchantDashboard').then(module => ({ default: module.MerchantDashboard })));
 import { InstallPrompt } from './components/InstallPrompt';
 import { SwipeJobs } from './components/SwipeJobs';
 import { JobsBoard } from './components/JobsBoard';
@@ -27,6 +26,18 @@ import { EventHub } from './components/EventHub';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Register } from './components/Register';
 import { useSEO } from './hooks/useSEO';
+
+import { StudioLayout } from './components/studio/StudioLayout';
+import { StudioDashboard } from './components/studio/StudioDashboard';
+import { StudioAssets } from './components/studio/StudioAssets';
+import { StudioMarketplace } from './components/studio/StudioMarketplace';
+import { StudioServiceDetail } from './components/studio/StudioServiceDetail';
+
+import { MerchantLayout } from './components/merchant/layout/MerchantLayout';
+import { MerchantDashboardOverview } from './components/merchant/MerchantDashboardOverview';
+import { MerchantJobsList } from './components/merchant/MerchantJobsList';
+import { MerchantApplicants } from './components/merchant/MerchantApplicants';
+import { MerchantAnalytics } from './components/merchant/MerchantAnalytics';
 
 // Wrapper to handle company detail from URL
 function CompanyDetailWrapper({ companies }: { companies: Company[] }) {
@@ -46,16 +57,7 @@ function CompanyDetailWrapper({ companies }: { companies: Company[] }) {
   );
 }
 
-// Wrapper to handle merchant dashboard from URL
-function MerchantDashboardWrapper({ companies }: { companies: Company[] }) {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const company = companies.find(c => c.id === id);
 
-  if (!company) return <Navigate to="/" replace />;
-
-  return <MerchantDashboard company={company} onClose={() => navigate('/')} />;
-}
 
 function App() {
   const navigate = useNavigate();
@@ -74,7 +76,7 @@ function App() {
   const [isAddingCompany, setIsAddingCompany] = useState(false);
 
   // Echte Daten aus Supabase abrufen!
-  const { companies, isLoading, error, addCompany, updateCompany, deleteCompany, uploadFile, userLocation, requestLocation } = useCompanies();
+  const { companies, error, addCompany, updateCompany, deleteCompany, uploadFile, userLocation, requestLocation } = useCompanies();
 
   // Global SEO & Canonical Tag
   useSEO({
@@ -145,15 +147,7 @@ function App() {
         )}
         <ErrorBoundary>
           <Routes>
-            <Route path="/" element={
-              <Discover
-                companies={companies}
-                onSelectCompany={(id) => navigate(`/company/${id}`)}
-                isLoading={isLoading}
-                userLocation={userLocation}
-                onLocationRequest={requestLocation}
-              />
-            } />
+            <Route path="/" element={<Home />} />
             <Route path="/map" element={
               <Suspense fallback={<div className="flex h-[50vh] items-center justify-center text-gray-400">Karte lädt...</div>}>
                 <MapView companies={companies} onSelectCompany={(id: string) => navigate(`/company/${id}`)} />
@@ -166,7 +160,7 @@ function App() {
                 onCompanyClick={(id) => navigate(`/company/${id}`)}
               />
             } />
-            <Route path="/feed" element={
+            <Route path="/news" element={
               <ActivityFeed onCompanyClick={(id) => navigate(`/company/${id}`)} />
             } />
             <Route path="/events" element={<EventHub />} />
@@ -175,11 +169,22 @@ function App() {
             } />
             <Route path="/company/:id" element={<CompanyDetailWrapper companies={companies} />} />
             <Route path="/register" element={<Register onBack={() => navigate('/')} />} />
-            <Route path="/merchant/:id" element={
-              <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><RefreshCw className="animate-spin text-accent" /></div>}>
-                <MerchantDashboardWrapper companies={companies} />
-              </Suspense>
-            } />
+            <Route path="/merchant/:id" element={<MerchantLayout />}>
+              <Route index element={<Navigate to="overview" replace />} />
+              <Route path="overview" element={<MerchantDashboardOverview />} />
+              <Route path="jobs" element={<MerchantJobsList />} />
+              <Route path="applicants" element={<MerchantApplicants />} />
+              <Route path="analytics" element={<MerchantAnalytics />} />
+            </Route>
+
+            {/* Studio Routes */}
+            <Route path="/studio" element={<StudioLayout />}>
+              <Route index element={<StudioDashboard />} />
+              <Route path="assets" element={<StudioAssets />} />
+              <Route path="services" element={<StudioMarketplace />} />
+              <Route path="services/:id" element={<StudioServiceDetail />} />
+            </Route>
+
             <Route path="/admin" element={
               !session ? (
                 <Auth onBack={() => navigate('/')} />

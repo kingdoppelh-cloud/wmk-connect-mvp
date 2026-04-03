@@ -1,6 +1,6 @@
 import React from 'react';
 import { Briefcase, MapPin, Euro, Trash2 } from 'lucide-react';
-import { cn } from '../Layout';
+import { cn } from '../../utils/cn';
 import { type Job } from '../../types';
 
 interface MerchantJobsProps {

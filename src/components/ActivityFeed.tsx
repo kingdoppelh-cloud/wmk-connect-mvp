@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNews } from '../hooks/useNews';
 import { Newspaper, Sparkles, Clock, ExternalLink, Heart } from 'lucide-react';
-import { cn } from './Layout';
+import { cn } from '../utils/cn';
 import { NewsCardSkeleton } from './ui/Skeleton';
 
 interface ActivityFeedProps {
