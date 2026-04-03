@@ -9,13 +9,13 @@ export const HeroSwipe: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {/* Logo Splash — 60vh premium hero */}
-            <div className="-mx-6 bg-white flex items-center justify-center animate-in fade-in duration-700">
+            {/* Logo Splash — 60vh premium hero without box-shadow artifact */}
+            <div className="-mx-6 bg-white flex items-center justify-center animate-in fade-in duration-1000">
                 <img
                     src="/logo.png"
                     alt="WMK Connect"
-                    style={{ height: '60vh', width: 'auto', maxWidth: '95vw' }}
-                    className="object-contain drop-shadow-2xl"
+                    style={{ height: '60vh', width: 'auto', maxWidth: '95vw', mixBlendMode: 'multiply' }}
+                    className="object-contain"
                 />
             </div>
 
