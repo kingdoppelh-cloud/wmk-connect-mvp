@@ -10,17 +10,17 @@ export const HeroSwipe: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Logo Splash — 60vh premium hero without box-shadow artifact */}
-            <div className="-mx-6 bg-white flex items-center justify-center animate-in fade-in duration-1000">
+            <div className="-mx-6 bg-surface dark:bg-slate-900 flex items-center justify-center animate-in fade-in duration-1000">
                 <img
                     src="/logo.png"
                     alt="WMK Connect"
-                    style={{ height: '60vh', width: 'auto', maxWidth: '95vw', mixBlendMode: 'multiply' }}
-                    className="object-contain"
+                    style={{ height: '60vh', width: 'auto', maxWidth: '95vw' }}
+                    className="object-contain mix-blend-multiply dark:mix-blend-screen dark:invert"
                 />
             </div>
 
             {/* Hero Card */}
-            <section className="relative group overflow-hidden rounded-xl h-[420px] flex items-end">
+            <section className="relative group overflow-hidden rounded-xl h-[500px] flex items-end">
                 <div className="absolute inset-0 z-0">
                     <img
                         alt="Modern office workplace"
@@ -37,7 +37,7 @@ export const HeroSwipe: React.FC = () => {
                     </p>
                     <button
                         onClick={handleSwipe}
-                        className="bg-secondary hover:bg-red-600 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-3 transition-all active:scale-95 shadow-lg"
+                        className="bg-secondary dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-3 transition-all active:scale-95 shadow-lg"
                     >
                         Jetzt swipen
                         <ArrowRight className="w-5 h-5" />
