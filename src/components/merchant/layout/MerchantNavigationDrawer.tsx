@@ -25,13 +25,21 @@ export const MerchantNavigationDrawer: React.FC = () => {
                         <span className="material-symbols-outlined">group</span>
                         <span>Applicants</span>
                     </NavLink>
-                    <NavLink to={`/merchant/${id}/analytics`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
+                    <NavLink to={`/merchant/${id}/talent`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
+                        <span className="material-symbols-outlined">person_search</span>
+                        <span>Talent Pool</span>
+                    </NavLink>
+                    <NavLink to={`/merchant/${id}/reports`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
                         <span className="material-symbols-outlined">analytics</span>
-                        <span>Analytics</span>
+                        <span>Reports</span>
                     </NavLink>
                     <NavLink to={`/merchant/${id}/messages`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
                         <span className="material-symbols-outlined">mail</span>
                         <span>Postfach</span>
+                    </NavLink>
+                    <NavLink to={`/merchant/${id}/invoices`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
+                        <span className="material-symbols-outlined">receipt_long</span>
+                        <span>Billing</span>
                     </NavLink>
                 </nav>
             </div>

@@ -48,6 +48,7 @@ import { MerchantStudioOnboarding } from './components/merchant/MerchantStudioOn
 import { MerchantInvoices } from './components/merchant/MerchantInvoices';
 import { MerchantSubscription } from './components/merchant/MerchantSubscription';
 import { MerchantCheckout } from './components/merchant/MerchantCheckout';
+import { MerchantCheckoutSuccess } from './components/merchant/MerchantCheckoutSuccess';
 // Wrapper to handle company detail from URL
 function CompanyDetailWrapper({ companies }: { companies: Company[] }) {
   const { id } = useParams<{ id: string }>();
@@ -193,6 +194,7 @@ function App() {
               <Route path="invoices" element={<MerchantInvoices />} />
               <Route path="invoices/subscription" element={<MerchantSubscription />} />
               <Route path="checkout" element={<MerchantCheckout />} />
+              <Route path="checkout/success" element={<MerchantCheckoutSuccess />} />
             </Route>
 
             {/* Studio Routes */}
