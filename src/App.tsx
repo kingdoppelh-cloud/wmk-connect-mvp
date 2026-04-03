@@ -42,6 +42,9 @@ import { MerchantAnalytics } from './components/merchant/MerchantAnalytics';
 import { MerchantMessages } from './components/merchant/MerchantMessages';
 import { MerchantApplicantDetail } from './components/merchant/MerchantApplicantDetail';
 import { MerchantJobBoost } from './components/merchant/MerchantJobBoost';
+import { MerchantRecruitingReports } from './components/merchant/MerchantRecruitingReports';
+import { MerchantTalentPool } from './components/merchant/MerchantTalentPool';
+import { MerchantStudioOnboarding } from './components/merchant/MerchantStudioOnboarding';
 // Wrapper to handle company detail from URL
 function CompanyDetailWrapper({ companies }: { companies: Company[] }) {
   const { id } = useParams<{ id: string }>();
@@ -181,6 +184,9 @@ function App() {
               <Route path="applicants/:applicantId" element={<MerchantApplicantDetail />} />
               <Route path="analytics" element={<MerchantAnalytics />} />
               <Route path="messages" element={<MerchantMessages />} />
+              <Route path="reports" element={<MerchantRecruitingReports />} />
+              <Route path="talent" element={<MerchantTalentPool />} />
+              <Route path="onboarding" element={<MerchantStudioOnboarding />} />
             </Route>
 
             {/* Studio Routes */}
