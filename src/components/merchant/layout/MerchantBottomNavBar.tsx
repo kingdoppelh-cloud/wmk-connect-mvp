@@ -42,6 +42,14 @@ export const MerchantBottomNavBar: React.FC = () => {
                     </>
                 )}
             </NavLink>
+            <NavLink to={`/merchant/${id}/messages`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
+                {({ isActive }) => (
+                    <>
+                        <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}>mail</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest">Postfach</span>
+                    </>
+                )}
+            </NavLink>
         </nav>
     );
 };

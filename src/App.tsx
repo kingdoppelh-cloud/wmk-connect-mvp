@@ -25,6 +25,7 @@ import { ActivityFeed } from './components/ActivityFeed';
 import { EventHub } from './components/EventHub';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Register } from './components/Register';
+import { NotFound } from './components/NotFound';
 import { useSEO } from './hooks/useSEO';
 
 import { StudioLayout } from './components/studio/StudioLayout';
@@ -38,6 +39,7 @@ import { MerchantDashboardOverview } from './components/merchant/MerchantDashboa
 import { MerchantJobsList } from './components/merchant/MerchantJobsList';
 import { MerchantApplicants } from './components/merchant/MerchantApplicants';
 import { MerchantAnalytics } from './components/merchant/MerchantAnalytics';
+import { MerchantMessages } from './components/merchant/MerchantMessages';
 
 // Wrapper to handle company detail from URL
 function CompanyDetailWrapper({ companies }: { companies: Company[] }) {
@@ -175,6 +177,7 @@ function App() {
               <Route path="jobs" element={<MerchantJobsList />} />
               <Route path="applicants" element={<MerchantApplicants />} />
               <Route path="analytics" element={<MerchantAnalytics />} />
+              <Route path="messages" element={<MerchantMessages />} />
             </Route>
 
             {/* Studio Routes */}
@@ -208,6 +211,7 @@ function App() {
                 </Suspense>
               )
             } />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
         <InstallPrompt />
