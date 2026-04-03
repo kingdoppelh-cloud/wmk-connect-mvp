@@ -2,25 +2,19 @@ import React from 'react';
 
 export const MerchantTopAppBar: React.FC = () => {
     return (
-        <header className="bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl fixed top-0 w-full z-50 shadow-[0px_12px_32px_rgba(27,59,90,0.06)] flex items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden">
-                    {/* Placeholder for Merchant Logo */}
-                    <img
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDafyvawA5jPTVJpgi5kxd5BuDRHEzeNP9rS2cFmpUe1j4say3C5YeQBVkDwh9qYgEHGmlpIbQ_Lvo5cWQQJVcHVN7KQLhAawxxxEeX-CLNheL76A_8533uQ5LqO6BioK3XmkZFlPJ5vo506UgrF9lmiqxPScwRPOXcOougayNIge2fjM7uTjmclCw3aQ-R7DfQoYC0nBtOOm64TWqJAwIOrDE2B9EzB5K6ZamOhvQkLslSx_mAzemqq4gTJkzpaSNUplngLH8eD5o"
-                        alt="Merchant Logo"
-                    />
-                </div>
-                <div className="flex items-center gap-3">
-                    <img src="/logo.png" alt="WMK Connect Logo" className="h-10 w-auto object-contain drop-shadow-sm" />
-                    <span className="text-xl font-bold text-slate-900 dark:text-slate-50 font-headline tracking-tight">Civic Network Admin</span>
+        <header className="glass fixed top-0 w-full z-50 no-line flex items-center justify-between px-8 py-5">
+            <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4">
+                    <img src="/logo.png" alt="WMK Connect Logo" className="h-12 w-auto object-contain transition-transform hover:scale-105 duration-300" />
+                    <div className="h-8 w-px bg-on-surface opacity-10 hidden md:block"></div>
+                    <span className="text-xl font-headline font-bold text-primary tracking-tight hidden sm:block">Merchant Hub</span>
                 </div>
             </div>
-            <div className="flex items-center gap-4">
-                <button className="text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors active:scale-95 duration-200">
-                    <span className="material-symbols-outlined">notifications</span>
+            <div className="flex items-center gap-6">
+                <button className="text-on-surface opacity-60 hover:opacity-100 hover:text-secondary transition-all active:scale-95 duration-200">
+                    <span className="material-symbols-outlined text-2xl">notifications</span>
                 </button>
-                <div className="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+                <div className="h-10 w-px bg-on-surface opacity-5 mx-1"></div>
                 <div className="flex items-center gap-3">
                     <div className="text-right hidden sm:block">
                         <p className="text-xs font-bold text-on-surface">Admin User</p>

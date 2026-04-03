@@ -3,9 +3,9 @@
 
 
 @theme {
-  --color-primary: #1B3B5A;
-  --color-secondary: #E31A1A;
-  --color-accent: #e11d48;
+  --color-primary: #002542;
+  --color-secondary: #b52426;
+  --color-accent: #b52426;
   --color-premium: #fbbf24;
   --color-surface: #fbf9f8;
   --color-on-surface: #1b1c1c;
@@ -74,25 +74,20 @@
 }
 
 .merchant-theme {
-  --color-primary: #b9000b;
-  --color-secondary: #436182;
-  --color-surface: #f8f9ff;
-  --color-on-surface: #001d35;
+  --color-primary: #002542;
+  --color-secondary: #b52426;
+  --color-surface: #fbf9f8;
+  --color-on-surface: #1b1c1c;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #eef4ff;
-  --color-surface-container: #e4efff;
-  --color-surface-container-high: #dbe9ff;
-  --color-surface-container-highest: #d1e4ff;
-  --color-tertiary: #005da2;
-  --color-on-tertiary: #ffffff;
-  --color-background: #f8f9ff;
-  --color-on-background: #001d35;
-  --color-inverse-surface: #103251;
-  --color-inverse-on-surface: #e9f1ff;
-  --color-outline: #926e6a;
-  --color-outline-variant: #e8bdb7;
-  --color-primary-container: #e31a1a;
-  --color-on-primary-container: #fff9f8;
+  --color-surface-container-low: #f6f3f2;
+  --color-surface-container: #f0eded;
+  --color-surface-container-high: #eae8e7;
+  --color-surface-container-highest: #e4e2e1;
+  --color-tertiary: #192435;
+  --color-background: #fbf9f8;
+  --color-on-background: #1b1c1c;
+  --color-outline-variant: rgba(195, 198, 206, 0.15);
+  /* Civic "Ghost Border" fallback */
 }
 
 body {
@@ -100,18 +95,32 @@ body {
   color: #111827;
 }
 
+/* Civic Architect Utilities */
+.no-line {
+  border: none !important;
+}
+
+.surface-lift {
+  @apply bg-surface-container-lowest;
+  box-shadow: 0 4px 60px rgba(27, 28, 28, 0.04);
+  /* Tinted Civic shadow */
+}
+
 /* Glassmorphism utility */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(251, 249, 248, 0.8);
+  /* Civic surface at 80% */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(195, 198, 206, 0.15);
+  /* Ghost border fallback */
 }
 
 .glass-dark {
-  background: rgba(31, 41, 55, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(25, 36, 53, 0.8);
+  /* Civic tertiary at 80% */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 

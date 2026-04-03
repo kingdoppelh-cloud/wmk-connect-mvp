@@ -4,14 +4,14 @@ import { NavLink, useParams } from 'react-router-dom';
 export const MerchantNavigationDrawer: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
-    const linkBaseClass = "flex items-center gap-3 px-4 py-3 font-headline font-medium text-sm transition-all duration-300 ease-in-out group rounded-md lg:rounded-none";
-    const activeClass = "text-red-700 dark:text-red-500 border-l-4 lg:border-l-0 lg:border-r-4 border-red-700 dark:border-red-500 bg-slate-100 dark:bg-slate-900";
-    const inactiveClass = "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-100";
+    const linkBaseClass = "flex items-center gap-4 px-5 py-3.5 font-sans font-medium text-sm transition-all duration-300 ease-in-out group rounded-xl mx-2";
+    const activeClass = "text-primary bg-surface-container-lowest shadow-sm";
+    const inactiveClass = "text-on-surface opacity-60 hover:opacity-100 hover:bg-surface-container-high";
 
     return (
-        <aside className="hidden lg:flex flex-col h-screen fixed left-0 top-0 pt-20 w-64 border-r border-slate-200/15 dark:border-slate-800/15 bg-slate-50 dark:bg-slate-950 z-40">
-            <div className="px-6 py-8">
-                <p className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4">Management</p>
+        <aside className="hidden lg:flex flex-col h-screen fixed left-0 top-0 pt-20 w-64 no-line bg-surface-container-low z-40">
+            <div className="px-6 py-10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface opacity-40 mb-6 px-2">Management Hub</p>
                 <nav className="space-y-1">
                     <NavLink to={`/merchant/${id}/overview`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
                         <span className="material-symbols-outlined">dashboard</span>
@@ -31,12 +31,12 @@ export const MerchantNavigationDrawer: React.FC = () => {
                     </NavLink>
                 </nav>
             </div>
-            <div className="mt-auto px-6 py-6 border-t border-slate-200/15 dark:border-slate-800/15">
-                <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/15">
-                    <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">PRO PLAN</p>
-                    <p className="text-[11px] text-secondary mb-3">Your hiring window is active for 24 more days.</p>
-                    <div className="h-1 w-full bg-slate-200 rounded-full overflow-hidden">
-                        <div className="h-full bg-primary w-2/3"></div>
+            <div className="mt-auto px-6 py-10">
+                <div className="p-5 rounded-2xl bg-surface-container-lowest no-line">
+                    <p className="text-[10px] font-bold text-primary opacity-50 uppercase tracking-widest mb-2">PRO PLAN ACTIVE</p>
+                    <p className="text-xs font-medium text-secondary mb-4 leading-relaxed">Your hiring window is active for 24 more days.</p>
+                    <div className="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+                        <div className="h-full bg-primary w-2/3 transition-all duration-1000 ease-out"></div>
                     </div>
                 </div>
             </div>
