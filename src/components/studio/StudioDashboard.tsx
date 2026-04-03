@@ -2,117 +2,146 @@ import React from 'react';
 
 export const StudioDashboard: React.FC = () => {
     return (
-        <div className="pt-8 pb-20 px-4 md:px-12 max-w-7xl mx-auto">
+        <div className="pb-24 md:pb-0 bg-[#fbf9f8] min-h-screen">
             {/* Dashboard Header */}
-            <div className="mb-12">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 block">Willkommen zurück</span>
-                <h2 className="text-4xl md:text-5xl font-black font-headline tracking-tighter text-on-background">WMK Studio Dashboard</h2>
-            </div>
-            {/* Bento Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                {/* Main Project Card (Asymmetric Focus) */}
-                <div className="md:col-span-8 space-y-8">
-                    {/* Civic Lead Component */}
-                    <div className="surface-container-high border-l-[12px] border-primary p-8 rounded-lg bg-surface-container-high">
-                        <h3 className="text-3xl font-bold font-headline text-on-surface mb-2">Web-Redesign Portfolio</h3>
-                        <p className="text-on-surface-variant max-w-xl">Wir befinden uns aktuell in der finalen Entwicklungsphase. Das Responsive Testing wird wie geplant abgeschlossen.</p>
-                        <div className="mt-8 space-y-4">
-                            <div className="flex justify-between items-end">
-                                <span className="text-sm font-semibold text-primary">In Entwicklung</span>
-                                <span className="text-sm font-bold text-on-background">75%</span>
-                            </div>
-                            <div className="w-full bg-surface-container-lowest h-3 rounded-full overflow-hidden">
-                                <div className="bg-gradient-to-r from-primary to-primary-container h-full w-[75%]"></div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Next Milestones List */}
-                    <div className="bg-surface-container-lowest p-8 rounded-lg shadow-[0px_12px_32px_rgba(27,59,90,0.06)]">
-                        <h4 className="text-xl font-bold font-headline text-on-background mb-8 flex items-center gap-2">
-                            <span className="material-symbols-outlined text-primary">event_upcoming</span>
-                            Nächste Meilensteine
-                        </h4>
-                        <div className="space-y-6">
-                            <div className="flex items-start gap-6 group">
-                                <div className="flex-shrink-0 w-12 text-center py-2 bg-surface-container-low rounded-lg transition-colors group-hover:bg-primary/10">
-                                    <span className="block text-xs font-bold uppercase text-on-surface-variant">Okt</span>
-                                    <span className="block text-xl font-black text-on-background">20</span>
-                                </div>
-                                <div className="flex-grow pb-6 border-b border-outline-variant/15">
-                                    <h5 className="font-bold text-on-background">Design-Abnahme</h5>
-                                    <p className="text-sm text-on-surface-variant">Finale Prüfung der UI-Prototypen und Assets.</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-6 group">
-                                <div className="flex-shrink-0 w-12 text-center py-2 bg-surface-container-low rounded-lg transition-colors group-hover:bg-primary/10">
-                                    <span className="block text-xs font-bold uppercase text-on-surface-variant">Nov</span>
-                                    <span className="block text-xl font-black text-on-background">04</span>
-                                </div>
-                                <div className="flex-grow pb-6 border-b border-outline-variant/15">
-                                    <h5 className="font-bold text-on-background">Content Integration</h5>
-                                    <p className="text-sm text-on-surface-variant">Einpflegen der redaktionellen Inhalte und Medien.</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-6 group">
-                                <div className="flex-shrink-0 w-12 text-center py-2 bg-surface-container-low rounded-lg transition-colors group-hover:bg-primary/10">
-                                    <span className="block text-xs font-bold uppercase text-on-surface-variant">Nov</span>
-                                    <span className="block text-xl font-black text-on-background">15</span>
-                                </div>
-                                <div className="flex-grow">
-                                    <h5 className="font-bold text-on-background">Go-Live Vorbereitung</h5>
-                                    <p className="text-sm text-on-surface-variant">Server-Konfiguration und finale SEO-Checks.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Sidebar Info */}
-                <div className="md:col-span-4 space-y-8">
-                    {/* Contact Card */}
-                    <div className="bg-on-background p-8 rounded-lg text-white relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary-fixed-dim mb-6">Ihr Ansprechpartner</h4>
-                        <div className="flex items-center gap-4 mb-8 relative z-10">
-                            <img alt="Marcus Keller" className="w-16 h-16 rounded-lg object-cover ring-2 ring-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL4i8zP9-uFIZl2fU0_mIBScUZQSdpeDQlxm2G0ZHeAFbzcJc4MUfDgeBlx04HnqN0l0ai3nAU2H--4CqMSCK9NPz7d9i63J5qZatueTPpCUh3C-LlSJ1ZKC2rTq3Eg8UP03TtrPaeJn_YfksNwWhWcXKR1AKMayDx8yZhSaX4P4M9vFPyv6k6IOpkXLwCmU830H0uFBXsWRRCM3crgWDBwBCo__SnaUHv67LWu9g94fJS-QAE-wlnNKr1d_ylu2uHJf4FMkzDX4I" />
-                            <div>
-                                <span className="block font-bold text-lg leading-tight">Marcus Keller</span>
-                                <span className="block text-sm text-slate-400">Senior Project Lead</span>
-                            </div>
-                        </div>
-                        <button className="w-full relative z-10 bg-gradient-to-br from-primary to-primary-container text-white font-bold py-4 rounded-md flex items-center justify-center gap-3 active:opacity-80 transition-all hover:translate-y-[-2px] shadow-lg shadow-primary/20">
-                            <span className="material-symbols-outlined">chat</span>
-                            Chat mit dem Studio
-                        </button>
-                    </div>
-                    {/* Secondary Project List */}
-                    <div className="bg-surface-container-low p-8 rounded-lg">
-                        <h4 className="text-sm font-bold uppercase tracking-wider text-on-surface-variant mb-6">Weitere Projekte</h4>
+            <div className="pt-20 pb-12 px-6 lg:px-12">
+                <div className="container mx-auto">
+                    <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-12">
                         <div className="space-y-4">
-                            <div className="bg-surface-container-lowest p-4 rounded-md flex items-center justify-between group cursor-pointer hover:bg-surface-bright transition-all">
-                                <div>
-                                    <span className="block font-bold text-on-background">Brand Identity</span>
-                                    <span className="block text-xs text-on-surface-variant">Abgeschlossen</span>
-                                </div>
-                                <span className="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">check_circle</span>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[9px] font-black tracking-[0.2em] uppercase">
+                                <span className="w-1.5 h-1.5 bg-[#b9000b] rounded-full animate-pulse"></span>
+                                Live Tracking
                             </div>
-                            <div className="bg-surface-container-lowest p-4 rounded-md flex items-center justify-between group cursor-pointer hover:bg-surface-bright transition-all">
-                                <div>
-                                    <span className="block font-bold text-on-background">Social Media Assets</span>
-                                    <span className="block text-xs text-on-surface-variant">In Planung</span>
-                                </div>
-                                <span className="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">schedule</span>
-                            </div>
+                            <h1 className="text-6xl lg:text-7xl font-headline font-black tracking-tighter leading-none text-slate-950">
+                                Meine <span className="italic">Projekte</span>
+                            </h1>
+                            <p className="text-slate-500 font-medium text-lg">Präzise Kontrolle über jeden Meilenstein Ihres digitalen Wachstums.</p>
+                        </div>
+                        <div className="flex gap-4">
+                            <button className="bg-white border border-slate-200 p-4 rounded-2xl text-slate-900 group hover:border-[#b9000b] transition-all shadow-sm">
+                                <span className="material-symbols-outlined group-hover:scale-110 transition-transform">filter_list</span>
+                            </button>
+                            <button className="bg-[#b9000b] text-white px-8 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl shadow-[#b9000b]/20 active:scale-95 transition-all">
+                                Neues Projekt
+                            </button>
                         </div>
                     </div>
-                    {/* Quick Stats */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-surface-container-lowest p-4 rounded-lg shadow-sm">
-                            <span className="block text-xs font-bold text-on-surface-variant uppercase">Tasks</span>
-                            <span className="text-2xl font-black text-on-background">12</span>
+
+                    {/* Bento Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        {/* Featured Project */}
+                        <div className="lg:col-span-8 bg-white rounded-[40px] p-10 lg:p-16 shadow-sm border border-slate-100 flex flex-col justify-between group hover:shadow-2xl hover:shadow-slate-200 transition-all duration-700">
+                            <div className="space-y-8">
+                                <div className="flex justify-between items-start">
+                                    <div className="space-y-1">
+                                        <h2 className="text-4xl font-headline font-black text-slate-950 tracking-tight">Web-Redesign MVP</h2>
+                                        <p className="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em]">Firma XYZ &middot; Phase: Implementation</p>
+                                    </div>
+                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-[#b9000b]">
+                                        <span className="material-symbols-outlined text-3xl filled-icon">web</span>
+                                    </div>
+                                </div>
+
+                                {/* Milestone Progress */}
+                                <div className="space-y-6">
+                                    <div className="flex justify-between items-end">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Gesamtfortschritt</span>
+                                        <span className="text-2xl font-headline font-black text-slate-950">68%</span>
+                                    </div>
+                                    <div className="h-3 bg-slate-50 rounded-full overflow-hidden p-0.5 border border-slate-100">
+                                        <div className="h-full bg-gradient-to-r from-[#b9000b] to-[#ff4d58] rounded-full transition-all duration-1000 shadow-[0_0_12px_rgba(185,0,11,0.3)]" style={{ width: '68%' }}></div>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                                    {[
+                                        { label: "Konzeption", status: "completed", date: "12.03.2026" },
+                                        { label: "UI Design", status: "completed", date: "24.03.2026" },
+                                        { label: "Development", status: "active", date: "Zieht..." }
+                                    ].map((m, i) => (
+                                        <div key={i} className={`p-6 rounded-3xl border ${m.status === 'active' ? 'bg-slate-950 text-white border-slate-800' : 'bg-slate-50 border-slate-100 opacity-60'}`}>
+                                            <div className="text-[9px] font-black uppercase tracking-[0.2em] mb-4 opacity-50">{m.label}</div>
+                                            <div className="flex items-center gap-3">
+                                                <span className={`material-symbols-outlined text-sm ${m.status === 'completed' ? 'text-[#b9000b] filled-icon' : 'text-slate-400'}`}>
+                                                    {m.status === 'completed' ? 'check_circle' : 'pending'}
+                                                </span>
+                                                <span className="text-xs font-bold">{m.date}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="mt-12 flex items-center justify-between border-t border-slate-100 pt-8">
+                                <div className="flex -space-x-4">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-slate-200 overflow-hidden shadow-sm">
+                                            <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Team Member" />
+                                        </div>
+                                    ))}
+                                    <div className="w-10 h-10 rounded-full border-4 border-white bg-[#b9000b] flex items-center justify-center text-white text-[10px] font-black">+2</div>
+                                </div>
+                                <button className="text-[#b9000b] font-black uppercase text-[10px] tracking-[0.2em] flex items-center gap-2 group-hover:gap-4 transition-all">
+                                    Details öffnen <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                                </button>
+                            </div>
                         </div>
-                        <div className="bg-surface-container-lowest p-4 rounded-lg shadow-sm">
-                            <span className="block text-xs font-bold text-on-surface-variant uppercase">Review</span>
-                            <span className="text-2xl font-black text-primary">02</span>
+
+                        {/* Stats Sidebar */}
+                        <div className="lg:col-span-4 flex flex-col gap-8">
+                            {/* Project Count */}
+                            <div className="bg-slate-950 text-white rounded-[40px] p-10 flex flex-col justify-between flex-1 relative overflow-hidden shadow-2xl">
+                                <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#b9000b] opacity-10 blur-[60px] rounded-full"></div>
+                                <div>
+                                    <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#b9000b] mb-12">System Status</div>
+                                    <div className="text-8xl font-headline font-black leading-none mb-4">04</div>
+                                    <div className="text-lg font-medium opacity-60">Aktive Projekte im Studio</div>
+                                </div>
+                                <div className="mt-12 group cursor-pointer flex items-center justify-between">
+                                    <span className="font-bold underline decoration-[#b9000b] decoration-2 underline-offset-8">Archiv einsehen</span>
+                                    <span className="material-symbols-outlined text-[#b9000b]">archive</span>
+                                </div>
+                            </div>
+
+                            {/* Resource Card */}
+                            <div className="bg-white border border-slate-100 rounded-[40px] p-10 shadow-sm">
+                                <h3 className="text-xl font-headline font-black text-slate-950 mb-8 uppercase tracking-tight italic">Nächster Meilenstein</h3>
+                                <div className="space-y-6">
+                                    <div className="flex gap-6 items-start">
+                                        <div className="w-1.5 h-1.5 bg-[#b9000b] rounded-full mt-2.5"></div>
+                                        <div>
+                                            <div className="text-sm font-bold text-slate-950">Review: Design-Konzept</div>
+                                            <div className="text-xs text-slate-500 mt-1">Morgen, 10:00 Uhr &middot; Google Meet</div>
+                                        </div>
+                                    </div>
+                                    <button className="w-full bg-slate-50 text-slate-900 py-4 rounded-2xl font-black uppercase text-[9px] tracking-[0.2em] border border-slate-100 hover:bg-slate-100 transition-colors">
+                                        Kalender öffnen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Recent Activity Mini-Bento */}
+                        <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {[
+                                { title: "Feedback erhalten", proj: "KI-Chatbot v2", icon: "forum", time: "Vor 2h" },
+                                { title: "Asset-Upload", proj: "Recruiting Funnel", icon: "upload_file", time: "Vor 5h" },
+                                { title: "Deployment", proj: "Merchant Portal", icon: "rocket_launch", time: "Gestern" }
+                            ].map((act, i) => (
+                                <div key={i} className="bg-white p-8 rounded-[40px] border border-slate-100 flex items-center gap-6 group hover:-translate-y-1 transition-all shadow-sm">
+                                    <div className="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-2xl text-slate-400 group-hover:text-[#b9000b] transition-colors">
+                                        <span className="material-symbols-outlined">{act.icon}</span>
+                                    </div>
+                                    <div>
+                                        <div className="text-xs font-black text-slate-950 flex items-center gap-2">
+                                            {act.title}
+                                            <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+                                            <span className="text-[9px] text-slate-400 lowercase italic">{act.time}</span>
+                                        </div>
+                                        <div className="text-[10px] text-slate-500 font-medium">{act.proj}</div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

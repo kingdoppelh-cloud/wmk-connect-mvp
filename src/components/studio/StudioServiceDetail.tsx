@@ -1,109 +1,113 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const StudioServiceDetail: React.FC = () => {
     return (
-        <div className="pt-8 pb-32 max-w-7xl mx-auto px-6">
-            {/* Hero Section: Asymmetric & Editorial */}
-            <section className="grid grid-cols-1 md:grid-cols-12 gap-12 items-end mb-24">
-                <div className="md:col-span-8">
-                    <div className="inline-block px-3 py-1 mb-6 bg-surface-container-high rounded-full">
-                        <span className="text-xs font-bold uppercase tracking-widest text-primary font-label">Premium Optik</span>
-                    </div>
-                    <h1 className="text-5xl md:text-7xl font-black text-on-background leading-[0.9] tracking-tighter mb-8">
-                        Web-Redesign <br />& <span className="text-primary italic">UI/UX</span>
-                    </h1>
-                    <p className="text-xl md:text-2xl text-secondary max-w-2xl leading-relaxed">
-                        Wir verwandeln Ihre bestehende Website in ein modernes, leistungsstarkes Aushängeschild für Ihr Unternehmen. Fokus auf Konversion und Premium-Look.
-                    </p>
-                </div>
-                <div className="md:col-span-4 flex justify-end">
-                    <div className="p-8 bg-surface-container-low rounded-xl border-l-8 border-primary shadow-sm">
-                        <div className="text-label-md uppercase tracking-widest text-secondary font-bold mb-2">Investment</div>
-                        <div className="text-4xl font-black text-on-background">ab 2.500 €</div>
-                        <div className="text-sm text-secondary mt-1">Individuelles Angebot</div>
-                    </div>
-                </div>
-            </section>
+        <div className="pb-24 md:pb-0 bg-white min-h-screen selection:bg-[#b9000b]/20">
+            {/* Header / Intro */}
+            <header className="pt-24 pb-16 px-6 lg:px-24">
+                <div className="container mx-auto">
+                    <Link to="/studio" className="inline-flex items-center gap-2 text-slate-400 hover:text-[#b9000b] transition-colors mb-12 group">
+                        <span className="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">Zurück zum Studio</span>
+                    </Link>
 
-            {/* Bento Grid: Features & Preview */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
-                {/* Feature Card: Mobile First */}
-                <div className="md:col-span-1 bg-surface-container-lowest p-10 rounded-xl flex flex-col justify-between hover:translate-y-[-4px] transition-transform duration-300 shadow-sm border border-outline-variant/10">
-                    <div>
-                        <span className="material-symbols-outlined text-primary text-4xl mb-6">smartphone</span>
-                        <h3 className="text-2xl font-bold mb-4 font-headline">Mobile-First Design</h3>
-                        <p className="text-secondary leading-relaxed">Nahtlose Erlebnisse auf allen Endgeräten – von Smartphone bis Desktop.</p>
-                    </div>
-                </div>
-
-                {/* Main Preview Card (Case Study) */}
-                <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-xl bg-slate-900 group shadow-lg">
-                    <img alt="Premium Web Design UI" className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4n5nyEwqfW-s8f20Cg_tvbs6LNA_fqwxdYv0Djr-giJiULE9OuRG4U9A6yVA2CHsK6nVqJWqYDLg9rlSTRBfg1cdjkVvCVyjBCw3V9Mp0dtRWizKlhZUnORoavFxvjafGV1wkr04xMeGjXjT2WN-vlvsdggMSHL6hqk_crUGCUgyC8O1ywgK8QpacNhHluI9DmXUaGnWqPFQORi4ZE7ffMPRzidNApigq4oq-1ZrKp_ITwuDEuRwNUVEBLtXC9r3XeDVrwhcTHMY" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-90"></div>
-                    <div className="absolute bottom-0 left-0 p-10 w-full">
-                        <div className="flex items-center gap-4 mb-4">
-                            <span className="px-3 py-1 bg-primary text-on-primary text-xs font-bold rounded">BEFORE / AFTER</span>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                        <div className="lg:col-span-8 space-y-8">
+                            <div className="flex items-center gap-4">
+                                <span className="w-12 h-[1px] bg-[#b9000b]"></span>
+                                <span className="text-[#b9000b] font-black uppercase text-[10px] tracking-[0.4em]">Premium Modul</span>
+                            </div>
+                            <h1 className="text-6xl lg:text-9xl font-headline font-black tracking-tighter leading-[0.85] text-slate-950">
+                                Web-Redesign <br /><span className="italic">(Premium)</span>
+                            </h1>
+                            <p className="text-2xl text-slate-600 max-w-2xl leading-relaxed font-medium pt-4">
+                                Wir bauen keine Webseiten. Wir erschaffen digitale Repräsentationen, die Ihre Markenidentität atmen und Konversionen erzwingen.
+                            </p>
                         </div>
-                        <h2 className="text-3xl font-black text-white mb-2 font-headline">Digital Transformation</h2>
-                        <p className="text-slate-300 max-w-md">Einblicke in unsere jüngste Zusammenarbeit mit führenden Industrie-Partnern.</p>
-                    </div>
-                </div>
-
-                {/* Feature Card: Tailwind */}
-                <div className="md:col-span-1 bg-surface-container-lowest p-10 rounded-xl flex flex-col justify-between hover:translate-y-[-4px] transition-transform duration-300 shadow-sm border border-outline-variant/10">
-                    <div>
-                        <span className="material-symbols-outlined text-primary text-4xl mb-6">terminal</span>
-                        <h3 className="text-2xl font-bold mb-4 font-headline">Tailwind CSS Integration</h3>
-                        <p className="text-secondary leading-relaxed">Moderne Utility-First Architektur für maximale Skalierbarkeit und Wartbarkeit.</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Secondary Details: The "Civic Lead" Style */}
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-24">
-                <div className="order-2 md:order-1">
-                    <div className="bg-surface-container-high p-12 rounded-xl border-l-[12px] border-primary shadow-sm">
-                        <h2 className="text-4xl font-black text-primary mb-6 leading-tight font-headline">"Qualität ist kein Zufall, sondern das Ergebnis höchster Präzision."</h2>
-                        <p className="text-on-surface font-medium italic opacity-75">— WMK Studio Design-Prinzip</p>
-                    </div>
-                </div>
-                <div className="order-1 md:order-2 space-y-12">
-                    <div className="flex gap-6">
-                        <div className="w-12 h-12 shrink-0 bg-primary-container rounded-lg flex items-center justify-center text-on-primary">
-                            <span className="material-symbols-outlined">speed</span>
-                        </div>
-                        <div>
-                            <h4 className="text-xl font-bold mb-2 font-headline">Optimierte Ladezeiten</h4>
-                            <p className="text-secondary">Core Web Vitals Optimierung für blitzschnelle Performance und bessere Nutzersignale.</p>
+                        <div className="lg:col-span-4 pt-4 lg:pt-20">
+                            <div className="bg-slate-50 p-10 rounded-[40px] border border-slate-100 space-y-8">
+                                <div className="space-y-1">
+                                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Investition ab</div>
+                                    <div className="text-4xl font-headline font-black text-slate-950 tracking-tighter">2.500 € <span className="text-xl text-[#b9000b] font-medium">*</span></div>
+                                </div>
+                                <button className="w-full bg-[#b9000b] text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-2xl shadow-[#b9000b]/20 active:scale-95 transition-all">
+                                    Paket anfragen
+                                </button>
+                                <p className="text-[10px] text-slate-400 leading-relaxed italic">* Individuelle Kalkulation basierend auf Komplexität und Umfang.</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex gap-6">
-                        <div className="w-12 h-12 shrink-0 bg-primary-container rounded-lg flex items-center justify-center text-on-primary">
-                            <span className="material-symbols-outlined">travel_explore</span>
+                </div>
+            </header>
+
+            {/* Editorial Content Section */}
+            <section className="py-32 bg-slate-950 text-white overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-[#b9000b]/5 blur-[120px]"></div>
+
+                <div className="container mx-auto px-6 lg:px-24">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                        <div className="relative">
+                            <div className="aspect-[3/4] rounded-[60px] overflow-hidden shadow-2xl relative z-10">
+                                <img alt="Design process detail" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYF_eS_9H-7xWw-m9v9vUo-uY_B9U6n4v_9m_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v_v" />
+                            </div>
+                            <div className="absolute -bottom-12 -right-12 w-64 h-64 border-[32px] border-[#b9000b]/10 rounded-full"></div>
                         </div>
-                        <div>
-                            <h4 className="text-xl font-bold mb-2 font-headline">SEO-Grundgerüst</h4>
-                            <p className="text-secondary">Strukturiertes Markup und semantisches HTML für die beste Sichtbarkeit bei Google.</p>
+
+                        <div className="space-y-16">
+                            <div className="space-y-6">
+                                <h2 className="text-5xl font-headline font-black tracking-tight leading-none italic">01. Strategische Vision</h2>
+                                <p className="text-slate-400 text-xl leading-relaxed">Jedes Design-Element folgt einer psychologischen Logik. Wir analysieren Ihre Zielgruppe und entwickeln eine User Journey, die Widerstände abbaut.</p>
+                            </div>
+                            <div className="space-y-6">
+                                <h2 className="text-5xl font-headline font-black tracking-tight leading-none">02. Technische Exzellenz</h2>
+                                <p className="text-slate-400 text-xl leading-relaxed">Höchstgeschwindigkeit, perfekte Mobiloptimierung und barrierefreie Architektur sind für uns kein Luxus, sondern Standard.</p>
+                            </div>
+                            <div className="space-y-6">
+                                <h2 className="text-5xl font-headline font-black tracking-tight leading-none italic text-[#b9000b]">03. Editorial Design</h2>
+                                <p className="text-slate-400 text-xl leading-relaxed">Wir nutzen moderne Typografie und Weißraum, um Ihre Inhalte wie ein Premium-Magazin zu präsentieren – hochwertig und zeitlos.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* CTA Section: Floating Glass Card */}
-            <section className="relative bg-on-background rounded-3xl p-12 md:p-20 overflow-hidden shadow-2xl">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-primary opacity-20 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div className="relative z-10 text-center max-w-3xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-black text-white mb-8 tracking-tighter font-headline">Bereit für den nächsten Schritt?</h2>
-                    <p className="text-slate-300 text-lg mb-12 leading-relaxed">
-                        Lassen Sie uns gemeinsam besprechen, wie wir Ihre Online-Präsenz auf das nächste Level heben können.
-                    </p>
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                        <button className="w-full md:w-auto px-10 py-5 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-xl active:scale-95 transition-transform shadow-lg shadow-primary/20">
-                            Jetzt unverbindlich anfragen
-                        </button>
-                        <button className="w-full md:w-auto px-10 py-5 border border-white/15 text-white font-bold rounded-xl hover:bg-white/5 transition-colors">
-                            Portfolio ansehen
-                        </button>
+            {/* Feature List */}
+            <section className="py-32 bg-white">
+                <div className="container mx-auto px-6 lg:px-24">
+                    <div className="mb-20 text-center space-y-4">
+                        <span className="text-[#b9000b] font-black uppercase text-[10px] tracking-[0.4em]">Inhalt des Moduls</span>
+                        <h2 className="text-5xl font-headline font-black text-slate-900 tracking-tighter">Was Sie erhalten</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        {[
+                            { title: "Custom UI Design", desc: "Keine Vorlagen. Jedes Interface wird von Grund auf für Ihre Marke gestaltet." },
+                            { title: "Motion Engineering", desc: "Subtile Animationen, die den Nutzer führen und ein lebendiges Gefühl vermitteln." },
+                            { title: "SEO Foundation", desc: "Strukturelle Optimierung für maximale Sichtbarkeit in Suchmaschinen von Tag 1." }
+                        ].map((item, i) => (
+                            <div key={i} className="group p-10 border border-slate-100 rounded-[40px] hover:bg-slate-50 transition-all duration-500">
+                                <div className="text-[10px] font-black text-slate-300 mb-8 uppercase tracking-[0.3em]">Modul {i + 1}</div>
+                                <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight uppercase italic">{item.title}</h3>
+                                <p className="text-slate-500 leading-relaxed font-medium">{item.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Last Call */}
+            <section className="pb-32 px-6">
+                <div className="container mx-auto bg-[#b9000b] rounded-[60px] p-20 lg:p-32 flex flex-col items-center text-center text-white relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_white_0%,_transparent_100%)] opacity-10"></div>
+                    <h2 className="text-5xl lg:text-7xl font-headline font-black tracking-tighter mb-12 relative z-10 leading-none">
+                        Zeit für eine digitale <br />Renaissance.
+                    </h2>
+                    <button className="bg-white text-[#b9000b] px-12 py-6 rounded-2xl font-black uppercase text-xs tracking-[0.4em] active:scale-95 transition-all shadow-2xl relative z-10 hover:bg-slate-50">
+                        Projekt-Briefing anfordern
+                    </button>
+                    <div className="mt-12 text-[10px] font-black uppercase tracking-[0.3em] opacity-60 relative z-10 italic">
+                        Limitierte Kapazitäten für Q2/2026
                     </div>
                 </div>
             </section>
