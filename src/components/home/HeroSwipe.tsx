@@ -9,15 +9,14 @@ export const HeroSwipe: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {/* Logo Splash — first thing the user sees */}
-            <div className="flex flex-col items-center pt-4 pb-2 animate-in fade-in duration-700">
+            {/* Logo Splash — full-width white section so PNG white background vanishes */}
+            <div className="-mx-6 bg-white flex flex-col items-center py-8 animate-in fade-in duration-700">
                 <img
                     src="/logo.png"
                     alt="WMK Connect"
-                    className="w-40 h-40 md:w-52 md:h-52 object-contain drop-shadow-xl"
-                    style={{ mixBlendMode: 'multiply' }}
+                    className="w-72 h-72 md:w-96 md:h-96 object-contain"
                 />
-                <p className="text-[10px] tracking-[0.3em] uppercase font-black text-slate-400 -mt-2">
+                <p className="text-[11px] tracking-[0.35em] uppercase font-black text-slate-400 -mt-3 pb-2">
                     Deine Region, Vernetzt
                 </p>
             </div>
