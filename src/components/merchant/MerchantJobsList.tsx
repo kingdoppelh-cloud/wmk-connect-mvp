@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const MerchantJobsList: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="pt-8 pb-12 px-6 lg:px-12">
             {/* Header Section */}
@@ -88,7 +91,10 @@ export const MerchantJobsList: React.FC = () => {
                             <span className="material-symbols-outlined text-[20px]">pause_circle</span>
                             <span>Pause</span>
                         </button>
-                        <button className="flex items-center gap-2 px-6 py-2.5 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-primary rounded-xl transition-all shadow-lg shadow-secondary/10">
+                        <button
+                            onClick={() => navigate('1/boost')}
+                            className="flex items-center gap-2 px-6 py-2.5 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-primary rounded-xl transition-all shadow-lg shadow-secondary/10"
+                        >
                             <span className="material-symbols-outlined text-[20px]">visibility</span>
                             <span>View</span>
                         </button>
@@ -128,7 +134,10 @@ export const MerchantJobsList: React.FC = () => {
                             <span className="material-symbols-outlined text-[20px]">play_circle</span>
                             <span>Resume</span>
                         </button>
-                        <button className="flex items-center gap-2 px-6 py-2.5 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-primary rounded-xl transition-all shadow-lg shadow-secondary/10">
+                        <button
+                            onClick={() => navigate('2/boost')}
+                            className="flex items-center gap-2 px-6 py-2.5 text-xs font-black uppercase tracking-widest bg-secondary text-white hover:bg-primary rounded-xl transition-all shadow-lg shadow-secondary/10"
+                        >
                             <span className="material-symbols-outlined text-[20px]">visibility</span>
                             <span>View</span>
                         </button>

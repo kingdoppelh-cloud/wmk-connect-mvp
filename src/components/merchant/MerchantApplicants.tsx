@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const MerchantApplicants: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="pt-8 pb-12 px-6 lg:px-12 max-w-7xl mx-auto w-full">
             {/* Header Section with Asymmetric Layout */}
@@ -45,7 +48,10 @@ export const MerchantApplicants: React.FC = () => {
             {/* Applicants Grid */}
             <div className="grid grid-cols-1 gap-6">
                 {/* Applicant Card 1 */}
-                <div className="group bg-surface-container-lowest hover:bg-surface-container-low p-8 rounded-[2.5rem] no-line transition-all duration-300 cursor-pointer">
+                <div
+                    onClick={() => navigate('elena')}
+                    className="group bg-surface-container-lowest hover:bg-surface-container-low p-8 rounded-[2.5rem] no-line transition-all duration-300 cursor-pointer"
+                >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                         <div className="flex items-center gap-8">
                             <div className="relative group/avatar">
