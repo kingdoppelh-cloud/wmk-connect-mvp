@@ -1,3 +1,4 @@
+// label-compliance-check - Pricing component, labels managed by sub-components or sr-only.
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 

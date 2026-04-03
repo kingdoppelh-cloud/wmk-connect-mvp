@@ -3,6 +3,7 @@ import React from 'react';
 export const MerchantDashboardOverview: React.FC = () => {
     return (
         <div className="pt-8 pb-12 px-6 lg:px-12">
+            <label className="sr-only">Händler Dashboard Übersicht</label>
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
                 <div>
@@ -40,7 +41,7 @@ export const MerchantDashboardOverview: React.FC = () => {
                 {/* Metric 2 */}
                 <div className="bg-white rounded-2xl p-6 shadow-[0px_4px_24px_rgba(27,59,90,0.04)] border border-slate-100 flex flex-col">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                             <span className="material-symbols-outlined">group</span>
                         </div>
                         <span className="flex items-center gap-1 text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-md">

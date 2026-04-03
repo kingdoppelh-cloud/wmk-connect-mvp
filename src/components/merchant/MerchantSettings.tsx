@@ -46,8 +46,9 @@ export const MerchantSettings: React.FC<MerchantSettingsProps> = ({
                     <form onSubmit={onUpdateProfile} className="space-y-8">
                         <div className="space-y-6">
                             <div className="group">
-                                <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2 group-focus-within:text-red-500 transition-colors">Öffentlicher Name</label>
+                                <label htmlFor="publicName" className="block text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2 group-focus-within:text-red-500 transition-colors">Öffentlicher Name</label>
                                 <input
+                                    id="publicName"
                                     className={`w-full bg-[#05080a] border border-white/[0.05] px-5 py-4 rounded-2xl focus:ring-1 focus:ring-red-500/50 outline-none transition-all text-white font-medium ${formErrors.description ? "border-red-500" : ""}`}
                                     value={profileData.description}
                                     onChange={e => setProfileData({ ...profileData, description: e.target.value })}
@@ -55,8 +56,9 @@ export const MerchantSettings: React.FC<MerchantSettingsProps> = ({
                             </div>
 
                             <div className="group">
-                                <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2 group-focus-within:text-red-500 transition-colors">Professionelle Bio</label>
+                                <label htmlFor="publicBio" className="block text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2 group-focus-within:text-red-500 transition-colors">Professionelle Bio</label>
                                 <textarea
+                                    id="publicBio"
                                     className={`w-full bg-[#05080a] border border-white/[0.05] px-5 py-4 rounded-2xl focus:ring-1 focus:ring-red-500/50 outline-none min-h-[140px] resize-none transition-all text-white text-sm leading-relaxed ${formErrors.descriptionLong ? "border-red-500" : ""}`}
                                     value={profileData.descriptionLong}
                                     onChange={e => setProfileData({ ...profileData, descriptionLong: e.target.value })}

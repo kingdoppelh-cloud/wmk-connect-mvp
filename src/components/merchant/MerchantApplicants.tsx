@@ -25,11 +25,11 @@ export const MerchantApplicants: React.FC = () => {
                 <div className="flex items-center gap-6 flex-1 min-w-[300px]">
                     <div className="relative flex-1 max-w-md">
                         <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary opacity-40">search</span>
-                        <input className="w-full bg-white no-line pl-12 pr-6 py-4 text-sm font-bold text-primary rounded-2xl transition-all focus:ring-2 focus:ring-primary/10 placeholder:text-on-surface/30 placeholder:font-medium" placeholder="Search by name or title..." type="text" />
+                        <input aria-label="Bewerber suchen" className="w-full bg-white no-line pl-12 pr-6 py-4 text-sm font-bold text-primary rounded-2xl transition-all focus:ring-2 focus:ring-primary/10 placeholder:text-on-surface/30 placeholder:font-medium" placeholder="Search by name or title..." type="text" />
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="hidden sm:inline text-[10px] font-black text-on-surface opacity-30 uppercase tracking-[0.2em]">Filter by Job:</span>
-                        <select className="bg-transparent border-none text-sm font-bold focus:ring-0 cursor-pointer text-primary p-0 h-auto">
+                        <label htmlFor="jobFilter" className="hidden sm:inline text-[10px] font-black text-on-surface opacity-30 uppercase tracking-[0.2em] cursor-pointer">Filter by Job:</label>
+                        <select id="jobFilter" className="bg-transparent border-none text-sm font-bold focus:ring-0 cursor-pointer text-primary p-0 h-auto">
                             <option>All Listings</option>
                             <option>City Planner</option>
                             <option>Social Services Coord.</option>

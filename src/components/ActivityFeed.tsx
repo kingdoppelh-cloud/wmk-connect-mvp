@@ -82,8 +82,8 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ onCompanyClick }) =>
                                 <span className={cn(
                                     "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
                                     post.type === 'offer' ? "bg-amber-100 text-amber-700" :
-                                        post.type === 'event' ? "bg-purple-100 text-purple-700" :
-                                            post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
+                                        post.type === 'event' ? "bg-emerald-100 text-emerald-700" :
+                                            post.type === 'special' ? "bg-cyan-100 text-cyan-700" :
                                                 "bg-slate-100 text-slate-600"
                                 )}>
                                     {post.type}
@@ -112,6 +112,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ onCompanyClick }) =>
                                 <div className="pt-4 border-t border-slate-50 flex items-center justify-between">
                                     <button
                                         onClick={() => toggleLike(post.id)}
+                                        aria-label={post.is_liked ? "Gefällt mir entfernen" : "Gefällt mir"}
                                         className={cn(
                                             "flex items-center gap-2 px-4 py-2 rounded-xl transition-all active:scale-90",
                                             post.is_liked

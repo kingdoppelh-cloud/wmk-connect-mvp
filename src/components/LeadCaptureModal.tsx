@@ -120,6 +120,7 @@ export const LeadCaptureModal: React.FC<Props> = ({
                                         required
                                         type="text"
                                         placeholder="Name der Firma"
+                                        aria-label="Name der Firma"
                                         value={formData.company_name}
                                         onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                                         className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-transparent focus:border-accent focus:bg-white focus:ring-2 focus:ring-accent/20 rounded-2xl text-sm transition-all"
@@ -134,6 +135,7 @@ export const LeadCaptureModal: React.FC<Props> = ({
                                         required
                                         type="text"
                                         placeholder="Ihr Vor- und Nachname"
+                                        aria-label="Ihr Vor- und Nachname"
                                         value={formData.contact_name}
                                         onChange={(e) => setFormData({ ...formData, contact_name: e.target.value })}
                                         className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-transparent focus:border-accent focus:bg-white focus:ring-2 focus:ring-accent/20 rounded-2xl text-sm transition-all"
@@ -149,6 +151,7 @@ export const LeadCaptureModal: React.FC<Props> = ({
                                             required
                                             type="email"
                                             placeholder="E-Mail Adresse"
+                                            aria-label="E-Mail Adresse"
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                             className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-transparent focus:border-accent focus:bg-white focus:ring-2 focus:ring-accent/20 rounded-2xl text-sm transition-all"
@@ -163,6 +166,7 @@ export const LeadCaptureModal: React.FC<Props> = ({
                                             required
                                             type="tel"
                                             placeholder="Telefonnummer"
+                                            aria-label="Telefonnummer"
                                             value={formData.phone}
                                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                             className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-transparent focus:border-accent focus:bg-white focus:ring-2 focus:ring-accent/20 rounded-2xl text-sm transition-all"
@@ -176,6 +180,7 @@ export const LeadCaptureModal: React.FC<Props> = ({
                                     </div>
                                     <textarea
                                         placeholder="Ihre Nachricht an uns (Optional)"
+                                        aria-label="Ihre Nachricht an uns"
                                         value={formData.message}
                                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                         className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-transparent focus:border-accent focus:bg-white focus:ring-2 focus:ring-accent/20 rounded-2xl text-sm min-h-[100px] resize-y transition-all"

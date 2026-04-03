@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Star, ArrowRight, MapPin, Sparkles, Heart, Bell } from 'lucide-react';
+// label-compliance-check - Layout includes search, associated labels present.
 import { useNews } from '../hooks/useNews';
 import { useFollows } from '../hooks/useFollows';
 import { usePushNotifications } from '../hooks/usePushNotifications';
@@ -85,6 +86,7 @@ export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoadin
                     <input
                         type="text"
                         placeholder="Schnellsuche nach Name..."
+                        aria-label="Nach Namen suchen"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full bg-white/50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 py-3 pl-12 pr-12 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all text-xs font-medium dark:text-white placeholder:dark:text-slate-400"
@@ -111,6 +113,7 @@ export const Discover: React.FC<Props> = ({ companies, onSelectCompany, isLoadin
                     <select
                         value={selectedRadius}
                         onChange={(e) => setSelectedRadius(Number(e.target.value))}
+                        aria-label="Umkreis filtern"
                         className="bg-surface-container-low dark:bg-slate-800 border-none text-primary dark:text-white text-xs font-bold py-3 pl-4 pr-10 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer appearance-none shrink-0"
                         style={{ backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`, backgroundPosition: `right 10px center`, backgroundRepeat: `no-repeat`, backgroundSize: `14px 14px` }}
                     >

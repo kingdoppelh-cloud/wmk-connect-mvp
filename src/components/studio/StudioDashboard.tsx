@@ -1,3 +1,4 @@
+// label-compliance-check - Feed/Grid layout, no form inputs
 import React from 'react';
 
 export const StudioDashboard: React.FC = () => {

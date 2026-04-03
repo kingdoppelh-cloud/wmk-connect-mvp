@@ -30,22 +30,23 @@ export const MerchantTalentPool: React.FC = () => {
                         className="w-full bg-white border-none rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-primary/20 text-on-surface shadow-sm"
                         placeholder="Name, Skills oder Ort suchen..."
                         type="text"
+                        aria-label="Kandidaten suchen"
                     />
                 </div>
                 <div className="flex flex-wrap gap-3 w-full">
-                    <select className="bg-white border-none shadow-sm rounded-xl px-4 py-3 text-sm font-semibold text-secondary focus:ring-2 focus:ring-primary/20 min-w-[140px] cursor-pointer">
+                    <select aria-label="Fachbereich filtern" className="bg-white border-none shadow-sm rounded-xl px-4 py-3 text-sm font-semibold text-secondary focus:ring-2 focus:ring-primary/20 min-w-[140px] cursor-pointer">
                         <option>Fachbereich</option>
                         <option>Bauwesen</option>
                         <option>IT &amp; Software</option>
                         <option>Administration</option>
                     </select>
-                    <select className="bg-white border-none shadow-sm rounded-xl px-4 py-3 text-sm font-semibold text-secondary focus:ring-2 focus:ring-primary/20 min-w-[140px] cursor-pointer">
+                    <select aria-label="Status filtern" className="bg-white border-none shadow-sm rounded-xl px-4 py-3 text-sm font-semibold text-secondary focus:ring-2 focus:ring-primary/20 min-w-[140px] cursor-pointer">
                         <option>Status</option>
                         <option>Verfügbar</option>
                         <option>In Prüfung</option>
                         <option>Platziert</option>
                     </select>
-                    <select className="bg-white border-none shadow-sm rounded-xl px-4 py-3 text-sm font-semibold text-secondary focus:ring-2 focus:ring-primary/20 min-w-[140px] cursor-pointer">
+                    <select aria-label="Erfahrung filtern" className="bg-white border-none shadow-sm rounded-xl px-4 py-3 text-sm font-semibold text-secondary focus:ring-2 focus:ring-primary/20 min-w-[140px] cursor-pointer">
                         <option>Erfahrung</option>
                         <option>Junior</option>
                         <option>Professional</option>

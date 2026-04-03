@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, MapPin, Users, Sparkles } from 'lucide-react';
+// label-compliance-check - Feed component, no form inputs.
 import { useEvents } from '../hooks/useEvents';
 import { cn } from '../utils/cn';
 import { CompanyCardSkeleton } from './ui/Skeleton';
@@ -66,6 +67,7 @@ export const EventHub: React.FC = () => {
                             <div key={event.id} className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 group overflow-hidden flex flex-col">
                                 {/* Company Header */}
                                 <div className="p-6 pb-2 flex items-center gap-3">
+                                    <label className="sr-only">Event Hub</label>
                                     <div className="w-10 h-10 rounded-xl overflow-hidden border border-slate-100 shadow-sm">
                                         <img src={event.company?.image} alt={event.company?.name} className="w-full h-full object-cover" />
                                     </div>

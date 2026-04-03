@@ -16,7 +16,7 @@ export const RewardModal: React.FC<RewardModalProps> = ({ isOpen, onClose }) => 
         { icon: <Eye size={20} />, label: 'Profil besuchen', points: '+1', color: 'bg-blue-50 text-blue-600' },
         { icon: <MessageCircle size={20} />, label: 'Kontaktanfrage', points: '+3', color: 'bg-emerald-50 text-emerald-600' },
         { icon: <Calendar size={20} />, label: 'Event-Zusage', points: '+5', color: 'bg-amber-50 text-amber-600' },
-        { icon: <Share2 size={20} />, label: 'Unternehmen teilen', points: '+10', color: 'bg-purple-50 text-purple-600' },
+        { icon: <Share2 size={20} />, label: 'Unternehmen teilen', points: '+10', color: 'bg-cyan-50 text-cyan-600' },
     ];
 
     return (

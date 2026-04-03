@@ -94,10 +94,11 @@ export const Register: React.FC<RegisterProps> = ({ onBack }) => {
                 <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
                     <form onSubmit={handleRegister} className="space-y-5">
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Firmenname</label>
+                            <label htmlFor="companyName" className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Firmenname</label>
                             <div className="relative">
                                 <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                 <input
+                                    id="companyName"
                                     required
                                     type="text"
                                     value={companyName}
@@ -109,10 +110,11 @@ export const Register: React.FC<RegisterProps> = ({ onBack }) => {
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kategorie</label>
+                            <label htmlFor="category" className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kategorie</label>
                             <div className="relative">
                                 <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                 <select
+                                    id="category"
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                     className="w-full bg-slate-50 border border-slate-100 pl-12 pr-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/20 font-bold text-slate-900 appearance-none"
@@ -127,10 +129,11 @@ export const Register: React.FC<RegisterProps> = ({ onBack }) => {
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">E-Mail Adresse</label>
+                            <label htmlFor="email" className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">E-Mail Adresse</label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                 <input
+                                    id="email"
                                     required
                                     type="email"
                                     value={email}
@@ -142,10 +145,11 @@ export const Register: React.FC<RegisterProps> = ({ onBack }) => {
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Passwort</label>
+                            <label htmlFor="password" className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Passwort</label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                 <input
+                                    id="password"
                                     required
                                     minLength={6}
                                     type="password"

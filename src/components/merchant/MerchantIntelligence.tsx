@@ -146,8 +146,8 @@ export const MerchantIntelligence: React.FC<MerchantIntelligenceProps> = ({ comp
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-[32px] p-6 border border-slate-200/60 shadow-sm flex flex-col items-center justify-center text-center space-y-2 group hover:border-purple-200 transition-colors">
-                        <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <div className="bg-white rounded-[32px] p-6 border border-slate-200/60 shadow-sm flex flex-col items-center justify-center text-center space-y-2 group hover:border-emerald-200 transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Globe size={20} />
                         </div>
                         <div>

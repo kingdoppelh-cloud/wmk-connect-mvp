@@ -126,8 +126,9 @@ export const ProfileEditor: React.FC<Props> = ({ isOpen, onClose }) => {
 
                     {/* Name */}
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-primary dark:text-slate-300 uppercase tracking-widest">Vollständiger Name</label>
+                        <label htmlFor="full_name" className="text-[10px] font-black text-primary dark:text-slate-300 uppercase tracking-widest">Vollständiger Name</label>
                         <input
+                            id="full_name"
                             type="text"
                             value={formData.full_name || ''}
                             onChange={e => setFormData({ ...formData, full_name: e.target.value })}
@@ -138,8 +139,9 @@ export const ProfileEditor: React.FC<Props> = ({ isOpen, onClose }) => {
 
                     {/* Bio / Biography */}
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-primary dark:text-slate-300 uppercase tracking-widest">Biografie / Erfahrung</label>
+                        <label htmlFor="bio" className="text-[10px] font-black text-primary dark:text-slate-300 uppercase tracking-widest">Biografie / Erfahrung</label>
                         <textarea
+                            id="bio"
                             rows={4}
                             value={formData.bio || ''}
                             onChange={e => setFormData({ ...formData, bio: e.target.value })}
@@ -162,12 +164,14 @@ export const ProfileEditor: React.FC<Props> = ({ isOpen, onClose }) => {
                         </div>
                         <div className="flex gap-2">
                             <input
+                                id="new_skill"
                                 type="text"
                                 value={newSkill}
                                 onChange={e => setNewSkill(e.target.value)}
                                 onKeyPress={e => e.key === 'Enter' && addSkill()}
                                 placeholder="z.B. Sanitär, Heizung..."
                                 className="flex-1 bg-white dark:bg-slate-800 border-none px-5 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold text-primary dark:text-white placeholder:text-slate-400"
+                                aria-label="Neue Fähigkeit hinzufügen"
                             />
                             <button
                                 onClick={addSkill}

@@ -369,8 +369,9 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                         </div>
                         <form onSubmit={handleAddJob} className="p-8 space-y-4">
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Job-Titel</label>
+                                <label htmlFor="jobTitle" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Job-Titel</label>
                                 <input
+                                    id="jobTitle"
                                     required
                                     value={newJob.title}
                                     onChange={e => {
@@ -387,19 +388,20 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                             </div>
                             <div className="grid grid-cols-2 gap-4 text-left">
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Art</label>
-                                    <select value={newJob.job_type} onChange={e => setNewJob({ ...newJob, job_type: e.target.value })} className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none">
+                                    <label htmlFor="jobType" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Art</label>
+                                    <select id="jobType" value={newJob.job_type} onChange={e => setNewJob({ ...newJob, job_type: e.target.value })} className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none">
                                         <option>Vollzeit</option><option>Teilzeit</option><option>Minijob</option><option>Ausbildung</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Gehalt</label>
-                                    <input value={newJob.salary_range} onChange={e => setNewJob({ ...newJob, salary_range: e.target.value })} placeholder="z.B. 3.000€" className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none" />
+                                    <label htmlFor="jobSalary" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Gehalt</label>
+                                    <input id="jobSalary" value={newJob.salary_range} onChange={e => setNewJob({ ...newJob, salary_range: e.target.value })} placeholder="z.B. 3.000€" className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none" />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label>
+                                <label htmlFor="jobDescription" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label>
                                 <textarea
+                                    id="jobDescription"
                                     required
                                     rows={3}
                                     value={newJob.description}
@@ -473,17 +475,18 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Bild hinzufügen</label>
+                                <label htmlFor="newsImage" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Bild hinzufügen</label>
                                 <div className="relative group">
-                                    <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer z-10" onChange={(e) => setNewsImageFile(e.target.files?.[0] || null)} />
+                                    <input id="newsImage" type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer z-10" onChange={(e) => setNewsImageFile(e.target.files?.[0] || null)} />
                                     <div className={cn("w-full aspect-[16/9] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center transition-all", newsImageFile ? "border-accent bg-accent/5" : "border-slate-100 bg-slate-50")}>
                                         {newsImageFile ? <img src={URL.createObjectURL(newsImageFile)} className="w-full h-full object-cover rounded-xl" alt="Preview" /> : <ImageIcon className="text-slate-300" size={32} />}
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Was gibt es Neues?</label>
+                                <label htmlFor="newsContent" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 text-left">Was gibt es Neues?</label>
                                 <textarea
+                                    id="newsContent"
                                     required
                                     rows={4}
                                     value={newPost.content}
@@ -532,8 +535,9 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                             </div>
                             <form onSubmit={handleAddEvent} className="space-y-5">
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Event-Titel</label>
+                                    <label htmlFor="eventTitle" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Event-Titel</label>
                                     <input
+                                        id="eventTitle"
                                         required
                                         value={newEvent.title}
                                         onChange={e => {
@@ -550,8 +554,9 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                 </div>
                                 <div className="grid grid-cols-2 gap-4 text-left">
                                     <div>
-                                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Datum & Zeit</label>
+                                        <label htmlFor="eventDate" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Datum & Zeit</label>
                                         <input
+                                            id="eventDate"
                                             required
                                             type="datetime-local"
                                             value={newEvent.event_date}
@@ -566,11 +571,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({ company, o
                                         />
                                         {formErrors.event_date && <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-wider">{formErrors.event_date}</p>}
                                     </div>
-                                    <div><label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Ort</label><input value={newEvent.location_override} onChange={e => setNewEvent({ ...newEvent, location_override: e.target.value })} placeholder="Optional" className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none font-bold text-xs" /></div>
+                                    <div><label htmlFor="eventLocation" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5">Ort</label><input id="eventLocation" value={newEvent.location_override} onChange={e => setNewEvent({ ...newEvent, location_override: e.target.value })} placeholder="Optional" className="w-full bg-slate-50 border border-slate-100 px-4 py-3 rounded-xl outline-none font-bold text-xs" /></div>
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label>
+                                    <label htmlFor="eventDescription" className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1.5 text-left">Beschreibung</label>
                                     <textarea
+                                        id="eventDescription"
                                         required
                                         rows={3}
                                         value={newEvent.description}

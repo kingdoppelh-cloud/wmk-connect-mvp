@@ -9,6 +9,7 @@ interface SkeletonProps {
 export const Skeleton: React.FC<SkeletonProps> = ({ className, variant = 'rect' }) => {
     return (
         <div
+            aria-label="Ladeinhalt"
             className={cn(
                 "animate-pulse bg-slate-200/60",
                 variant === 'circle' && "rounded-full",

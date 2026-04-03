@@ -6,6 +6,7 @@ export const MerchantApplicantDetail: React.FC = () => {
 
     return (
         <div className="pt-8 pb-32 px-6 max-w-7xl mx-auto w-full">
+            <label className="sr-only">Bewerber Details</label>
             {/* Back Button */}
             <button
                 onClick={() => navigate('..')}

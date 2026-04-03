@@ -30,7 +30,7 @@ export const AdminDashboard: React.FC<Props> = ({ companies, onBack, onEdit, onA
         { label: 'Gesamt', value: companies.length, icon: Building2, color: 'text-slate-900', bg: 'bg-slate-100' },
         { label: 'Premium', value: companies.filter(c => c.isPremium).length, icon: Star, color: 'text-accent', bg: 'bg-accent/10' },
         { label: 'Kategorien', value: new Set(companies.map(c => c.category)).size, icon: LayoutDashboard, color: 'text-blue-600', bg: 'bg-blue-50' },
-        { label: 'Personal', value: 1, icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' }
+        { label: 'Personal', value: 1, icon: Users, color: 'text-emerald-600', bg: 'bg-emerald-50' }
     ];
 
     return (

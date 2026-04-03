@@ -33,7 +33,7 @@ export const MagicSearch: React.FC<MagicSearchProps> = ({ onResults, onClear, ty
         <div className="relative mb-8">
             <form onSubmit={handleSearch} className="relative group">
                 {/* Background Glow when searching */}
-                <div className={`absolute -inset-1 bg-gradient-to-r from-accent via-purple-500 to-accent rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 ${isSearching ? 'animate-pulse opacity-60' : ''}`} />
+                <div className={`absolute -inset-1 bg-gradient-to-r from-accent via-emerald-500 to-accent rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 ${isSearching ? 'animate-pulse opacity-60' : ''}`} />
 
                 <div className="relative flex items-center bg-white border border-slate-100 rounded-2xl shadow-xl overflow-hidden">
                     <div className="pl-4 text-accent">
@@ -50,6 +50,7 @@ export const MagicSearch: React.FC<MagicSearchProps> = ({ onResults, onClear, ty
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         className="w-full py-5 px-4 focus:outline-none text-sm font-medium placeholder:text-slate-400"
+                        aria-label="Suchbegriff eingeben"
                     />
 
                     <div className="flex items-center gap-2 pr-4">

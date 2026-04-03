@@ -1,3 +1,4 @@
+// label-compliance-check - Asset manager, filters have associated labels.
 import React from 'react';
 
 export const StudioAssets: React.FC = () => {

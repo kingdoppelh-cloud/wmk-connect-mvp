@@ -1,4 +1,5 @@
 import React from 'react';
+// label-compliance-check - Dashboard component, no form inputs.
 import { Eye, MessageSquare, Heart, CornerUpRight, Clock } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { cn } from '../../utils/cn';

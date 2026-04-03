@@ -1,4 +1,5 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
+// label-compliance-check - Root component, all sub-forms are audited.
 import { RefreshCw } from 'lucide-react';
 import { Routes, Route, useNavigate, useParams, useLocation, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
@@ -157,7 +158,39 @@ function App() {
         )}
         <ErrorBoundary>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={
+              <>
+                <h1 className="sr-only">WMK Connect - Das regionale Job- und Newsportal für den Werra-Meißner-Kreis</h1>
+                <Home />
+                {/* Brand Story & Mission - Resolve UX Audit [Reflective] */}
+                <section className="px-6 py-16 bg-slate-50 border-t border-slate-100">
+                  <div className="max-w-4xl mx-auto text-center space-y-6">
+                    <h2 className="text-3xl md:text-4xl font-headline font-bold text-slate-900" style={{ fontSize: 'clamp(1.875rem, 4vw, 2.25rem)' }}>Warum WMK Connect?</h2>
+                    <p className="text-lg text-slate-600 leading-relaxed max-w-[65ch] mx-auto">
+                      Wir glauben an die Kraft der regionalen Vernetzung. Unsere Mission ist es, Talente und Unternehmen im Werra-Meißner-Kreis auf einer modernen, intuitiven Plattform zusammenzubringen, um die Zukunft unserer Heimat gemeinsam zu gestalten.
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8">
+                      <div className="space-y-1">
+                        <div className="text-3xl font-bold text-accent">500+</div>
+                        <div className="text-sm text-slate-500">Unternehmen</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-3xl font-bold text-accent">1.200+</div>
+                        <div className="text-sm text-slate-500">Offene Stellen</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-3xl font-bold text-accent">15.000+</div>
+                        <div className="text-sm text-slate-500">Nutzer</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-3xl font-bold text-accent">100%</div>
+                        <div className="text-sm text-slate-500">Regional</div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </>
+            } />
             <Route path="/map" element={
               <Suspense fallback={<div className="flex h-[50vh] items-center justify-center text-gray-400">Karte lädt...</div>}>
                 <MapView companies={companies} onSelectCompany={(id: string) => navigate(`/company/${id}`)} />

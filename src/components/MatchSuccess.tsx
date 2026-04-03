@@ -12,12 +12,12 @@ export const MatchSuccess: React.FC<MatchSuccessProps> = ({ companyName = "WMK C
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-        // Optional: Trigger confetti or other effects
+        const timer = setTimeout(() => setMounted(true), 50);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
-        <div className={`fixed inset-0 z-[500] flex flex-col bg-surface transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`fixed inset-0 z-[500] flex flex-col bg-surface transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
             <div className="flex-1 flex flex-col items-center justify-center p-8 max-w-lg mx-auto w-full text-center">
 
                 {/* Celebration Icon */}

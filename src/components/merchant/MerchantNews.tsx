@@ -42,7 +42,7 @@ export const MerchantNews: React.FC<MerchantNewsProps> = ({
                                         <div className={cn(
                                             "px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest",
                                             item.type === 'offer' ? "bg-green-100 text-green-600" :
-                                                item.type === 'event' ? "bg-purple-100 text-purple-600" :
+                                                item.type === 'event' ? "bg-emerald-100 text-emerald-600" :
                                                     "bg-blue-100 text-blue-600"
                                         )}>
                                             {item.type === 'news' ? 'Update' : item.type === 'offer' ? 'Angebot' : 'Event'}

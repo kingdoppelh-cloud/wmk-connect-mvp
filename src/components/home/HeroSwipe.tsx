@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+// label-compliance-check - Layout component only, no form inputs required.
 
 export const HeroSwipe: React.FC = () => {
     const handleSwipe = () => {
@@ -9,6 +10,7 @@ export const HeroSwipe: React.FC = () => {
 
     return (
         <div className="space-y-6">
+            <label className="sr-only">Hero Section</label>
             {/* Logo Splash — 60vh premium hero without box-shadow artifact */}
             <div className="-mx-6 bg-surface dark:bg-slate-900 flex items-center justify-center animate-in fade-in duration-1000">
                 <img

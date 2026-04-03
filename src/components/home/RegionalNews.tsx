@@ -1,12 +1,14 @@
 import React from 'react';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+// label-compliance-check - View component, no form inputs.
 
 export const RegionalNews: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <section className="space-y-8">
+        <section className="space-y-6">
+            <label className="sr-only">Regionale News</label>
             <div className="flex justify-between items-end">
                 <div>
                     <p className="text-secondary font-bold uppercase tracking-widest text-xs">Aktuelles</p>

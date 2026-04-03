@@ -49,7 +49,7 @@ export const CompanyNewsSection: React.FC<CompanyNewsSectionProps> = ({ companyI
                                     <span className={cn(
                                         "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-[0.1em]",
                                         post.type === 'offer' ? "bg-amber-100 text-amber-700" :
-                                            post.type === 'event' ? "bg-purple-100 text-purple-700" :
+                                            post.type === 'event' ? "bg-cyan-100 text-cyan-700" :
                                                 post.type === 'special' ? "bg-emerald-100 text-emerald-700" :
                                                     "bg-slate-200 text-slate-600"
                                     )}>

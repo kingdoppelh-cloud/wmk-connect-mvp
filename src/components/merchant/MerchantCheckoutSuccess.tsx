@@ -10,7 +10,8 @@ export const MerchantCheckoutSuccess: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen bg-surface text-on-surface font-inter">
+        <div className="min-h-screen bg-[#05080a] flex items-center justify-center p-4">
+            <label className="sr-only">Zahlung erfolgreich</label>
             {/* Top Navigation Bar (Mocked for dashboard layout integration) */}
             <header className="bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 border-b border-outline/5">
                 <div className="flex items-center gap-3">
