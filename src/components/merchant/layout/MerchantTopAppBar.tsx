@@ -11,7 +11,10 @@ export const MerchantTopAppBar: React.FC = () => {
                         alt="Merchant Logo"
                     />
                 </div>
-                <span className="text-xl font-bold text-slate-900 dark:text-slate-50 font-headline tracking-tight">Civic Network Admin</span>
+                <div className="flex items-center gap-3">
+                    <img src="/logo.png" alt="WMK Connect Logo" className="h-10 w-auto object-contain drop-shadow-sm" />
+                    <span className="text-xl font-bold text-slate-900 dark:text-slate-50 font-headline tracking-tight">Civic Network Admin</span>
+                </div>
             </div>
             <div className="flex items-center gap-4">
                 <button className="text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors active:scale-95 duration-200">

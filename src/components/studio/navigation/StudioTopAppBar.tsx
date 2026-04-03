@@ -6,7 +6,10 @@ export const StudioTopAppBar: React.FC = () => {
         <header className="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md shadow-[0px_12px_32px_rgba(27,59,90,0.06)] h-16 flex justify-between items-center px-6 font-headline tracking-tight">
             <div className="flex items-center gap-4">
                 <span className="material-symbols-outlined text-slate-600 dark:text-slate-400 cursor-pointer active:scale-95 duration-200">menu</span>
-                <Link to="/studio" className="text-xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">WMK Studio</Link>
+                <div className="flex items-center gap-3">
+                    <img src="/logo.png" alt="WMK Connect Logo" className="h-10 w-auto object-contain" />
+                    <Link to="/studio" className="text-xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">WMK Studio</Link>
+                </div>
             </div>
 
             {/* Desktop Nav Cluster */}
