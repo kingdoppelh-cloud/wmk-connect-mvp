@@ -32,6 +32,16 @@ serve(async (req: Request) => {
             title = 'Neues Event im WMK!'
             body = record.title
             url = '/events'
+        } else if (table === 'leads') {
+            if (record.lead_type === 'website_service') {
+                title = 'Neue Website-Anfrage! 🚀'
+                body = `Interesse an einem Wachstums-Paket von ${record.company_name}`
+                url = '/merchant/dashboard?tab=leads'
+            } else {
+                title = 'Neuer Lead eingegangen'
+                body = `${record.contact_name} hat eine Anfrage gesendet.`
+                url = '/merchant/dashboard?tab=leads'
+            }
         }
 
         console.log(`Sending push for ${table}: "${title}" (${body}) to ${subscriptions?.length} users... URL: ${url}`)

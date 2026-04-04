@@ -28,8 +28,7 @@ export function useNotifications() {
             const { data, error } = await supabase
                 .from('notifications')
                 .select(`
-                    *,
-                    company:companies(name, logo_url)
+                    *
                 `)
                 .eq('user_id', sessionId)
                 .order('created_at', { ascending: false })

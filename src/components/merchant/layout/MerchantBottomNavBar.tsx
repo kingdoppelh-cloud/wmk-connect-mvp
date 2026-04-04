@@ -34,19 +34,19 @@ export const MerchantBottomNavBar: React.FC = () => {
                     </>
                 )}
             </NavLink>
-            <NavLink to={`/merchant/${id}/analytics`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
-                {({ isActive }) => (
-                    <>
-                        <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}>analytics</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Insights</span>
-                    </>
-                )}
-            </NavLink>
             <NavLink to={`/merchant/${id}/messages`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
                 {({ isActive }) => (
                     <>
                         <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}>mail</span>
                         <span className="text-[10px] font-bold uppercase tracking-widest">Postfach</span>
+                    </>
+                )}
+            </NavLink>
+            <NavLink to={`/merchant/${id}/services`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
+                {({ isActive }) => (
+                    <>
+                        <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}>auto_awesome</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest">Services</span>
                     </>
                 )}
             </NavLink>

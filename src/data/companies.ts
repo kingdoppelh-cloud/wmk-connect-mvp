@@ -17,6 +17,7 @@ export interface Company {
     offer?: string;
     distance?: number;
     ownerId?: string;
+    hasActiveJobs?: boolean;
 }
 
 export const companies: Company[] = [
@@ -46,7 +47,8 @@ export const companies: Company[] = [
             "6": "11:30-22:00"
         },
         isPremium: true,
-        address: 'Kirchplatz 2, 37242 Bad Sooden-Allendorf'
+        address: 'Kirchplatz 2, 37242 Bad Sooden-Allendorf',
+        hasActiveJobs: true
     },
     {
         id: '2',
@@ -85,7 +87,8 @@ export const companies: Company[] = [
             "5": "08:00-14:00"
         },
         isPremium: true,
-        address: 'Industriestraße 5, 37242 Bad Sooden-Allendorf'
+        address: 'Industriestraße 5, 37242 Bad Sooden-Allendorf',
+        hasActiveJobs: true
     },
     {
         id: '4',

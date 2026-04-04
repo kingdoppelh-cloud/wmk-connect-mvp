@@ -4,7 +4,7 @@ import { supabase } from '../utils/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MatchSuccess } from './MatchSuccess';
 
-type LeadType = 'new_entry' | 'claim_profile';
+type LeadType = 'new_entry' | 'claim_profile' | 'direct_message';
 
 interface Props {
     isOpen: boolean;
@@ -65,10 +65,16 @@ export const LeadCaptureModal: React.FC<Props> = ({
         });
     };
 
-    const title = leadType === 'claim_profile' ? 'Profil übernehmen' : 'Firma eintragen';
-    const subtitle = leadType === 'claim_profile'
-        ? 'Ist das Ihre Firma? Kontaktieren Sie uns, um das Profil zu bearbeiten und Premium-Vorteile zu nutzen.'
-        : 'Werden Sie Teil von WMK Connect und steigern Sie Ihre lokale Sichtbarkeit.';
+    let title = 'Firma eintragen';
+    let subtitle = 'Werden Sie Teil von WMK Connect und steigern Sie Ihre lokale Sichtbarkeit.';
+
+    if (leadType === 'claim_profile') {
+        title = 'Profil übernehmen';
+        subtitle = 'Ist das Ihre Firma? Kontaktieren Sie uns, um das Profil zu bearbeiten und Premium-Vorteile zu nutzen.';
+    } else if (leadType === 'direct_message') {
+        title = 'Direktnachricht senden';
+        subtitle = `Schreiben Sie direkt an ${prefilledCompanyName || 'das Unternehmen'}. Ihre Nachricht landet sofort im Postfach.`;
+    }
 
     if (!isOpen && !isSuccess) return null;
 

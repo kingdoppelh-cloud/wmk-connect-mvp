@@ -56,6 +56,12 @@
   --font-headline: "Public Sans", system-ui, -apple-system, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
   --font-label: "Inter", system-ui, -apple-system, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-2xl: 2.5rem;
 }
 
 .studio-theme {
@@ -92,8 +98,9 @@
 }
 
 body {
-  background-color: #f9fafb;
-  color: #111827;
+  @apply bg-surface text-on-surface;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Civic Architect Utilities */

@@ -22,7 +22,7 @@ BEGIN
       url := 'https://ednlbgioxlndddlofenu.supabase.co/functions/v1/send-templated-email',
       headers := jsonb_build_object(
         'Content-Type', 'application/json',
-        'Authorization', 'Bearer ' || '<YOUR_SERVICE_ROLE_KEY>'
+        'Authorization', 'Bearer [YOUR_SUPABASE_SERVICE_ROLE_KEY]'
       ),
       body := jsonb_build_object(
         'to', NEW.email,
@@ -56,7 +56,7 @@ BEGIN
         url := 'https://ednlbgioxlndddlofenu.supabase.co/functions/v1/send-templated-email',
         headers := jsonb_build_object(
           'Content-Type', 'application/json',
-          'Authorization', 'Bearer ' || '<YOUR_SERVICE_ROLE_KEY>'
+          'Authorization', 'Bearer [YOUR_SUPABASE_SERVICE_ROLE_KEY]'
         ),
         body := jsonb_build_object(
           'to', candidate_email,

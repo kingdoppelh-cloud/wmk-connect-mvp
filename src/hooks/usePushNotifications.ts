@@ -29,7 +29,7 @@ export function usePushNotifications() {
                 // For this MVP, we simulate the storage of subscription info
                 const subscription = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
-                    applicationServerKey: 'BIdyM...placeholder...key'
+                    applicationServerKey: '[YOUR_VAPID_PUBLIC_KEY]'
                 });
 
                 if (subscription) {

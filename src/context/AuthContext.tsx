@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await supabase.auth.signOut();
     };
 
-    const isAdmin = !!session; // Simple check for now, can be expanded to check user metadata
+    const isAdmin = session?.user?.user_metadata?.role === 'admin';
 
     return (
         <AuthContext.Provider value={{ session, user, isLoading, isAdmin, signOut }}>

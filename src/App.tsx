@@ -28,6 +28,8 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { Register } from './components/Register';
 import { NotFound } from './components/NotFound';
 import { useSEO } from './hooks/useSEO';
+import { useStats } from './hooks/useStats';
+import { WMK_WHATSAPP } from './constants';
 
 import { StudioLayout } from './components/studio/StudioLayout';
 import { StudioDashboard } from './components/studio/StudioDashboard';
@@ -50,6 +52,7 @@ import { MerchantInvoices } from './components/merchant/MerchantInvoices';
 import { MerchantSubscription } from './components/merchant/MerchantSubscription';
 import { MerchantCheckout } from './components/merchant/MerchantCheckout';
 import { MerchantCheckoutSuccess } from './components/merchant/MerchantCheckoutSuccess';
+import { MerchantServices } from './components/merchant/MerchantServices';
 // Wrapper to handle company detail from URL
 function CompanyDetailWrapper({ companies }: { companies: Company[] }) {
   const { id } = useParams<{ id: string }>();
@@ -88,6 +91,7 @@ function App() {
 
   // Echte Daten aus Supabase abrufen!
   const { companies, error, addCompany, updateCompany, deleteCompany, uploadFile, userLocation, requestLocation } = useCompanies();
+  const stats = useStats();
 
   // Global SEO & Canonical Tag
   useSEO({
@@ -171,15 +175,15 @@ function App() {
                     </p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8">
                       <div className="space-y-1">
-                        <div className="text-3xl font-bold text-accent">500+</div>
+                        <div className="text-3xl font-bold text-accent">{stats.companies}+</div>
                         <div className="text-sm text-slate-500">Unternehmen</div>
                       </div>
                       <div className="space-y-1">
-                        <div className="text-3xl font-bold text-accent">1.200+</div>
+                        <div className="text-3xl font-bold text-accent">{stats.jobs}+</div>
                         <div className="text-sm text-slate-500">Offene Stellen</div>
                       </div>
                       <div className="space-y-1">
-                        <div className="text-3xl font-bold text-accent">15.000+</div>
+                        <div className="text-3xl font-bold text-accent">{stats.users}+</div>
                         <div className="text-sm text-slate-500">Nutzer</div>
                       </div>
                       <div className="space-y-1">
@@ -221,6 +225,7 @@ function App() {
               <Route path="applicants/:applicantId" element={<MerchantApplicantDetail />} />
               <Route path="analytics" element={<MerchantAnalytics />} />
               <Route path="messages" element={<MerchantMessages />} />
+              <Route path="services" element={<MerchantServices />} />
               <Route path="reports" element={<MerchantRecruitingReports />} />
               <Route path="talent" element={<MerchantTalentPool />} />
               <Route path="onboarding" element={<MerchantStudioOnboarding />} />
@@ -272,7 +277,7 @@ function App() {
           onClose={() => setShowPartnerBenefits(false)}
           onContact={() => {
             const text = encodeURIComponent("Hallo WMK Connect Team, ich interessiere mich für eine Partnerschaft!");
-            window.open(`https://wa.me/4917612345678?text=${text}`, '_blank');
+            window.open(`https://wa.me/${WMK_WHATSAPP}?text=${text}`, '_blank');
           }}
         />
       )}

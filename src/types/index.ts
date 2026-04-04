@@ -49,7 +49,9 @@ export type AnalyticsEventType =
     | 'click_phone'
     | 'open_swipe_jobs'
     | 'job_view'
-    | 'email_click';
+    | 'email_click'
+    | 'direct_message_start'
+    | 'direct_message_sent';
 
 export interface AnalyticsEvent {
     id: string;

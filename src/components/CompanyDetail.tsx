@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, BarChart2, ArrowRight } from 'lucide-react';
+import { Phone, Mail, BarChart2, ArrowRight, MessageSquare } from 'lucide-react';
 import { type Company } from '../data/companies';
 import { LeadCaptureModal } from './LeadCaptureModal';
 import { useSEO } from '../hooks/useSEO';
@@ -47,6 +47,7 @@ interface Props {
 
 export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies = [], onSelectCompany }) => {
     const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
+    const [isDirectMessageModalOpen, setIsDirectMessageModalOpen] = useState(false);
     const { isFollowed, followerCount, toggleFollow } = useFollows(company.id);
     const { earnPoints } = useRewards();
     const { trackEvent } = useAnalytics();
@@ -178,6 +179,16 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                         <h2 className="text-2xl font-black mb-4">Noch Fragen?</h2>
                         <p className="text-slate-400 mb-8">Kontaktieren Sie uns direkt per E-Mail oder rufen Sie uns an.</p>
                         <div className="flex flex-col gap-3">
+                            <button
+                                onClick={() => {
+                                    setIsDirectMessageModalOpen(true);
+                                    trackEvent(company.id, 'direct_message_start');
+                                }}
+                                className="flex items-center justify-center gap-3 bg-accent text-white py-4 rounded-2xl font-black hover:bg-pink-600 transition-all shadow-xl shadow-accent/20 border border-accent"
+                            >
+                                <MessageSquare size={20} />
+                                Direktnachricht schreiben
+                            </button>
                             <a
                                 href={`mailto:${company.email || 'hello@wmk-connect.de'}`}
                                 onClick={() => trackEvent(company.id, 'email_click')}
@@ -239,6 +250,14 @@ export const CompanyDetail: React.FC<Props> = ({ company, onBack, allCompanies =
                 isOpen={isClaimModalOpen}
                 onClose={() => setIsClaimModalOpen(false)}
                 leadType="claim_profile"
+                prefilledCompanyName={company.name}
+                claimedCompanyId={company.id}
+            />
+
+            <LeadCaptureModal
+                isOpen={isDirectMessageModalOpen}
+                onClose={() => setIsDirectMessageModalOpen(false)}
+                leadType="direct_message"
                 prefilledCompanyName={company.name}
                 claimedCompanyId={company.id}
             />

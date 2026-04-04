@@ -37,6 +37,10 @@ export const MerchantNavigationDrawer: React.FC = () => {
                         <span className="material-symbols-outlined">mail</span>
                         <span>Postfach</span>
                     </NavLink>
+                    <NavLink to={`/merchant/${id}/services`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
+                        <span className="material-symbols-outlined">auto_awesome</span>
+                        <span>Services</span>
+                    </NavLink>
                     <NavLink to={`/merchant/${id}/invoices`} className={({ isActive }) => `${linkBaseClass} ${isActive ? activeClass : inactiveClass}`}>
                         <span className="material-symbols-outlined">receipt_long</span>
                         <span>Billing</span>

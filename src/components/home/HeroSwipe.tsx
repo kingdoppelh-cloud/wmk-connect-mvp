@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
-// label-compliance-check - Layout component only, no form inputs required.
+import { useNavigate } from 'react-router-dom';
 
 export const HeroSwipe: React.FC = () => {
+    const navigate = useNavigate();
+    const [clickCount, setClickCount] = useState(0);
+    const lastClickTime = useRef<number>(0);
+
+    const handleLogoClick = () => {
+        const now = Date.now();
+        if (now - lastClickTime.current > 2000) {
+            setClickCount(1);
+        } else {
+            const newCount = clickCount + 1;
+            if (newCount >= 5) {
+                navigate('/admin');
+                setClickCount(0);
+            } else {
+                setClickCount(newCount);
+            }
+        }
+        lastClickTime.current = now;
+    };
+
     const handleSwipe = () => {
         const event = new CustomEvent('open-swipe-jobs', { detail: 'open-general' });
         window.dispatchEvent(event);
@@ -11,19 +31,21 @@ export const HeroSwipe: React.FC = () => {
     return (
         <div className="space-y-4 md:space-y-6">
             <label className="sr-only">Hero Section</label>
-            {/* Logo Splash — Extrem großes transparentes Hero-Logo */}
-            <div className="flex items-center justify-center py-2 overflow-visible" style={{ background: 'transparent' }}>
+            {/* Logo Splash — Optimiertes, nicht-gestrecktes Logo */}
+            <div className="flex items-center justify-center py-6 overflow-visible">
                 <img
                     src="/logo.png"
                     alt="WMK Connect"
+                    onClick={handleLogoClick}
                     style={{
-                        height: 'clamp(400px, 85vw, 600px)',
+                        maxHeight: '280px',
                         width: 'auto',
-                        maxWidth: '100vw',
+                        maxWidth: '85vw',
+                        objectFit: 'contain',
                         mixBlendMode: 'multiply',
-                        background: 'transparent',
                     }}
-                    className="animate-in fade-in duration-1000"
+                    className="animate-in fade-in duration-1000 cursor-pointer select-none"
+                    loading="lazy"
                 />
             </div>
 
@@ -34,6 +56,7 @@ export const HeroSwipe: React.FC = () => {
                         alt="Modernes Büro-Ambiente"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
+                        loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
                 </div>

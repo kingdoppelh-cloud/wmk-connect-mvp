@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Briefcase, Euro, MapPin, Search, Heart, Star, Info } from 'lucide-react';
+import { Briefcase, MapPin, Search, Heart, Star, Info } from 'lucide-react';
 import { type Job, type MagicResult } from '../types'; import { useJobs } from '../hooks/useJobs';
 import { useUI } from '../context/UIContext';
 import { MagicSearch } from './MagicSearch';
@@ -179,13 +179,14 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
                 {filteredJobs.map((job) => (
                     <div
                         key={job.id}
-                        className="group bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-100 active:scale-[0.98]"
+                        className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-100 active:scale-[0.98]"
                     >
                         <div className="relative h-64 overflow-hidden">
                             <img
                                 src={job.image_url || 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80'}
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                 alt={job.title}
+                                loading="lazy"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <div className="absolute top-6 right-6">
@@ -198,7 +199,7 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
                                     onClick={() => job.company_id && onCompanyClick?.(job.company_id)}
                                     className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-white/50 shadow-lg bg-white shrink-0 hover:border-white transition-colors"
                                 >
-                                    <img src={job.company?.image} className="w-full h-full object-cover" alt={job.company?.name} />
+                                    <img src={job.company?.image} className="w-full h-full object-cover" alt={job.company?.name} loading="lazy" />
                                 </button>
                                 <div className="min-w-0">
                                     <button
@@ -207,7 +208,7 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
                                     >
                                         {job.company?.name}
                                     </button>
-                                    <h3 className="text-white text-2xl font-black leading-none truncate uppercase italic">{job.title}</h3>
+                                    <h3 className="text-white text-2xl font-black leading-[1.1] line-clamp-2 uppercase italic mb-1">{job.title}</h3>
                                 </div>
                             </div>
                         </div>
@@ -216,10 +217,11 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
                             <div className="grid grid-cols-2 gap-4 mb-8">
                                 <div className="bg-slate-50 p-4 rounded-3xl border border-slate-100 flex flex-col justify-center">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <Euro className="text-accent" size={16} />
                                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Gehalt</span>
                                     </div>
-                                    <p className="text-lg font-black text-slate-900 truncate">{job.salary_range || 'n.A.'}</p>
+                                    <p className="text-lg font-black text-slate-900 truncate">
+                                        {job.salary_range?.replace(/(EUR|Euro|€)/g, ' €').replace(/\s+/g, ' ').trim() || 'n.A.'}
+                                    </p>
                                 </div>
                                 <div className="bg-slate-50 p-4 rounded-3xl border border-slate-100 flex flex-col justify-center">
                                     <div className="flex items-center gap-2 mb-1">
@@ -237,10 +239,12 @@ export const JobsBoard: React.FC<JobsBoardProps> = ({ onCompanyClick, userLocati
                             <div className="flex gap-3">
                                 <button
                                     onClick={() => handleApply(job)}
-                                    className="flex-1 bg-slate-950 text-white h-16 rounded-[1.5rem] font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-800 transition-colors shadow-lg active:scale-95 duration-200"
+                                    className="flex-1 bg-slate-950 text-white h-16 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-800 transition-colors shadow-lg active:scale-95 duration-200"
                                 >
-                                    <Heart size={20} fill="currentColor" className="text-accent" />
-                                    Schnell-Bewerben
+                                    <div className="flex items-center justify-center gap-3">
+                                        <Heart size={20} fill="currentColor" className="text-secondary" />
+                                        <span>Schnell-Bewerben</span>
+                                    </div>
                                 </button>
                                 <button className="w-16 h-16 bg-slate-100 text-slate-900 rounded-[1.5rem] flex items-center justify-center hover:bg-slate-200 transition-colors shadow-sm active:scale-95 duration-200">
                                     <Info size={24} />

@@ -50,7 +50,7 @@ export function useCompanies() {
     return R * c;
   }, []);
 
-  const fetchCompanies = async () => {
+  const fetchCompanies = useCallback(async () => {
     try {
       setIsLoading(true);
       if (!hasSupabaseConfig) throw new Error('Supabase fehlt');
@@ -65,11 +65,11 @@ export function useCompanies() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchCompanies();
-  }, []);
+  }, [fetchCompanies]);
 
   const sortedCompanies = useMemo(() => {
     return [...companies].sort((a, b) => {

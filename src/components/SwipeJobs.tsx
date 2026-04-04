@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SlidersHorizontal, Euro, MapPin, ArrowRight, Users, PartyPopper, Timer, Train, Dumbbell, Coins, MousePointerClick, X, Heart, RefreshCw, Briefcase, Star } from 'lucide-react';
+import { SlidersHorizontal, MapPin, ArrowRight, Users, PartyPopper, Timer, Train, Dumbbell, Coins, MousePointerClick, X, Heart, RefreshCw, Briefcase, Star } from 'lucide-react';
 import type { Company } from '../data/companies';
 import { useJobs } from '../hooks/useJobs';
 import { useSEO } from '../hooks/useSEO';
@@ -162,21 +162,30 @@ export const SwipeJobs: React.FC<SwipeJobsProps> = ({ company, onClose }) => {
                                 </div>
                             )}
                         </div>
-                        <div>
-                            <h2 className="text-5xl font-black leading-[0.9] tracking-tighter mb-2 text-white uppercase">{activeJob.title}</h2>
-                            <p className="text-xl text-white/80 font-medium tracking-wide">{company.name}</p>
+                        <div className="min-h-[120px] flex flex-col justify-end">
+                            <h2 className="text-4xl md:text-5xl font-black leading-[1.1] tracking-tighter mb-3 text-white uppercase line-clamp-2">
+                                {activeJob.title}
+                            </h2>
+                            <p className="text-lg md:text-xl text-white/80 font-medium tracking-wide">{company.name}</p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-5 rounded-[2rem]">
-                                <Euro className="text-accent mb-2" size={24} />
-                                <p className="text-[10px] text-white/50 uppercase font-bold tracking-widest">Gehalt</p>
-                                <p className="text-2xl font-black text-white">{activeJob.salary_range || 'n.A.'}</p>
+                            <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-5 rounded-2xl flex flex-col justify-center">
+                                <div className="flex items-center gap-2 mb-1.5">
+                                    <span className="text-[10px] text-white/50 uppercase font-black tracking-widest">Gehalt</span>
+                                </div>
+                                <p className="text-xl font-black text-white truncate">
+                                    {activeJob.salary_range?.replace(/(EUR|Euro|€)/g, ' €').replace(/\s+/g, ' ').trim() || 'n.A.'}
+                                </p>
                             </div>
-                            <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-5 rounded-[2rem]">
-                                <MapPin className="text-accent mb-2" size={24} />
-                                <p className="text-[10px] text-white/50 uppercase font-bold tracking-widest">Art</p>
-                                <p className="text-2xl font-black text-white truncate">{activeJob.job_type}</p>
+                            <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-5 rounded-2xl flex flex-col justify-center">
+                                <div className="flex items-center gap-2 mb-1.5">
+                                    <MapPin className="text-accent" size={18} />
+                                    <span className="text-[10px] text-white/50 uppercase font-black tracking-widest">Bereich</span>
+                                </div>
+                                <p className="text-xl font-black text-white truncate">
+                                    {activeJob.category || activeJob.job_type}
+                                </p>
                             </div>
                         </div>
                     </div>

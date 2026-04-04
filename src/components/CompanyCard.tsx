@@ -55,6 +55,18 @@ export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavo
                 </div>
             )}
 
+            {/* Hiring Now Badge */}
+            {company.hasActiveJobs && (
+                <div className={cn(
+                    "absolute -top-3 glass px-3 py-1 rounded-full border flex items-center gap-1.5 shadow-lg z-10 bg-white/90 backdrop-blur-sm",
+                    company.isPremium ? "left-44" : "left-6",
+                    "border-green-200"
+                )}>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    <span className="text-[10px] font-bold text-green-700 uppercase tracking-wider">Hiring Now</span>
+                </div>
+            )}
+
             <div className="flex justify-between items-start mb-3">
                 <div>
                     <span className="text-[10px] font-bold text-accent uppercase tracking-widest leading-none mb-1 block">
@@ -75,9 +87,11 @@ export const CompanyCard: React.FC<Props> = ({ company, isFavorite, onToggleFavo
                                 alt={company.name}
                                 loading="lazy"
                                 decoding="async"
+                                width="400"
+                                height="225"
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 onError={(e) => {
-                                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=100';
+                                    (e.target as HTMLImageElement).src = '/placeholder-company.jpg';
                                 }}
                             />
                         </div>
