@@ -1,0 +1,232 @@
+<!-- Analyse & Insights (Admin) -->
+<!DOCTYPE html>
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Analyse &amp; Insights - Civic Network Admin</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Public+Sans:wght@700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { "colors": { "inverse-on-surface": "#e9f1ff", "on-tertiary-container": "#fafaff", "inverse-surface": "#103251", "surface-tint": "#c0000c", "surface-bright": "#f8f9ff", "primary": "#b9000b", "secondary": "#436182", "on-primary": "#ffffff", "error": "#ba1a1a", "surface-container": "#e4efff", "primary-container": "#e31a1a", "on-surface": "#001d35", "tertiary": "#005da2", "on-secondary-container": "#405e7e", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#004880", "background": "#f8f9ff", "secondary-fixed-dim": "#abc9ef", "on-tertiary-fixed": "#001c37", "on-primary-fixed-variant": "#930006", "on-surface-variant": "#5e3f3b", "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "inverse-primary": "#ffb4aa", "tertiary-container": "#0076cb", "outline": "#926e6a", "on-error-container": "#93000a", "on-background": "#001d35", "primary-fixed-dim": "#ffb4aa", "surface-container-highest": "#d1e4ff", "on-secondary-fixed": "#001d35", "error-container": "#ffdad6", "surface-container-high": "#dbe9ff", "on-primary-container": "#fff9f8", "surface-dim": "#c2dcff", "primary-fixed": "#ffdad5", "surface": "#f8f9ff", "surface-variant": "#d1e4ff", "on-secondary-fixed-variant": "#2a4968", "outline-variant": "#e8bdb7", "tertiary-fixed-dim": "#a1c9ff", "secondary-fixed": "#d1e4ff", "surface-container-low": "#eef4ff", "secondary-container": "#b9d7fd", "tertiary-fixed": "#d2e4ff", "on-primary-fixed": "#410001", "on-error": "#ffffff" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "fontFamily": { "headline": ["Public Sans"], "body": ["Inter"], "label": ["Inter"] } } }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .civic-lead-accent {
+            border-left: 12px solid #b9000b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+            color: #001d35;
+            min-height: max(884px, 100dvh);
+        }
+
+        .font-public-sans {
+            font-family: 'Public Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <header class="bg-white/80 backdrop-blur-md shadow-[0px_12px_32px_rgba(27,59,90,0.06)] fixed top-0 w-full z-50">
+        <div class="flex justify-between items-center px-6 py-4 w-full">
+            <div class="flex items-center gap-4">
+                <button class="text-slate-600 hover:bg-slate-50 transition-colors p-2 rounded-lg"><span
+                        class="material-symbols-outlined">menu</span></button>
+                <h1 class="text-xl font-bold tracking-tighter text-slate-900 font-public-sans">Civic Network Admin</h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <nav class="hidden md:flex gap-8">
+                    <a class="text-red-700 font-bold font-public-sans tracking-tight" href="#">Analyse &amp;
+                        Insights</a>
+                    <a class="text-slate-600 hover:text-slate-900 transition-colors font-public-sans tracking-tight"
+                        href="#">Netzwerk</a>
+                    <a class="text-slate-600 hover:text-slate-900 transition-colors font-public-sans tracking-tight"
+                        href="#">Verwaltung</a>
+                </nav>
+                <div class="h-10 w-10 rounded-full bg-slate-200 overflow-hidden ring-2 ring-white">
+                    <img class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4_2hwmxjPszWm2-47NeNYm1DrB_xvrIgxfCLbiMu9zGWJErTxSYvOZV8pVqUPhAnBHvbuZamLPHh4zMdQvyBqAwGOGrN1mXq3NJqWY_67JesfQt4E3O9_1g-H_SoYFPQDHWw0FKqjjC_JIRRtQYhCaq3dbu9V7d0EFqohym1F76eF5_br-YTOC4n-GUrHvPqz1R9sbOPwjo5-FSpC0GOg0jEGnRtNPfKbt2L0_DD6DrONbPNgVs9fIGQvunynE9iqSHu-VHHizmo"
+                        alt="Admin Avatar" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="flex pt-[72px]">
+        <aside class="hidden lg:flex flex-col h-[calc(100vh-72px)] w-72 bg-slate-50 py-8 px-4 sticky top-[72px]">
+            <div class="mb-8 px-4"><span
+                    class="text-xs uppercase tracking-[0.2em] font-black text-slate-400 font-public-sans">THE MODERN
+                    ARCHIVIST</span></div>
+            <nav class="space-y-1">
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 transition-all font-public-sans text-sm font-medium rounded-lg"
+                    href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+                <a class="flex items-center gap-3 px-4 py-3 bg-white text-red-700 border-l-4 border-red-700 transition-all font-public-sans text-sm font-medium"
+                    href="#"><span class="material-symbols-outlined">analytics</span>Analytics</a>
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 transition-all font-public-sans text-sm font-medium rounded-lg"
+                    href="#"><span class="material-symbols-outlined">hub</span>Job Network</a>
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 transition-all font-public-sans text-sm font-medium rounded-lg"
+                    href="#"><span class="material-symbols-outlined">group</span>User Management</a>
+                <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 transition-all font-public-sans text-sm font-medium rounded-lg"
+                    href="#"><span class="material-symbols-outlined">settings</span>System Settings</a>
+            </nav>
+        </aside>
+        <main class="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary mb-2 block">Enterprise
+                        Report</span>
+                    <h2 class="text-4xl md:text-5xl font-black font-public-sans tracking-tight text-on-surface">Analyse
+                        &amp; Insights</h2>
+                </div>
+                <div class="flex items-center bg-surface-container-low p-1 rounded-xl shadow-sm">
+                    <button
+                        class="px-4 py-2 text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-colors">7
+                        Tage</button>
+                    <button class="px-4 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-primary">30
+                        Tage</button>
+                    <button
+                        class="px-4 py-2 text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-colors">Vierteljahr</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div
+                    class="bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(27,59,90,0.06)] group hover:translate-y-[-4px] transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6"><span
+                            class="p-3 bg-red-50 text-primary rounded-lg"><span
+                                class="material-symbols-outlined">ads_click</span></span><span
+                            class="text-emerald-600 text-sm font-bold flex items-center gap-1">+12.4% <span
+                                class="material-symbols-outlined text-xs">trending_up</span></span></div>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-wider mb-1">Gesamt-Klicks</p>
+                    <h3 class="text-4xl font-black font-public-sans text-on-surface">42,890</h3>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(27,59,90,0.06)] group hover:translate-y-[-4px] transition-all duration-300 border-b-4 border-primary">
+                    <div class="flex justify-between items-start mb-6"><span
+                            class="p-3 bg-slate-100 text-secondary rounded-lg"><span
+                                class="material-symbols-outlined">assignment_turned_in</span></span><span
+                            class="text-emerald-600 text-sm font-bold flex items-center gap-1">+5.2% <span
+                                class="material-symbols-outlined text-xs">trending_up</span></span></div>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-wider mb-1">Bewerbungsrate</p>
+                    <h3 class="text-4xl font-black font-public-sans text-on-surface">8.4%</h3>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(27,59,90,0.06)] group hover:translate-y-[-4px] transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6"><span
+                            class="p-3 bg-slate-100 text-secondary rounded-lg"><span
+                                class="material-symbols-outlined">interactive_space</span></span><span
+                            class="text-red-600 text-sm font-bold flex items-center gap-1">-1.8% <span
+                                class="material-symbols-outlined text-xs">trending_down</span></span></div>
+                    <p class="text-slate-500 text-sm font-medium uppercase tracking-wider mb-1">Engagement</p>
+                    <h3 class="text-4xl font-black font-public-sans text-on-surface">15.2k</h3>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                <div
+                    class="lg:col-span-8 bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(27,59,90,0.06)]">
+                    <div class="flex justify-between items-center mb-8">
+                        <h4 class="text-xl font-bold font-public-sans tracking-tight">Bewerbungstrends</h4>
+                    </div>
+                    <div class="relative h-64 w-full flex items-end gap-2 px-2">
+                        <div class="flex-1 bg-slate-100 h-[40%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[60%] rounded-t-sm"></div>
+                        </div>
+                        <div class="flex-1 bg-slate-100 h-[50%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[85%] rounded-t-sm"></div>
+                        </div>
+                        <div class="flex-1 bg-slate-100 h-[30%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[50%] rounded-t-sm"></div>
+                        </div>
+                        <div class="flex-1 bg-slate-100 h-[60%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[70%] rounded-t-sm"></div>
+                        </div>
+                        <div class="flex-1 bg-slate-100 h-[45%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[90%] rounded-t-sm"></div>
+                        </div>
+                        <div class="flex-1 bg-slate-100 h-[80%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[40%] rounded-t-sm"></div>
+                        </div>
+                        <div class="flex-1 bg-slate-100 h-[70%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[85%] rounded-t-sm"></div>
+                        </div>
+                        <div class="flex-1 bg-slate-100 h-[90%] rounded-t-sm relative">
+                            <div class="absolute bottom-0 left-0 w-full bg-primary h-[60%] rounded-t-sm"></div>
+                        </div>
+                    </div>
+                    <div
+                        class="flex justify-between mt-4 px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <span>Tag 1</span><span>Tag 15</span><span>Tag 30</span></div>
+                </div>
+                <div class="lg:col-span-4 bg-surface-container-low p-8 rounded-xl">
+                    <h4 class="text-xl font-bold font-public-sans tracking-tight mb-8">Fachbereiche</h4>
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-48 h-48 mb-8">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#e2e8f0" stroke-width="4">
+                                </circle>
+                                <circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#b9000b"
+                                    stroke-dasharray="45 100" stroke-width="4"></circle>
+                                <circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#1b3b5a"
+                                    stroke-dasharray="30 100" stroke-dashoffset="-45" stroke-width="4"></circle>
+                                <circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#436182"
+                                    stroke-dasharray="25 100" stroke-dashoffset="-75" stroke-width="4"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center"><span
+                                    class="text-2xl font-black font-public-sans">100%</span><span
+                                    class="text-[10px] font-bold text-slate-500 uppercase">Verteilt</span></div>
+                        </div>
+                        <div class="w-full space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-primary"></div><span
+                                        class="text-sm font-medium">Informationstechnologie</span>
+                                </div><span class="text-sm font-bold">45%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-[#1b3b5a]"></div><span
+                                        class="text-sm font-medium">Bauwesen &amp; Technik</span>
+                                </div><span class="text-sm font-bold">30%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-secondary"></div><span
+                                        class="text-sm font-medium">Verwaltung &amp; Recht</span>
+                                </div><span class="text-sm font-bold">25%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md flex justify-around items-center py-3 shadow-[0px_-8px_24px_rgba(27,59,90,0.08)] z-50">
+        <button class="flex flex-col items-center gap-1 text-slate-400"><span
+                class="material-symbols-outlined">dashboard</span><span
+                class="text-[10px] font-bold uppercase tracking-tighter">Home</span></button>
+        <button class="flex flex-col items-center gap-1 text-primary"><span class="material-symbols-outlined"
+                style="font-variation-settings: 'FILL' 1;">analytics</span><span
+                class="text-[10px] font-bold uppercase tracking-tighter">Insights</span></button>
+        <button class="flex flex-col items-center gap-1 text-slate-400"><span
+                class="material-symbols-outlined">hub</span><span
+                class="text-[10px] font-bold uppercase tracking-tighter">Jobs</span></button>
+        <button class="flex flex-col items-center gap-1 text-slate-400"><span
+                class="material-symbols-outlined">settings</span><span
+                class="text-[10px] font-bold uppercase tracking-tighter">Profil</span></button>
+    </nav>
+</body>
+
+</html>

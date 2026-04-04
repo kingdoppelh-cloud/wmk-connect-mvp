@@ -1,0 +1,246 @@
+<!-- E-Mail: Willkommen im Netzwerk -->
+<!DOCTYPE html>
+
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Willkommen bei WMK Connect</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;800;900&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#930006",
+                        "on-tertiary-fixed-variant": "#004880",
+                        "tertiary-container": "#0076cb",
+                        "surface-tint": "#c0000c",
+                        "on-tertiary-container": "#fafaff",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-fixed": "#001c37",
+                        "on-surface": "#001d35",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#ffb4aa",
+                        "on-secondary-container": "#405e7e",
+                        "secondary": "#436182",
+                        "primary-fixed": "#ffdad5",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#d1e4ff",
+                        "secondary-container": "#b9d7fd",
+                        "tertiary": "#005da2",
+                        "outline": "#926e6a",
+                        "inverse-surface": "#103251",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#410001",
+                        "surface-container-low": "#eef4ff",
+                        "secondary-fixed": "#d1e4ff",
+                        "secondary-fixed-dim": "#abc9ef",
+                        "primary": "#b9000b",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#fff9f8",
+                        "on-surface-variant": "#5e3f3b",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#c2dcff",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "on-secondary-fixed": "#001d35",
+                        "tertiary-fixed-dim": "#a1c9ff",
+                        "on-background": "#001d35",
+                        "surface-container-high": "#dbe9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#e4efff",
+                        "outline-variant": "#e8bdb7",
+                        "inverse-on-surface": "#e9f1ff",
+                        "primary-container": "#e31a1a",
+                        "background": "#f8f9ff",
+                        "surface-variant": "#d1e4ff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#d2e4ff",
+                        "on-secondary-fixed-variant": "#2a4968"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-header {
+            background: rgba(248, 249, 255, 0.8);
+            backdrop-filter: blur(24px);
+        }
+
+        .civic-gradient {
+            background: linear-gradient(135deg, #b9000b 0%, #e31a1a 100%);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased">
+    <!-- Top Navigation Anchor -->
+    <header
+        class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-[0px_12px_32px_rgba(27,59,90,0.06)] flex items-center justify-between px-6 h-16 w-full">
+        <div class="flex items-center gap-3">
+            <div
+                class="w-8 h-8 rounded-xl civic-gradient flex items-center justify-center text-white font-bold shadow-lg">
+                <span class="material-symbols-outlined text-sm" data-icon="account_balance">account_balance</span>
+            </div>
+            <span class="font-headline text-xl font-bold tracking-tighter text-slate-900 uppercase">Civic Archive</span>
+        </div>
+        <div class="flex gap-4">
+            <span
+                class="material-symbols-outlined text-slate-600 cursor-pointer hover:bg-slate-200/50 p-2 rounded-lg transition-colors"
+                data-icon="settings">settings</span>
+        </div>
+    </header>
+    <main class="pt-16 pb-24 max-w-[640px] mx-auto px-4 md:px-0">
+        <!-- Hero Section -->
+        <section
+            class="mt-8 rounded-xl overflow-hidden shadow-[0px_12px_32px_rgba(27,59,90,0.06)] bg-surface-container-lowest">
+            <div class="relative h-64 w-full">
+                <img alt="Regional Landmark" class="w-full h-full object-cover"
+                    data-alt="Cinematic wide shot of a historic German town square with traditional timber-framed houses and a gothic cathedral at dusk"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWxEPIJtXWL6U8pGxlNsPKZaimL6TEdWpUFXCFnyiqpJn4Lw55hSGQ3z8ufZPAglbUFon8PO9dwHAuEvkXNXx6SfraWDQiyA8DI3nYL20kfVGvvlzfjDVAnhvmPAuEnLnrNxKKsTbarSpWK_4NY5SKcNh16XA-lsYHPr4FhlkXnV2JIOuURCIuDcIts8ZYlFL3X3ixYZnZQHYeM4jBf7YHnpbM8PZV1HQ5YVPoLTYk0BaIVfkT62LVB3sQfx-pjLolVVoh27ejHek" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div class="absolute bottom-6 left-8">
+                    <span
+                        class="bg-primary-container text-white px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest font-headline mb-2 inline-block">Willkommen</span>
+                    <h1 class="text-white text-3xl font-headline font-black tracking-tight leading-none">Willkommen im
+                        Netzwerk, {{ user_name }}!</h1>
+                </div>
+            </div>
+            <!-- Content Body -->
+            <div class="p-8 md:p-12 space-y-8">
+                <div class="space-y-4">
+                    <p class="text-secondary text-lg leading-relaxed">
+                        Es ist uns eine Ehre, Sie bei <span class="font-bold text-on-surface">WMK Connect</span>
+                        begrüßen zu dürfen. Gestalten Sie die Zukunft unserer Region aktiv mit und vernetzen Sie sich
+                        mit den führenden Köpfen unserer Gemeinschaft.
+                    </p>
+                </div>
+                <!-- Signature Component: Civic Lead -->
+                <div
+                    class="bg-surface-container-high p-6 rounded-lg border-l-[12px] border-primary flex items-start gap-4">
+                    <span class="material-symbols-outlined text-primary text-3xl" data-icon="format_quote"
+                        style="font-variation-settings: 'FILL' 1;">format_quote</span>
+                    <div>
+                        <p class="font-headline text-xl font-bold tracking-tight text-on-surface italic">„In der
+                            Vernetzung liegt die Stärke unserer Region.“</p>
+                        <p class="text-xs uppercase tracking-widest text-secondary mt-2">— Geschäftsführung WMK Connect
+                        </p>
+                    </div>
+                </div>
+                <!-- Bento Grid Features -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Swipe Jobs -->
+                    <div
+                        class="bg-surface-container-low p-6 rounded-xl hover:bg-surface-bright transition-all group border border-transparent hover:border-outline-variant/15">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary" data-icon="touch_app">touch_app</span>
+                        </div>
+                        <h3 class="font-headline font-bold text-on-surface mb-2">Swipe-Jobs</h3>
+                        <p class="text-sm text-secondary leading-snug">Finden Sie neue Karrieremöglichkeiten in Ihrer
+                            Nähe mit nur einem Wisch.</p>
+                    </div>
+                    <!-- Firmenverzeichnis -->
+                    <div
+                        class="bg-surface-container-low p-6 rounded-xl hover:bg-surface-bright transition-all group border border-transparent hover:border-outline-variant/15">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary"
+                                data-icon="corporate_fare">corporate_fare</span>
+                        </div>
+                        <h3 class="font-headline font-bold text-on-surface mb-2">Firmenverzeichnis</h3>
+                        <p class="text-sm text-secondary leading-snug">Entdecken Sie lokale Partner und Unternehmen für
+                            starke Synergien.</p>
+                    </div>
+                    <!-- Studio -->
+                    <div
+                        class="bg-surface-container-low p-6 rounded-xl hover:bg-surface-bright transition-all group md:col-span-2 border border-transparent hover:border-outline-variant/15">
+                        <div class="flex items-center gap-6">
+                            <div
+                                class="w-12 h-12 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:rotate-6 transition-transform">
+                                <span class="material-symbols-outlined text-primary"
+                                    data-icon="camera_video">camera_video</span>
+                            </div>
+                            <div>
+                                <h3 class="font-headline font-bold text-on-surface mb-1">Studio</h3>
+                                <p class="text-sm text-secondary leading-snug">Präsentieren Sie Ihre Expertise in
+                                    unserem exklusiven Content-Studio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Primary CTA -->
+                <div class="pt-6 flex flex-col items-center">
+                    <a class="civic-gradient text-white px-10 py-4 rounded-xl font-headline font-bold tracking-tight text-lg shadow-[0px_12px_32px_rgba(185,0,11,0.2)] hover:scale-105 active:scale-95 transition-all text-center w-full md:w-auto"
+                        href="#">
+                        Jetzt Profil vervollständigen
+                    </a>
+                    <p class="text-xs text-slate-400 mt-6 uppercase tracking-tighter">
+                        Nur noch 2 Minuten bis zum vollen Zugang
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer Component -->
+    <footer class="w-full py-12 border-t border-slate-100 bg-slate-50">
+        <div class="flex flex-col items-center gap-6 px-8 max-w-7xl mx-auto">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-slate-900 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[10px] text-white" data-icon="verified">verified</span>
+                </div>
+                <span class="font-headline font-bold text-slate-900 uppercase text-sm tracking-widest">WMK
+                    Connect</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="font-headline text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
+                    href="#">Legal Disclosure</a>
+                <a class="font-headline text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
+                    href="#">Privacy Policy</a>
+                <a class="font-headline text-xs uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
+                    href="#">Accessibility</a>
+            </div>
+            <p class="font-headline text-xs uppercase tracking-widest text-slate-400 text-center">
+                © 2024 The Modern Archivist. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+    <!-- Floating Navigation Suppression Check (Mail Context) -->
+    <!-- Note: Mobile Nav is suppressed for E-Mail focus as per Task Suppression Rules -->
+</body>
+
+</html>

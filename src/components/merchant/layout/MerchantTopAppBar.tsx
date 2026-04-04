@@ -5,7 +5,7 @@ export const MerchantTopAppBar: React.FC = () => {
         <header className="glass fixed top-0 w-full z-50 no-line flex items-center justify-between px-8 py-5">
             <div className="flex items-center gap-6">
                 <div className="flex items-center gap-4">
-                    <img src="/logo.png" alt="WMK Connect Logo" className="h-14 w-auto object-contain transition-transform hover:scale-105 duration-300" />
+
                     <div className="h-8 w-px bg-on-surface opacity-10 hidden md:block"></div>
                     <span className="text-xl font-headline font-bold text-primary tracking-tight hidden sm:block">Merchant Hub</span>
                 </div>

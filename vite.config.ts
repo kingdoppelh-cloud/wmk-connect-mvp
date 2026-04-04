@@ -18,7 +18,7 @@ export default defineConfig({
         name: 'WMK Connect - Werra-Meißner-Kreis',
         short_name: 'WMK Connect',
         description: 'Ihre Region. Ihre Firmen. Ein Netzwerk. Entdecke tolle Restaurants, Handwerker und Dienstleister im Werra-Meißner-Kreis.',
-        theme_color: '#0ea5e9',
+        theme_color: '#b9000b',
         background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',

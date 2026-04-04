@@ -5,6 +5,8 @@ import { useJobs } from '../hooks/useJobs';
 import { useSEO } from '../hooks/useSEO';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { useRewards } from '../hooks/useRewards';
+import { useProfile } from '../hooks/useProfile';
+import { useMatches } from '../hooks/useMatches';
 
 interface SwipeJobsProps {
     company: Company;
@@ -17,6 +19,8 @@ export const SwipeJobs: React.FC<SwipeJobsProps> = ({ company, onClose }) => {
     const [currentJobIndex, setCurrentJobIndex] = useState(0);
     const { trackEvent } = useAnalytics();
     const { earnPoints } = useRewards();
+    const { profile } = useProfile();
+    const { recordMatch } = useMatches();
 
     const activeJob = jobs[currentJobIndex];
 
@@ -67,7 +71,12 @@ export const SwipeJobs: React.FC<SwipeJobsProps> = ({ company, onClose }) => {
         );
     }
 
-    const handleApply = () => {
+    const handleApply = async () => {
+        // Record match in DB if profile exists
+        if (profile?.id) {
+            await recordMatch(profile.id, company.id);
+        }
+
         const text = encodeURIComponent(`Hallo ${company.name}, ich habe Ihre Anzeige für "${activeJob.title}" in der WMK Connect App gesehen und interessiere mich für die Stelle!`);
         window.open(`https://wa.me/${company.whatsapp.replace(/[^0-9]/g, '')}?text=${text}`, '_blank');
         onClose();

@@ -22,17 +22,26 @@ export const Datenschutz: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 </section>
 
                 <section>
-                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">2. Datenerfassung in der App</h2>
-                    <h3 className="font-bold text-slate-900 mb-2">Supabase (Datenbank & Authentifizierung)</h3>
-                    <p>Wir nutzen Supabase zur Speicherung unserer Unternehmensdaten und für den Login-Bereich. Bei der Nutzung werden technisch notwendige Daten verarbeitet, um die Sicherheit und Funktionalität der App zu gewährleisten.</p>
-
-                    <h3 className="font-bold text-slate-900 mb-2 mt-4">LocalStorage (Favoriten)</h3>
-                    <p>Ihre Favoriten werden ausschließlich lokal in Ihrem Browser (LocalStorage) gespeichert. Diese Daten werden nicht an unsere Server übertragen.</p>
+                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">2. Datenerfassung & Dienste</h2>
+                    <div className="space-y-4">
+                        <div>
+                            <h3 className="font-bold text-slate-900 mb-1">Supabase</h3>
+                            <p>Wir nutzen Supabase zur sicheren Speicherung von Profildaten und zur Authentifizierung. Daten werden verschlüsselt übertragen und auf Servern innerhalb der EU verarbeitet.</p>
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-slate-900 mb-1">Resend / E-Mail</h3>
+                            <p>Für den Versand von System-E-Mails (z.B. Match-Benachrichtigungen) nutzen wir Resend. Dabei wird Ihre E-Mail-Adresse technisch an diesen Dienst übertragen.</p>
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-slate-900 mb-1">LocalStorage</h3>
+                            <p>Lokale Einstellungen und Favoriten werden ausschließlich auf Ihrem Endgerät gespeichert.</p>
+                        </div>
+                    </div>
                 </section>
 
                 <section>
                     <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">3. Ihre Rechte</h2>
-                    <p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung.</p>
+                    <p>Sie haben das Recht auf Auskunft, Berichtigung, Sperrung oder Löschung Ihrer Daten. Kontaktieren Sie uns hierzu unter support@wmk-connect.de.</p>
                 </section>
             </div>
         </div>

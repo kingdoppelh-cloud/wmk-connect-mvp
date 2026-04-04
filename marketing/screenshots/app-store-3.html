@@ -1,0 +1,308 @@
+<!-- Mein Profil: Motivierend & Vollständig -->
+<!DOCTYPE html>
+
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#303030",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "on-secondary-container": "#600008",
+                        "tertiary": "#192435",
+                        "surface-container": "#f0eded",
+                        "on-primary-container": "#87a5ca",
+                        "on-background": "#1b1c1c",
+                        "inverse-primary": "#abc9ef",
+                        "background": "#fbf9f8",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "surface-variant": "#e4e2e1",
+                        "tertiary-fixed": "#d8e3fa",
+                        "secondary-container": "#ff5a55",
+                        "outline-variant": "#c3c6ce",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dcd9d9",
+                        "on-tertiary-fixed": "#111c2c",
+                        "tertiary-fixed-dim": "#bcc7dd",
+                        "on-primary-fixed": "#001d35",
+                        "surface": "#fbf9f8",
+                        "surface-container-high": "#eae8e7",
+                        "on-surface-variant": "#43474d",
+                        "on-primary": "#ffffff",
+                        "outline": "#73777e",
+                        "surface-container-low": "#f6f3f2",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#2f3a4c",
+                        "primary-container": "#1b3b5a",
+                        "inverse-on-surface": "#f3f0f0",
+                        "secondary-fixed": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#fbf9f8",
+                        "on-primary-fixed-variant": "#2a4968",
+                        "surface-tint": "#436182",
+                        "primary": "#002542",
+                        "on-tertiary-container": "#99a4b9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e4e2e1",
+                        "primary-fixed-dim": "#abc9ef",
+                        "on-secondary-fixed-variant": "#920212",
+                        "primary-fixed": "#d1e4ff",
+                        "on-secondary-fixed": "#410003",
+                        "secondary": "#b52426",
+                        "on-surface": "#1b1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased pb-24">
+    <!-- Top App Bar - Using Shared Component Styling -->
+    <header
+        class="fixed top-0 w-full z-50 bg-[#fbf9f8]/80 backdrop-blur-md shadow-xl shadow-[#1b1c1c]/4 flex justify-between items-center px-6 h-16">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#002542]" data-icon="account_circle">account_circle</span>
+            <h1 class="font-['Inter'] font-bold tracking-tight text-xl text-[#002542]">Mein Profil</h1>
+        </div>
+        <button
+            class="hover:bg-[#ffffff]/50 transition-colors p-2 rounded-full scale-95 transition-transform duration-200">
+            <span class="material-symbols-outlined text-[#002542]" data-icon="settings">settings</span>
+        </button>
+    </header>
+    <main class="pt-24 px-6 max-w-2xl mx-auto space-y-8">
+        <!-- Profile Header Section -->
+        <section class="flex flex-col items-center text-center space-y-4">
+            <div class="relative">
+                <div class="w-32 h-32 rounded-full overflow-hidden ring-4 ring-surface-container-high">
+                    <img alt="Maximilian Mustermann" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIubdFyJl9M7PtyvWCOQL8AqhPzsnyaXlBz0tsCqiPVWR3bRpOiSL2-QDWLg8KxbasltMEHNWIqjkz3fxYbn-7ibL6FTpRA7GXFBamz6KnmsmLWFLQnZqDvf4IhIwG5G4KvkXrJ9x6XgEg2wjJH0j6v_gy4tfiXk5pjwR5HYh5Cj1-9-Eq65wGdnARCp_2cqZHBa7tFdXscAttnmd2GJ31RT_AUYkMiaQcAmPkKiEt-Fmw1uXGmsNoHreNSHqMT4Ga6dRe2ScXe1g" />
+                </div>
+                <button
+                    class="absolute bottom-0 right-0 bg-secondary text-on-secondary p-2 rounded-full shadow-lg hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+                </button>
+            </div>
+            <div>
+                <h2 class="text-3xl font-extrabold text-primary tracking-tighter">Maximilian Mustermann</h2>
+                <p class="text-on-surface-variant font-medium text-lg">Bauingenieur (M.Sc.)</p>
+            </div>
+            <!-- Profile Completion Progress Bar -->
+            <div class="w-full max-w-xs pt-2 space-y-2">
+                <div class="flex justify-between items-center text-xs font-bold text-primary uppercase tracking-wider">
+                    <span>Profil-Vollständigkeit</span>
+                    <span>75%</span>
+                </div>
+                <div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+                    <div class="bg-secondary h-full rounded-full" style="width: 75%"></div>
+                </div>
+                <p class="text-[13px] text-on-surface-variant leading-tight">Dein Profil ist zu 75% vollständig</p>
+            </div>
+            <button
+                class="bg-primary text-on-primary px-8 py-2.5 rounded-full font-semibold tracking-wide hover:opacity-90 transition-opacity active:scale-95 duration-200">
+                Profil bearbeiten
+            </button>
+        </section>
+        <!-- Motivation Tip Banner -->
+        <section
+            class="bg-primary-container/10 border border-primary-container/20 rounded-2xl p-4 flex items-start gap-4">
+            <div class="bg-secondary/10 p-2 rounded-xl">
+                <span class="material-symbols-outlined text-secondary" data-icon="lightbulb">lightbulb</span>
+            </div>
+            <div class="space-y-1">
+                <h4 class="font-bold text-primary text-sm">Profi-Tipp</h4>
+                <p class="text-sm text-on-surface-variant leading-snug">Füge deine Zertifikate hinzu, um <span
+                        class="text-secondary font-bold">3x mehr Anfragen</span> zu erhalten.</p>
+            </div>
+        </section>
+        <!-- Stats Grid -->
+        <section class="grid grid-cols-3 gap-4">
+            <div
+                class="bg-surface-container-low p-4 rounded-xl flex flex-col items-center justify-center space-y-2 group hover:bg-surface-container-lowest transition-all">
+                <span class="material-symbols-outlined text-secondary" data-icon="favorite" data-weight="fill"
+                    style="font-variation-settings: 'FILL' 1;">favorite</span>
+                <span class="text-2xl font-bold text-primary">12</span>
+                <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant text-center">Gespeichert</span>
+            </div>
+            <div
+                class="bg-surface-container-low p-4 rounded-xl flex flex-col items-center justify-center space-y-2 group hover:bg-surface-container-lowest transition-all">
+                <span class="material-symbols-outlined text-primary" data-icon="work">work</span>
+                <span class="text-2xl font-bold text-primary">4</span>
+                <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant text-center">Bewerbungen</span>
+            </div>
+            <div
+                class="bg-surface-container-low p-4 rounded-xl flex flex-col items-center justify-center space-y-2 group hover:bg-surface-container-lowest transition-all">
+                <span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+                <span class="text-2xl font-bold text-primary">148</span>
+                <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant text-center">Netzwerk</span>
+            </div>
+        </section>
+        <!-- Activities Section -->
+        <section class="space-y-6">
+            <div class="flex justify-between items-end">
+                <h3 class="text-xl font-extrabold text-primary tracking-tight">Meine Aktivitäten</h3>
+                <span class="text-secondary text-sm font-bold uppercase tracking-wider cursor-pointer">Alle
+                    ansehen</span>
+            </div>
+            <div class="space-y-3">
+                <div
+                    class="bg-surface-container-lowest p-5 rounded-xl shadow-sm flex items-center justify-between border-l-4 border-primary">
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-primary">Senior Projektleiter Hochbau</h4>
+                        <p class="text-xs text-on-surface-variant">Hochtief AG • Vor 2 Tagen</p>
+                    </div>
+                    <div
+                        class="bg-surface-container text-[11px] font-bold px-3 py-1 rounded-full text-primary uppercase tracking-tighter">
+                        Eingegangen
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-5 rounded-xl shadow-sm flex items-center justify-between border-l-4 border-secondary">
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-primary">Statik-Experte Infrastruktur</h4>
+                        <p class="text-xs text-on-surface-variant">Strabag • Vor 5 Tagen</p>
+                    </div>
+                    <div
+                        class="bg-secondary-fixed text-[11px] font-bold px-3 py-1 rounded-full text-on-secondary-fixed-variant uppercase tracking-tighter">
+                        In Prüfung
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Saved Jobs Section -->
+        <section class="space-y-6">
+            <h3 class="text-xl font-extrabold text-primary tracking-tight">Gemerkte Jobs</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div
+                    class="bg-surface-container-low p-4 rounded-xl space-y-3 hover:bg-surface-container-lowest transition-all cursor-pointer">
+                    <div
+                        class="w-10 h-10 rounded-lg overflow-hidden bg-white flex items-center justify-center shadow-sm">
+                        <img alt="Company Logo" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjv0NtlLy34MMzTa-TNcx69AZ7ti0SUwqtxrOngThqO43GnzMRgdEy4VpaVJZFH6mN1x-PIXS3RzMmVBRKZkHO9WSPcF7YobMCHRk36Jil1aBignxoFIV1DOn4jgHxelnewjOJow609Eoq3QE8qTp0-0CQKCwQlhbPzvPBPqBq5I0Ek3BJBjiYQ33Hq26_gih0BcVNOZvaB_VUGWnBmijkp8Sb6v4PUs1qlTEn5WlwOhf5yoU4-xz1_hnmEy8kqhRXaowQw9WJOqw" />
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-primary leading-tight">BIM-Koordinator</h4>
+                        <p class="text-[11px] text-on-surface-variant font-medium">Buro Happold</p>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-container-low p-4 rounded-xl space-y-3 hover:bg-surface-container-lowest transition-all cursor-pointer">
+                    <div
+                        class="w-10 h-10 rounded-lg overflow-hidden bg-white flex items-center justify-center shadow-sm">
+                        <img alt="Company Logo" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxFOaIQ75WahgqXGAqZucgPkfx0QK7Ng4XcmcrxlQOir2_sjaPqkaOChfV52WytLv1vN5dxjOvGiVA9ChJB9VTN-xdW0j_qXg67WFTIbsZ23LNpixCJQ1EHEiEWw13HSG2Fq6FGedGckffBVvly5sVVMGPqLEOEzK0RjtEbEYsfxOieycdGa6cSBtFkLVNMlvN3-jfmZfgDQdrbRmxaJR-53yvWk5MCle39HUY0eTAYIE8_6qms-SZEZ-2rR0SNPfJvZ_c1xhL4dI" />
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-primary leading-tight">Bauleiter (m/w/d)</h4>
+                        <p class="text-[11px] text-on-surface-variant font-medium">Goldbeck GmbH</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Settings List -->
+        <section class="space-y-2 pb-12">
+            <h3 class="text-xl font-extrabold text-primary tracking-tight mb-4 px-1">Einstellungen</h3>
+            <div
+                class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl hover:bg-surface-container-high transition-colors cursor-pointer group">
+                <div class="flex items-center gap-4">
+                    <span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+                    <span class="font-semibold text-primary">Benachrichtigungen</span>
+                </div>
+                <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors"
+                    data-icon="chevron_right">chevron_right</span>
+            </div>
+            <div
+                class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl hover:bg-surface-container-high transition-colors cursor-pointer group">
+                <div class="flex items-center gap-4">
+                    <span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+                    <span class="font-semibold text-primary">Privatsphäre</span>
+                </div>
+                <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors"
+                    data-icon="chevron_right">chevron_right</span>
+            </div>
+            <div
+                class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl hover:bg-error-container transition-colors cursor-pointer group">
+                <div class="flex items-center gap-4">
+                    <span class="material-symbols-outlined text-secondary" data-icon="logout">logout</span>
+                    <span class="font-semibold text-secondary">Abmelden</span>
+                </div>
+                <span class="material-symbols-outlined text-secondary" data-icon="chevron_right">chevron_right</span>
+            </div>
+        </section>
+    </main>
+    <!-- Bottom Navigation Bar - Using Shared Component Styling -->
+    <nav
+        class="fixed bottom-0 left-0 w-full z-50 bg-[#fbf9f8]/80 backdrop-blur-md flex justify-around items-center pt-3 pb-6 px-4 rounded-t-xl shadow-2xl shadow-[#1b1c1c]/5">
+        <a class="flex flex-col items-center justify-center text-[#192435]/60 hover:text-[#002542] transition-all active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="explore">explore</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Entdecken</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#192435]/60 hover:text-[#002542] transition-all active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="work">work</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Jobs</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#192435]/60 hover:text-[#002542] transition-all active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="hub">hub</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Netzwerk</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#192435]/60 hover:text-[#002542] transition-all active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="event">event</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider">Events</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#b52426] font-bold active:scale-90 transition-all"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="person" data-weight="fill"
+                style="font-variation-settings: 'FILL' 1;">person</span>
+            <span class="font-['Inter'] text-[11px] font-bold uppercase tracking-wider">Profil</span>
+        </a>
+    </nav>
+</body>
+
+</html>

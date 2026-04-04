@@ -1,0 +1,106 @@
+<!-- E-Mail: Neue Nachricht erhalten -->
+<!DOCTYPE html>
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Neue Nachricht auf WMK Connect</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#b9000b",
+                        "secondary": "#436182",
+                        "surface": "#f8f9ff",
+                        "on-surface": "#001d35",
+                        "primary-container": "#e31a1a",
+                        "on-primary": "#ffffff"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .noble-gradient {
+            background: linear-gradient(135deg, #002542 0%, #b9000b 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased">
+    <main class="py-12 px-4 max-w-[600px] mx-auto">
+        <header class="mb-8 text-center">
+            <div class="inline-flex items-center gap-2 mb-4">
+                <div class="w-8 h-8 rounded bg-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-xs">chat</span>
+                </div>
+                <span class="font-headline font-bold uppercase tracking-widest text-sm">WMK Connect</span>
+            </div>
+        </header>
+
+        <section class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="noble-gradient p-8 text-white">
+                <h1 class="text-3xl font-headline font-bold leading-tight">Du hast eine neue Nachricht, {{ user_name }}!
+                </h1>
+                <p class="mt-2 opacity-80 text-sm italic">Du hast Post von {{ sender_name }}.</p>
+            </div>
+
+            <div class="p-8 space-y-6">
+                <!-- Message Preview -->
+                <div class="bg-surface border border-slate-100 p-6 rounded-xl relative">
+                    <div class="flex items-start gap-4">
+                        <img src="{{ sender_image_url }}" class="w-12 h-12 rounded-full border-2 border-white shadow-sm"
+                            alt="{{ sender_name }}">
+                        <div>
+                            <p class="font-bold text-sm">{{ sender_name }} schreibt:</p>
+                            <p class="text-secondary mt-1 text-base leading-relaxed italic">"{{ message_preview }}..."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <p class="text-lg text-secondary">
+                        Lass deinen Kontakt nicht warten. Antworte direkt über das Portal, um den Austausch
+                        fortzusetzen.
+                    </p>
+                </div>
+
+                <div class="pt-4 flex flex-col items-center">
+                    <a href="{{ chat_url }}"
+                        class="bg-primary hover:bg-primary-container text-white px-10 py-4 rounded-xl font-headline font-bold tracking-tight text-lg shadow-lg transition-all text-center w-full md:w-auto">
+                        Antworten
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-12 text-center text-slate-400 text-xs space-y-4">
+            <p uppercase tracking-widest>© 2024 WMK Connect. Alle Rechte vorbehalten.</p>
+            <div class="flex justify-center gap-4">
+                <a href="#" class="hover:text-primary transition-colors">Abmelden</a>
+                <span>•</span>
+                <a href="#" class="hover:text-primary transition-colors">Privatsphäre</a>
+            </div>
+        </footer>
+    </main>
+</body>
+
+</html>

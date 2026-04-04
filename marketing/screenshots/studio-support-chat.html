@@ -1,0 +1,300 @@
+<!-- Screenshot of https://wmk-connect-mvp.vercel.app/ -->
+<!DOCTYPE html>
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>WMK STUDIO | Support-Chat</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#ffdad5", "on-tertiary": "#ffffff", "error": "#ba1a1a", "tertiary-fixed": "#d2e4ff", "error-container": "#ffdad6", "surface-tint": "#c0000c", "surface-bright": "#f8f9ff", "on-surface-variant": "#5e3f3b", "tertiary-fixed-dim": "#a1c9ff", "inverse-surface": "#103251", "secondary-container": "#b9d7fd", "on-secondary-fixed": "#001d35", "inverse-primary": "#ffb4aa", "surface-container-lowest": "#ffffff", "primary-fixed-dim": "#ffb4aa", "on-primary-fixed-variant": "#930006", "surface-container-low": "#eef4ff", "on-surface": "#001d35", "on-background": "#001d35", "on-tertiary-fixed": "#001c37", "secondary-fixed": "#d1e4ff", "surface": "#f8f9ff", "surface-variant": "#d1e4ff", "on-secondary": "#ffffff", "outline-variant": "#e8bdb7", "secondary": "#436182", "primary-container": "#e31a1a", "on-secondary-container": "#405e7e", "on-secondary-fixed-variant": "#2a4968", "tertiary": "#005da2", "primary": "#b9000b", "on-primary-container": "#fff9f8", "inverse-on-surface": "#e9f1ff", "surface-container": "#e4efff", "on-error": "#ffffff", "surface-dim": "#c2dcff", "on-tertiary-fixed-variant": "#004880", "outline": "#926e6a", "on-primary-fixed": "#410001", "surface-container-high": "#dbe9ff", "tertiary-container": "#0076cb", "surface-container-highest": "#d1e4ff", "on-primary": "#ffffff", "secondary-fixed-dim": "#abc9ef", "on-error-container": "#93000a", "background": "#f8f9ff", "on-tertiary-container": "#fafaff"
+                    },
+                    "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                    "fontFamily": { "headline": ["Public Sans"], "body": ["Inter"], "label": ["Inter"] }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .chat-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed overflow-hidden h-screen flex flex-col">
+    <header
+        class="bg-slate-50/80 backdrop-blur-xl fixed top-0 w-full z-50 shadow-[0px_12px_32px_rgba(27,59,90,0.06)] flex items-center justify-between px-6 h-16 w-full">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-red-600">architecture</span>
+            <span class="text-xl font-bold tracking-tighter text-slate-900 font-headline">WMK STUDIO</span>
+        </div>
+        <nav class="hidden md:flex gap-8">
+            <button
+                class="text-slate-500 hover:bg-slate-200/50 transition-colors px-3 py-1 rounded-lg active:scale-95 text-sm font-medium">Services</button>
+            <button
+                class="text-slate-500 hover:bg-slate-200/50 transition-colors px-3 py-1 rounded-lg active:scale-95 text-sm font-medium">Portfolio</button>
+            <button
+                class="text-slate-500 hover:bg-slate-200/50 transition-colors px-3 py-1 rounded-lg active:scale-95 text-sm font-medium">Projects</button>
+            <button class="text-red-600 font-bold px-3 py-1 rounded-lg text-sm">Support</button>
+        </nav>
+        <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-surface">account_circle</span>
+        </div>
+    </header>
+    <main class="flex-grow pt-16 pb-20 md:pb-0 flex flex-col md:flex-row h-full max-w-7xl mx-auto w-full">
+        <aside class="hidden md:flex flex-col w-1/4 p-6 bg-surface-container-low gap-6">
+            <div class="space-y-4">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Aktives Projekt</span>
+                <h1 class="font-headline text-2xl font-extrabold tracking-tight text-on-background">Web-Redesign
+                    Metro-Immo</h1>
+                <div class="flex items-center gap-2 px-3 py-1 bg-surface-container-highest rounded-full w-fit">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span class="text-xs font-semibold text-secondary uppercase tracking-tight">In Arbeit</span>
+                </div>
+            </div>
+            <div class="mt-8 space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3">Zugeordnete Designer</h3>
+                    <div class="flex -space-x-2">
+                        <img class="w-10 h-10 rounded-full border-2 border-surface shadow-sm"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxQ3tgMEwr3ed9IuYH9N5gn-xDso614EYREJMnLJ7VirqWs7kfkHRBJGrUdvB44PJmZJP0pTOlZpeIvQ7JNdBYJPXh0OBrMFoh65jEhMb-4fIdTb1kmMSNtDXCRdkt-NNpIjgiXy0rYz_cpj9weDT8CtDYbY151kuEH3rgurYypMTjgQjcEnjJXraN8pmOsMpmPSgATioTyROt8MnBV9s9S4JLwP49iY_pdbsc99h_vKDompi1EuJDDou-eE0Pi6RmtMmkyOZUTxI"
+                            alt="Designer 1" />
+                        <img class="w-10 h-10 rounded-full border-2 border-surface shadow-sm"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnsiOYUkJLerPz5S_nhcNDZx9oA7XkMejegCk-zHRxEUB7BHFov42NrUQNAzbRhzUqoaKBXGH5H1YV8r2MZH9WAg_-Fz-lPRHKcnck7DKYHItCNSres6yNcTQmAAp-m1R7oROM7sT5RYhDwFCU6BDCnzPjWZc9Qn3H1v0j2Y3swKy3bnQ4NvwJEwbdosj1YZdHVGTnfCJ7dDxBdLoiagKabcJICfTH8N5LdJyW-aiX5pB66fRzPJOeHQ9u21xJXP_I-wqJ3GcZ-qQ"
+                            alt="Designer 2" />
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3">Letzte Dateien</h3>
+                    <div class="space-y-2">
+                        <div
+                            class="flex items-center gap-3 p-3 bg-surface-container-lowest rounded-xl hover:bg-surface-bright transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-primary">picture_as_pdf</span>
+                            <div class="flex flex-col overflow-hidden">
+                                <span class="text-sm font-semibold truncate">Brand_Guidelines_V2.pdf</span>
+                                <span class="text-[10px] text-slate-400">12.4 MB • Gestern</span>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 p-3 bg-surface-container-lowest rounded-xl hover:bg-surface-bright transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-primary">image</span>
+                            <div class="flex flex-col overflow-hidden">
+                                <span class="text-sm font-semibold truncate">Hero_Concept_A.jpg</span>
+                                <span class="text-[10px] text-slate-400">4.2 MB • Vor 2 Std.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <section class="flex-grow flex flex-col bg-surface border-x-0 md:border-x border-slate-200/15 relative">
+            <div
+                class="md:hidden flex items-center justify-between p-4 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-slate-100">
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-background">Web-Redesign Metro-Immo</span>
+                    <span class="text-[10px] font-medium text-emerald-600">In Arbeit</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400">more_vert</span>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6 space-y-8 chat-scrollbar">
+                <div class="flex justify-center">
+                    <span
+                        class="px-4 py-1 bg-surface-container-low text-[10px] font-bold text-slate-500 rounded-full uppercase tracking-widest">Gestern</span>
+                </div>
+                <div class="flex flex-col gap-2 max-w-[85%] md:max-w-[70%]">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-secondary">Marc (Metro-Immo)</span>
+                        <span class="text-[10px] text-slate-400">15:30</span>
+                    </div>
+                    <div
+                        class="bg-surface-container-low p-4 rounded-xl rounded-tl-none shadow-sm text-on-surface leading-relaxed">
+                        Hallo Team, wie sieht der aktuelle Stand beim Landingpage-Konzept aus? Wir bräuchten das PDF für
+                        die morgige Vorstandssitzung.</div>
+                </div>
+                <div class="flex flex-col gap-2 max-w-[85%] md:max-w-[70%] self-end items-end">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-[10px] text-slate-400">16:15</span>
+                        <span class="text-xs font-bold text-primary">Sarah (WMK Studio)</span>
+                    </div>
+                    <div class="bg-primary p-4 rounded-xl rounded-tr-none shadow-md text-on-primary leading-relaxed">Hey
+                        Marc! Wir sind gerade im Endspurt. Ich lade euch gleich den ersten Entwurf hoch. Schaut euch
+                        besonders die neue Navigation an.</div>
+                </div>
+                <div class="flex flex-col gap-2 max-w-[85%] md:max-w-[70%] self-end items-end">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-[10px] text-slate-400">16:17</span>
+                        <span class="text-xs font-bold text-primary">Sarah (WMK Studio)</span>
+                    </div>
+                    <div class="bg-primary p-4 rounded-xl rounded-tr-none shadow-md text-on-primary w-full">
+                        <div class="bg-white/10 rounded-lg p-3 flex items-center gap-3 mb-3 border border-white/20">
+                            <span class="material-symbols-outlined text-white">description</span>
+                            <div class="flex flex-col overflow-hidden">
+                                <span class="text-sm font-bold truncate text-white">Metro_Immo_V1_Concept.pdf</span>
+                                <span class="text-[10px] text-white/70 uppercase">24.5 MB</span>
+                            </div>
+                            <button class="ml-auto p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
+                                <span class="material-symbols-outlined text-xs text-white">download</span>
+                            </button>
+                        </div>
+                        <p class="leading-relaxed">Hier ist das versprochene Konzept. Wir freuen uns auf euer Feedback!
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <span
+                        class="px-4 py-1 bg-surface-container-low text-[10px] font-bold text-slate-500 rounded-full uppercase tracking-widest">Heute</span>
+                </div>
+                <div class="flex flex-col gap-2 max-w-[85%] md:max-w-[70%]">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-secondary">Marc (Metro-Immo)</span>
+                        <span class="text-[10px] text-slate-400">09:12</span>
+                    </div>
+                    <div class="bg-surface-container-low p-2 rounded-xl rounded-tl-none shadow-sm space-y-3">
+                        <img class="w-full h-48 object-cover rounded-lg"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4Lx05PsD8hA8PESFdVph8Bbgjyz4rzcVJ7X5qUvKlBAC-dWZr-DRYS6farz1alFeJuhdPZiOlGqM4xgaoQUgT5kIksawSDj91Vl8MY3tnoLYnDWeBZO0A7Ufhn71InxbHWGHXWC4NhdZg3UlBjivEk5sp2Ws16zotGeEz2-JW4JoMr_X3pyNMpqZbPcwdTmRG_LXHZxvxdZXZ_gMRoXOdT-pmjOZ3GQxIq0HcckP-TI4S8AYzSbo8o5lsthU2ThjgG2kC4u7Sr5k"
+                            alt="UI Concept" />
+                        <div class="px-2 pb-2">
+                            <p class="text-on-surface leading-relaxed">Das sieht fantastisch aus! Besonders die
+                                Hero-Sektion mit der Filterfunktion überzeugt uns sehr. Wir haben nur eine kleine
+                                Anmerkung zur Farbgewichtung des Footer-Bereichs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-surface-container-lowest border-t border-slate-200/10">
+                <div
+                    class="flex items-end gap-4 bg-surface-container-low p-2 rounded-2xl focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                    <div class="flex flex-col gap-2 mb-1 ml-1">
+                        <button
+                            class="p-2 hover:bg-surface-container-highest rounded-full transition-colors text-slate-500">
+                            <span class="material-symbols-outlined text-[20px]">attach_file</span>
+                        </button>
+                    </div>
+                    <textarea
+                        class="flex-grow bg-transparent border-none focus:ring-0 text-on-surface resize-none py-3 px-2 text-sm max-h-32 chat-scrollbar"
+                        placeholder="Nachricht schreiben oder Datei ablegen..." rows="1"></textarea>
+                    <button
+                        class="bg-primary text-on-primary w-10 h-10 rounded-xl flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+                        <span class="material-symbols-outlined">send</span>
+                    </button>
+                </div>
+                <div class="flex gap-4 mt-3 ml-2">
+                    <button
+                        class="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-tighter hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-sm">image</span> Bild senden
+                    </button>
+                    <button
+                        class="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-tighter hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-sm">add_comment</span> Entwurf kommentieren
+                    </button>
+                </div>
+            </div>
+        </section>
+        <aside class="hidden lg:flex flex-col w-1/4 p-6 bg-surface gap-8">
+            <section>
+                <h3 class="text-[10px] font-bold text-slate-500 uppercase mb-4 tracking-widest">Projekt-Team</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <img class="w-10 h-10 rounded-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaRg4KdKBgcSdDQ5zrbWUYYg4wBQWZ08dQ4N4DUCNuwV7hcmUddBeNaXKAX-byssyYYSCP6g4MzRJILotH_8Zast1f0M3vpFHZNKpxb-DX1WCptfPbMhtUUtuhJnwTQ3mQkUpvwp2LJK38WQY9puVkSuKnSVKe-67J3i0f-Bw9MjQR0H22_kWBPrktuTFjuEUEmImoqRPpUIsISsVpiZTm34smTE7AcGBRROb1UF_yHjd3UYevMKOCx4KE1Fk52Ar6kwYeL-W3lpU"
+                                alt="Sarah" />
+                            <span
+                                class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-surface rounded-full"></span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold">Sarah Schneider</span>
+                            <span class="text-[10px] text-slate-500 font-medium uppercase">Lead Designer</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <img class="w-10 h-10 rounded-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy1tOzQcd0N5GHjSD1vuW3xQKNJQAfEu4-2vovP1IsKb7VtaZwZhzRu1nRqAWqxzvlT3Glw5z9v_VuRTiDp5lmU9AA1YvVbtzmUOKdI2bHsXj5eTt2wbxp6CpHHiKw5L1d_zHe_9Gm3yv-_Dw2ovOQ6BlI8gnVS0t7oJQDN0uHLkDhw74bU3Cqqt4igXb71Q1TkoEwCvll4Dc53UWslPiRK-7gtNbONzlOd1RIqMnDgmcofs7oQe2q0Cis65v0ViAbfpup4vfbu04"
+                                alt="Lukas" />
+                            <span
+                                class="absolute bottom-0 right-0 w-3 h-3 bg-slate-300 border-2 border-surface rounded-full"></span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold">Lukas Weber</span>
+                            <span class="text-[10px] text-slate-500 font-medium uppercase">Projektleiter</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="bg-surface-container-low p-4 rounded-xl border-l-4 border-primary">
+                <h3 class="text-xs font-bold text-primary uppercase mb-2">Nächste Schritte</h3>
+                <p class="text-xs text-on-surface leading-relaxed">Vorstellung des Gesamtkonzepts am Mittwoch, 10:00 Uhr
+                    via Teams.</p>
+            </section>
+            <section>
+                <h3 class="text-[10px] font-bold text-slate-500 uppercase mb-4 tracking-widest">Support-Links</h3>
+                <div class="flex flex-col gap-2">
+                    <button
+                        class="text-left text-xs font-semibold py-2 px-3 hover:bg-surface-container-low rounded-lg transition-colors flex items-center justify-between group">
+                        FAQ &amp; Dokumentation
+                        <span
+                            class="material-symbols-outlined text-sm text-slate-300 group-hover:text-primary">open_in_new</span>
+                    </button>
+                    <button
+                        class="text-left text-xs font-semibold py-2 px-3 hover:bg-surface-container-low rounded-lg transition-colors flex items-center justify-between group">
+                        Technischer Support
+                        <span
+                            class="material-symbols-outlined text-sm text-slate-300 group-hover:text-primary">headset_mic</span>
+                    </button>
+                </div>
+            </section>
+        </aside>
+    </main>
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-safe bg-white/80 backdrop-blur-xl z-50 rounded-t-xl border-t border-slate-200/15">
+        <div class="flex flex-col items-center justify-center text-slate-500 px-3 py-1">
+            <span class="material-symbols-outlined">category</span>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Services</span>
+        </div>
+        <div class="flex flex-col items-center justify-center text-slate-500 px-3 py-1">
+            <span class="material-symbols-outlined">collections_bookmark</span>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Portfolio</span>
+        </div>
+        <div class="flex flex-col items-center justify-center text-slate-500 px-3 py-1">
+            <span class="material-symbols-outlined">account_tree</span>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Projects</span>
+        </div>
+        <div class="flex flex-col items-center justify-center text-red-600 bg-slate-100/50 rounded-lg px-3 py-1">
+            <span class="material-symbols-outlined">contact_support</span>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Support</span>
+        </div>
+    </nav>
+</body>
+
+</html>

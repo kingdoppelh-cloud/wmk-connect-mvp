@@ -18,25 +18,25 @@ export const Impressum: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <div className="prose prose-slate max-w-none space-y-8 text-slate-600">
                 <section>
                     <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">Angaben gemäß § 5 TMG</h2>
-                    <p className="font-bold text-slate-900">[Ihr Name / Firmenname]</p>
-                    <p>[Straße Hausnummer]</p>
-                    <p>[PLZ Ort]</p>
+                    <p className="font-bold text-slate-900">WMK Connect</p>
+                    <p>Werra-Meißner-Kreis</p>
+                    <p>Deutschland</p>
                 </section>
 
                 <section>
                     <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">Kontakt</h2>
-                    <p>Telefon: [Deine Telefonnummer]</p>
-                    <p>E-Mail: [Deine E-Mail Adresse]</p>
+                    <p>E-Mail: support@wmk-connect.de</p>
+                    <p>Website: wmk-connect.de</p>
                 </section>
 
                 <section>
-                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">Umsatzsteuer-ID</h2>
-                    <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />[Deine USt-ID, falls vorhanden]</p>
+                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+                    <p>WMK Connect Team</p>
                 </section>
 
                 <section>
-                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">Verbraucherstreitbeilegung</h2>
-                    <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-4">Haftungsausschluss</h2>
+                    <p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
                 </section>
             </div>
         </div>

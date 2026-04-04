@@ -7,7 +7,7 @@ export const StudioTopAppBar: React.FC = () => {
             <div className="flex items-center gap-4">
                 <span className="material-symbols-outlined text-slate-600 dark:text-slate-400 cursor-pointer active:scale-95 duration-200">menu</span>
                 <div className="flex items-center gap-3">
-                    <img src="/logo.png" alt="WMK Connect Logo" className="h-12 w-auto object-contain transition-transform hover:scale-105" />
+
                     <Link to="/studio" className="text-xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">WMK Studio</Link>
                 </div>
             </div>

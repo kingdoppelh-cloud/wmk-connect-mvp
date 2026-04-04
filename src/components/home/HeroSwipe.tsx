@@ -9,20 +9,26 @@ export const HeroSwipe: React.FC = () => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
             <label className="sr-only">Hero Section</label>
-            {/* Logo Splash — 60vh premium hero without box-shadow artifact */}
-            <div className="-mx-6 bg-surface dark:bg-slate-900 flex items-center justify-center animate-in fade-in duration-1000">
+            {/* Logo Splash — Extrem großes transparentes Hero-Logo */}
+            <div className="flex items-center justify-center py-2 overflow-visible" style={{ background: 'transparent' }}>
                 <img
                     src="/logo.png"
                     alt="WMK Connect"
-                    style={{ height: '60vh', width: 'auto', maxWidth: '95vw' }}
-                    className="object-contain mix-blend-multiply dark:mix-blend-screen dark:invert"
+                    style={{
+                        height: 'clamp(400px, 85vw, 600px)',
+                        width: 'auto',
+                        maxWidth: '100vw',
+                        mixBlendMode: 'multiply',
+                        background: 'transparent',
+                    }}
+                    className="animate-in fade-in duration-1000"
                 />
             </div>
 
             {/* Hero Card */}
-            <section className="relative group overflow-hidden rounded-xl h-[500px] flex items-end">
+            <section className="relative group overflow-hidden rounded-xl h-[360px] md:h-[500px] flex items-end">
                 <div className="absolute inset-0 z-0">
                     <img
                         alt="Modernes Büro-Ambiente"
@@ -31,15 +37,15 @@ export const HeroSwipe: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
                 </div>
-                <div className="relative z-10 p-8 md:p-12 max-w-2xl">
-                    <p className="text-white/80 uppercase tracking-widest font-bold text-xs mb-3">Deine Zukunft im Kreis</p>
-                    <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight leading-none">Swipe-Jobs entdecken</h1>
-                    <p className="text-white/90 text-lg mb-8 font-medium leading-relaxed">
+                <div className="relative z-10 p-6 md:p-12 max-w-2xl w-full">
+                    <p className="text-white/80 uppercase tracking-widest font-bold text-xs mb-2 md:mb-3">Deine Zukunft im Kreis</p>
+                    <h2 className="text-3xl md:text-6xl font-black text-white mb-4 md:mb-6 tracking-tight leading-tight">Swipe-Jobs entdecken</h2>
+                    <p className="text-white/90 text-sm md:text-lg mb-5 md:mb-8 font-medium leading-relaxed hidden sm:block">
                         Finde die besten Karrierechancen in deiner Region mit nur einem Swipe. Schnell, einfach und direkt.
                     </p>
                     <button
                         onClick={handleSwipe}
-                        className="bg-secondary dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-3 transition-all active:scale-95 shadow-lg"
+                        className="w-full sm:w-auto bg-secondary dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-500 text-white px-6 md:px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg"
                     >
                         Jetzt swipen
                         <ArrowRight className="w-5 h-5" />

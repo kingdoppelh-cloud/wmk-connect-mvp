@@ -1,0 +1,263 @@
+<!-- Swipe-Jobs Interface (Redux) -->
+<!DOCTYPE html>
+
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>WMK Connect - Swipe-Jobs</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#fff9f8",
+                        "on-primary-fixed": "#410001",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e4efff",
+                        "on-secondary-fixed-variant": "#2a4968",
+                        "on-tertiary-fixed-variant": "#004880",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed": "#d2e4ff",
+                        "on-secondary-fixed": "#001d35",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#a1c9ff",
+                        "primary": "#b9000b",
+                        "on-secondary-container": "#405e7e",
+                        "surface-container-high": "#dbe9ff",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#0076cb",
+                        "primary-container": "#e31a1a",
+                        "secondary": "#436182",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#d1e4ff",
+                        "on-primary-fixed-variant": "#930006",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#c2dcff",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#e9f1ff",
+                        "primary-fixed": "#ffdad5",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#b9d7fd",
+                        "outline": "#926e6a",
+                        "on-surface-variant": "#5e3f3b",
+                        "on-surface": "#001d35",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#abc9ef",
+                        "on-background": "#001d35",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#001c37",
+                        "outline-variant": "#e8bdb7",
+                        "inverse-primary": "#ffb4aa",
+                        "secondary-fixed": "#d1e4ff",
+                        "surface-tint": "#c0000c",
+                        "tertiary": "#005da2",
+                        "inverse-surface": "#103251",
+                        "on-tertiary-container": "#fafaff",
+                        "surface-container-highest": "#d1e4ff",
+                        "surface-container-low": "#eef4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .swipe-card-shadow {
+            box-shadow: 0px 12px 32px rgba(27, 59, 90, 0.06);
+        }
+
+        .glass-nav {
+            backdrop-filter: blur(24px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-surface font-body text-on-background selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-900/10 dark:border-slate-50/10 shadow-[0px_12px_32px_rgba(27,59,90,0.06)]">
+        <div class="flex items-center justify-between px-6 h-16 w-full max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+                <button
+                    class="text-slate-600 dark:text-slate-400 hover:text-red-600 transition-colors active:opacity-80 active:scale-95">
+                    <span class="material-symbols-outlined" data-icon="menu">menu</span>
+                </button>
+                <h1
+                    class="text-lg font-black tracking-tighter text-slate-900 dark:text-slate-50 font-['Public_Sans'] uppercase">
+                    WMK Connect
+                </h1>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-slate-600 dark:text-slate-400 font-semibold text-sm tracking-wider uppercase transition-colors hover:text-red-600"
+                    href="#">Entdecken</a>
+                <a class="text-red-600 dark:text-red-500 font-semibold text-sm tracking-wider uppercase transition-colors"
+                    href="#">Jobs</a>
+                <a class="text-slate-600 dark:text-slate-400 font-semibold text-sm tracking-wider uppercase transition-colors hover:text-red-600"
+                    href="#">Events</a>
+                <a class="text-slate-600 dark:text-slate-400 font-semibold text-sm tracking-wider uppercase transition-colors hover:text-red-600"
+                    href="#">Aktuelles</a>
+            </div>
+            <button
+                class="text-slate-600 dark:text-slate-400 hover:text-red-600 transition-colors active:opacity-80 active:scale-95">
+                <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+            </button>
+        </div>
+    </header>
+    <!-- Main Content Canvas -->
+    <main class="relative h-screen w-full flex flex-col items-center justify-center pt-16 pb-24 overflow-hidden">
+        <!-- Background Asymmetric Decorative Elements -->
+        <div class="absolute top-1/4 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-secondary/5 rounded-full blur-3xl pointer-events-none">
+        </div>
+        <!-- Swipe Container -->
+        <div class="relative w-full max-w-md px-4 h-full flex flex-col items-center justify-center gap-8 z-10">
+            <!-- Context Header (Editorial Style) -->
+            <div class="w-full text-left">
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-1 block">Empfehlung für
+                    Sie</span>
+                <h2 class="text-3xl font-black font-headline tracking-tighter text-on-background leading-none">Job Match
+                </h2>
+            </div>
+            <!-- Job Card (The Modern Archivist Style) -->
+            <div class="relative w-full aspect-[3/4] group">
+                <!-- Stack Effect -->
+                <div class="absolute inset-0 bg-surface-container-low translate-y-4 scale-95 rounded-xl -z-10"></div>
+                <div class="absolute inset-0 bg-surface-container-high translate-y-2 scale-[0.975] rounded-xl -z-10">
+                </div>
+                <div
+                    class="w-full h-full bg-surface-container-lowest rounded-xl overflow-hidden swipe-card-shadow flex flex-col border border-outline-variant/10">
+                    <!-- Image Section -->
+                    <div class="relative h-2/3 w-full">
+                        <img class="w-full h-full object-cover"
+                            data-alt="modern construction site with concrete pillars and steel beams under a clear bright sky professional architectural photography"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnTUuqPzNFotP3LMXwG5m-cCOo9DkSE8FQOXKMPaDCwWfte0OFJR6tYnJuoGJX5PljtVr0x_iV8T-iX5erzX2QbNA4IEJG9PXu7wPqTlvWogtpj0qZvz_nEFuiHKRmQz1MC_S-AYiUbB1aYMWTUS0UY7O8u9atUW793v7-NY020XDEp1BziqAlLyWlnHYJhYy_EHFHmS688ZhIFyQswbqvXdaV3qpqstkKgedUWuVybzugO864BBVoARyJ_OIlMlXoDAmZrCKaIfw" />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-on-background/80 via-transparent to-transparent">
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span
+                                    class="px-2 py-1 bg-primary text-[10px] font-bold text-white uppercase tracking-widest rounded-sm">Vollzeit</span>
+                                <span
+                                    class="px-2 py-1 bg-white/20 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-widest rounded-sm">Eschwege</span>
+                            </div>
+                            <h3
+                                class="text-2xl font-black text-white font-headline leading-tight tracking-tighter uppercase">
+                                Bauleiter (m/w/d)</h3>
+                            <p class="text-white/80 font-medium text-sm">Werra-Bau GmbH</p>
+                        </div>
+                    </div>
+                    <!-- Content Section -->
+                    <div class="p-6 flex flex-col gap-4">
+                        <div class="flex justify-between items-start">
+                            <div class="space-y-1">
+                                <p class="text-xs font-bold uppercase tracking-wider text-secondary/60">Anforderungen
+                                </p>
+                                <p class="text-sm text-on-surface font-medium leading-relaxed">Bauingenieurwesen Studium
+                                    oder vergleichbare Qualifikation. Mind. 3 Jahre Erfahrung.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <span
+                                class="text-[10px] font-semibold text-on-secondary-container bg-secondary-container px-2 py-1 rounded">Hochbau</span>
+                            <span
+                                class="text-[10px] font-semibold text-on-secondary-container bg-secondary-container px-2 py-1 rounded">Projektleitung</span>
+                            <span
+                                class="text-[10px] font-semibold text-on-secondary-container bg-secondary-container px-2 py-1 rounded">CAD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-center gap-6 w-full">
+                <!-- Reject Button -->
+                <button
+                    class="w-16 h-16 rounded-full bg-white shadow-lg border border-outline-variant/15 flex items-center justify-center text-slate-400 transition-all hover:text-on-background active:scale-90 duration-150">
+                    <span class="material-symbols-outlined text-3xl" data-icon="close">close</span>
+                </button>
+                <!-- Info Button -->
+                <button
+                    class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-secondary transition-all hover:bg-surface-container-high active:scale-90 duration-150">
+                    <span class="material-symbols-outlined" data-icon="info">info</span>
+                </button>
+                <!-- Like Button (Gradient Primary) -->
+                <button
+                    class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-container shadow-lg shadow-primary/20 flex items-center justify-center text-white transition-all hover:scale-110 active:scale-90 duration-150">
+                    <span class="material-symbols-outlined text-3xl" data-icon="favorite"
+                        style="font-variation-settings: 'FILL' 1;">favorite</span>
+                </button>
+            </div>
+        </div>
+        <!-- Tonal Sectioning Element -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-surface-container-low to-transparent -z-20">
+        </div>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe pt-2 border-t border-slate-900/5 dark:border-slate-50/5 bg-white dark:bg-slate-950 shadow-[0_-4px_24px_rgba(27,59,90,0.04)]">
+        <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 py-1 px-3 transition-all hover:bg-slate-50 dark:hover:bg-slate-900"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="explore">explore</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Entdecken</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-red-600 dark:text-red-500 bg-red-50/50 dark:bg-red-950/20 rounded-md py-1 px-3 transition-all"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="work"
+                style="font-variation-settings: 'FILL' 1;">work</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Jobs</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 py-1 px-3 transition-all hover:bg-slate-50 dark:hover:bg-slate-900"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="event">event</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Events</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 py-1 px-3 transition-all hover:bg-slate-50 dark:hover:bg-slate-900"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="newspaper">newspaper</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Aktuelles</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 py-1 px-3 transition-all hover:bg-slate-50 dark:hover:bg-slate-900"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="map">map</span>
+            <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-wider mt-1">Karte</span>
+        </a>
+    </nav>
+</body>
+
+</html>

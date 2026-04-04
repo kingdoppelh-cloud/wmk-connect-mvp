@@ -1,0 +1,139 @@
+<!-- Match-Erfolg! (Redux) -->
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Match Success | Civic Architect</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;800;900&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { "colors": { "surface": "#f8f9ff", "surface-variant": "#d1e4ff", "primary-fixed": "#ffdad5", "tertiary-fixed-dim": "#a1c9ff", "secondary-fixed": "#d1e4ff", "on-secondary-fixed-variant": "#2a4968", "outline-variant": "#e8bdb7", "secondary-container": "#b9d7fd", "surface-container-low": "#eef4ff", "tertiary-fixed": "#d2e4ff", "on-primary-fixed": "#410001", "on-error": "#ffffff", "primary-fixed-dim": "#ffb4aa", "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "inverse-primary": "#ffb4aa", "tertiary-container": "#0076cb", "outline": "#926e6a", "on-error-container": "#93000a", "on-background": "#001d35", "on-secondary-fixed": "#001d35", "error-container": "#ffdad6", "surface-container-highest": "#d1e4ff", "surface-container-high": "#dbe9ff", "on-primary-container": "#fff9f8", "surface-dim": "#c2dcff", "on-secondary-container": "#405e7e", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#004880", "background": "#f8f9ff", "on-primary-fixed-variant": "#930006", "on-surface-variant": "#5e3f3b", "secondary-fixed-dim": "#abc9ef", "on-tertiary-fixed": "#001c37", "on-tertiary-container": "#fafaff", "inverse-surface": "#103251", "surface-tint": "#c0000c", "surface-bright": "#f8f9ff", "inverse-on-surface": "#e9f1ff", "on-primary": "#ffffff", "primary": "#b9000b", "secondary": "#436182", "surface-container": "#e4efff", "error": "#ba1a1a", "primary-container": "#e31a1a", "on-surface": "#001d35", "tertiary": "#005da2" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "fontFamily": { "headline": ["Public Sans"], "body": ["Inter"], "label": ["Inter"] } } }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .celebration-bg {
+            background: radial-gradient(circle at center, #1B3B5A 0%, #001d35 100%);
+        }
+
+        .particle-overlay {
+            background-image: radial-gradient(circle, rgba(227, 26, 26, 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .match-gradient {
+            background: linear-gradient(135deg, #b9000b 0%, #e31a1a 100%);
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="font-body bg-on-background text-white min-h-screen overflow-hidden selection:bg-primary-container selection:text-white">
+    <header
+        class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 shadow-[0px_12px_32px_rgba(27,59,90,0.06)] hidden md:flex">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-red-600">account_balance</span>
+            <span class="text-xl font-bold tracking-tighter text-slate-900 font-headline">Civic Architect</span>
+        </div>
+    </header>
+    <main class="relative min-h-screen w-full flex flex-col items-center justify-center celebration-bg px-6">
+        <div class="absolute inset-0 particle-overlay opacity-30 pointer-events-none"></div>
+        <div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-tertiary/20 blur-[120px] rounded-full"></div>
+        <div class="relative z-10 w-full max-w-lg text-center">
+            <div
+                class="mb-12 inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/10">
+                <span class="material-symbols-outlined text-primary-container text-sm"
+                    style="font-variation-settings: 'FILL' 1;">celebration</span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] font-label">Verbindung Bestätigt</span>
+            </div>
+            <div class="flex justify-center items-center mb-16 relative">
+                <div class="relative z-20 -mr-6">
+                    <div
+                        class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-on-background overflow-hidden shadow-2xl">
+                        <img alt="User Profile" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjA7ayBC_TP2F-hdxLqE2BnCQHCeH3IfkyWEKT2onGSe1s6Bbf390ZRh37p3y-6h2boUsHvEIlhvcI_erktFekHmucgdEhpGh06z8_ovlUSYnMSXAHxXXILzsBFGpTyiYL0JQsKHgQXFo9alJdbgJNEITVD2_kvBL1q64QRXRKGcPU5FMuveiF-uhnJIvSfdH6mvgeFfH4cDFOfq9BXrxVlxdI03G0j5-QsmSt3d9ThYTryZ6J2FwyFwjI1gtOcow0npWXThSA8z4" />
+                    </div>
+                    <div
+                        class="absolute -bottom-2 -right-2 bg-primary-container p-2 rounded-full shadow-lg border-2 border-on-background">
+                        <span class="material-symbols-outlined text-white text-base">person</span>
+                    </div>
+                </div>
+                <div
+                    class="absolute z-30 bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl border-4 border-on-background">
+                    <span class="material-symbols-outlined text-primary text-3xl"
+                        style="font-variation-settings: 'FILL' 1;">favorite</span>
+                </div>
+                <div class="relative z-20 -ml-6">
+                    <div
+                        class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-on-background overflow-hidden shadow-2xl bg-white flex items-center justify-center">
+                        <img alt="WMK Bauholding Logo" class="w-full h-full object-cover opacity-90"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0hsy89LnGQqfMIEDLnkChFU-r1aJpkYfDR5xwZANKZzuHkrev4cekAtG09CeCTrJ8OJuVEQcpHHwoN55udIxrWpRIuD4WMrXurVzozwovVf7UOfg9UtCOYPjmM6IRMT2c0CFjLQhWvkQy4nGDLnvnUL81g1mrNzWO7BD3wifRFXer-lh_YCz6e-vUk6yYSE5sZ5HgxdBr59TYdAsLvTVFgbMQZuanvs5p8Ny44gkXa56Hbxg93LVuiduxEfQatXzLztVN8zlpB7Q" />
+                    </div>
+                    <div
+                        class="absolute -bottom-2 -left-2 bg-tertiary p-2 rounded-full shadow-lg border-2 border-on-background">
+                        <span class="material-symbols-outlined text-white text-base">business</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6 max-w-sm mx-auto">
+                <h1 class="text-4xl md:text-5xl font-black font-headline tracking-tighter leading-none">Es ist ein
+                    Match!</h1>
+                <p class="text-surface-variant/80 text-lg md:text-xl font-light leading-relaxed">Die <span
+                        class="font-bold text-white">WMK Bauholding</span> möchte dich kennenlernen. Starte jetzt den
+                    Dialog.</p>
+            </div>
+            <div class="mt-12 flex flex-col gap-4 items-center">
+                <button
+                    class="match-gradient w-full py-5 rounded-xl text-lg font-bold tracking-tight text-white shadow-[0px_8px_24px_rgba(227,26,26,0.3)] active:scale-95 transition-all duration-200 flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined">send</span>Jetzt Nachricht senden
+                </button>
+                <button
+                    class="w-full py-4 text-surface-variant font-medium hover:text-white transition-colors active:scale-95 duration-200 font-label tracking-wide">Später
+                    weitersuchen</button>
+            </div>
+        </div>
+    </main>
+    <nav
+        class="fixed bottom-0 w-full z-50 bg-white/80 backdrop-blur-xl rounded-t-lg shadow-[0px_-12px_32px_rgba(27,59,90,0.06)] md:hidden">
+        <div class="flex justify-around items-center h-20 px-4 pb-safe w-full">
+            <div
+                class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-900 transition-all active:scale-90 duration-200">
+                <span class="material-symbols-outlined">explore</span><span
+                    class="text-[10px] uppercase font-bold tracking-widest mt-1">Discover</span></div>
+            <div
+                class="flex flex-col items-center justify-center text-red-600 scale-110 active:scale-90 transition-transform duration-200">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">work</span><span
+                    class="text-[10px] uppercase font-bold tracking-widest mt-1">Jobs</span></div>
+            <div
+                class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-900 transition-all active:scale-90 duration-200">
+                <span class="material-symbols-outlined">event</span><span
+                    class="text-[10px] uppercase font-bold tracking-widest mt-1">Events</span></div>
+            <div
+                class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-900 transition-all active:scale-90 duration-200">
+                <span class="material-symbols-outlined">newspaper</span><span
+                    class="text-[10px] uppercase font-bold tracking-widest mt-1">News</span></div>
+            <div
+                class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-900 transition-all active:scale-90 duration-200">
+                <span class="material-symbols-outlined">map</span><span
+                    class="text-[10px] uppercase font-bold tracking-widest mt-1">Map</span></div>
+        </div>
+    </nav>
+</body>
+
+</html>

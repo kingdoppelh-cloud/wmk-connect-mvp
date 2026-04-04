@@ -1,0 +1,329 @@
+<!-- WMK Connect Hub V3 (The Ultimate) -->
+<!DOCTYPE html>
+
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#d8e3fa",
+                        "primary": "#002542",
+                        "secondary": "#b52426",
+                        "inverse-on-surface": "#f3f0f0",
+                        "outline": "#73777e",
+                        "surface-variant": "#e4e2e1",
+                        "on-tertiary-fixed": "#111c2c",
+                        "surface-container-highest": "#e4e2e1",
+                        "tertiary-container": "#2f3a4c",
+                        "secondary-container": "#ff5a55",
+                        "inverse-primary": "#abc9ef",
+                        "secondary-fixed": "#ffdad6",
+                        "on-secondary-fixed": "#410003",
+                        "on-error-container": "#93000a",
+                        "surface": "#fbf9f8",
+                        "outline-variant": "#c3c6ce",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#abc9ef",
+                        "surface-container": "#f0eded",
+                        "primary-container": "#1b3b5a",
+                        "on-error": "#ffffff",
+                        "on-background": "#1b1c1c",
+                        "background": "#fbf9f8",
+                        "on-surface-variant": "#43474d",
+                        "on-surface": "#1b1c1c",
+                        "surface-container-low": "#f6f3f2",
+                        "tertiary": "#192435",
+                        "surface-container-high": "#eae8e7",
+                        "on-secondary-fixed-variant": "#920212",
+                        "tertiary-fixed-dim": "#bcc7dd",
+                        "surface-tint": "#436182",
+                        "on-tertiary-container": "#99a4b9",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "on-secondary-container": "#600008",
+                        "surface-dim": "#dcd9d9",
+                        "on-primary-container": "#87a5ca",
+                        "primary-fixed": "#d1e4ff",
+                        "inverse-surface": "#303030",
+                        "surface-bright": "#fbf9f8",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#2a4968",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#001d35"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 w-full z-50 bg-[#fbf9f8]/80 dark:bg-[#192435]/80 backdrop-blur-md shadow-[0_40px_60px_-15px_rgba(0,37,66,0.04)] flex justify-between items-center px-6 py-4 w-full">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+            <span class="text-2xl font-black text-[#002542] dark:text-white tracking-tighter uppercase">WMK
+                Connect</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+        </div>
+    </header>
+    <main class="pt-24 px-6 max-w-7xl mx-auto space-y-12">
+        <!-- Hero Section: Swipe Jobs -->
+        <section class="relative group overflow-hidden rounded-xl h-[500px] flex items-end">
+            <div class="absolute inset-0 z-0">
+                <img alt="Modern office workplace"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    data-alt="Modern brightly lit open-plan office with clean wooden desks, ergonomic chairs, and large windows overlooking a city skyline at morning"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN3hYYJGprA9e8T3TljgFWd_et5WYMD1q_ELMCGehT35PSw2CWG4JCUzDwId8VKrPckmHrxeC4O6i90GwqiaLXMP6jUOlUopleCpfksKjjJdlAnrV9T96TD3qT8hpNYkORhjQAjbNdyBBkoXKXT2nNlmvTc0k-OIrYDyRf6xgQD1ePytBECVBYQl1nenu9qLgP8Mxjelptqcrh6js5Z3mT7pzwy8O0Y_Vi5H71jYzXO4vwDdvVB4v7HPA4mY6Q8yxIFjGU7IAgUSk" />
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
+            </div>
+            <div class="relative z-10 p-8 md:p-12 max-w-2xl">
+                <p class="text-on-primary/80 uppercase tracking-widest font-bold text-xs mb-3">Deine Zukunft im Kreis
+                </p>
+                <h1 class="text-4xl md:text-6xl font-black text-on-primary mb-6 tracking-tight leading-none">Swipe-Jobs
+                    entdecken</h1>
+                <p class="text-on-primary/90 text-lg mb-8 font-medium leading-relaxed">Finde die besten Karrierechancen
+                    in deiner Region mit nur einem Swipe. Schnell, einfach und direkt.</p>
+                <button
+                    class="bg-secondary hover:bg-secondary-container text-on-secondary px-8 py-4 rounded-xl font-bold flex items-center gap-3 transition-all active:scale-95 shadow-lg">
+                    Jetzt swipen
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+                </button>
+            </div>
+        </section>
+        <!-- Statistics Row -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-surface-container-low p-8 rounded-xl border-l-4 border-primary">
+                <p class="text-4xl font-black text-primary tracking-tighter">1.5k+</p>
+                <p class="text-on-surface-variant font-bold uppercase tracking-wider text-xs mt-2">Partner Unternehmen
+                </p>
+            </div>
+            <div class="bg-surface-container-low p-8 rounded-xl border-l-4 border-secondary">
+                <p class="text-4xl font-black text-secondary tracking-tighter">900+</p>
+                <p class="text-on-surface-variant font-bold uppercase tracking-wider text-xs mt-2">Aktuelle
+                    Stellenangebote</p>
+            </div>
+            <div class="bg-surface-container-low p-8 rounded-xl border-l-4 border-tertiary">
+                <p class="text-4xl font-black text-tertiary tracking-tighter">12k+</p>
+                <p class="text-on-surface-variant font-bold uppercase tracking-wider text-xs mt-2">Aktive Nutzer</p>
+            </div>
+        </section>
+        <!-- Business Registration & Call to Action -->
+        <section class="grid md:grid-cols-5 gap-8 items-center">
+            <div class="md:col-span-3 bg-surface-container-high p-8 md:p-12 rounded-xl">
+                <div class="flex items-start gap-6">
+                    <div class="bg-primary p-4 rounded-xl text-on-primary shrink-0">
+                        <span class="material-symbols-outlined text-4xl"
+                            data-icon="corporate_fare">corporate_fare</span>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-black text-primary mb-4 tracking-tight">Firma eintragen</h2>
+                        <p class="text-on-surface-variant text-lg leading-relaxed mb-6">Präsentieren Sie Ihr Unternehmen
+                            im Herzen des Werra-Meißner-Kreises. Werden Sie Teil unseres starken regionalen Netzwerks
+                            und finden Sie lokale Talente.</p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center gap-3 font-semibold text-primary">
+                                <span class="material-symbols-outlined text-sm"
+                                    data-icon="check_circle">check_circle</span> Sichtbarkeit in der Region erhöhen
+                            </li>
+                            <li class="flex items-center gap-3 font-semibold text-primary">
+                                <span class="material-symbols-outlined text-sm"
+                                    data-icon="check_circle">check_circle</span> Direkter Kontakt zu Fachkräften
+                            </li>
+                        </ul>
+                        <button
+                            class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold hover:bg-primary-container transition-colors">Jetzt
+                            registrieren</button>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-2 space-y-4">
+                <div class="bg-primary-container/10 p-8 rounded-xl flex flex-col justify-center h-full text-center">
+                    <span class="material-symbols-outlined text-primary text-5xl mb-4" data-icon="hub">hub</span>
+                    <h3 class="text-xl font-bold text-primary mb-2">Regionales Hub</h3>
+                    <p class="text-sm text-on-surface-variant">Die zentrale Schnittstelle zwischen Wirtschaft, Bildung
+                        und Gemeinschaft.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Regional News: Editorial Section -->
+        <section class="space-y-8">
+            <div class="flex justify-between items-end">
+                <div>
+                    <p class="text-secondary font-bold uppercase tracking-widest text-xs">Aktuelles</p>
+                    <h2 class="text-4xl font-black text-primary tracking-tight">Regionale News</h2>
+                </div>
+                <button
+                    class="text-primary font-bold border-b-2 border-primary pb-1 flex items-center gap-2 text-sm">Alle
+                    Artikel <span class="material-symbols-outlined text-sm"
+                        data-icon="open_in_new">open_in_new</span></button>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Feature Card -->
+                <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm flex flex-col">
+                    <div class="h-64 overflow-hidden relative">
+                        <img alt="Regional networking event" class="w-full h-full object-cover"
+                            data-alt="Group of diverse professionals engaging in a networking conversation at a high-end tech conference with warm interior lighting"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvP9lv3ax36UzQp8Zx5PWlKQ7fKFTIJQhMLSdc9-va1IHrEDneaFJQT0j8iuXz4NeNKYj_DgKn0x5tUArVuPuLt0ovcaL6-Nzfk7K3eL1IuMktctpdJZRIEB8UfRJWKc7XIw7dMv_LoRuUJ3sMj4eu8mRA6_Ut0Mw3me0FCazMxBnNg0xKfav-Hzp0uXonUiCbsUmSQzM6I3t1mXJDRFYkQ5g46q6xiwH2JajaUizuZlEErh0AKASf8qoeAaRCcnYGJOBxdbdXQDo" />
+                        <span
+                            class="absolute top-4 left-4 bg-secondary text-on-secondary px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest">Top
+                            News</span>
+                    </div>
+                    <div class="p-8">
+                        <time class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">12. OKT
+                            2023</time>
+                        <h3 class="text-2xl font-black text-primary mt-3 mb-4 leading-tight">Zukunftsdialog:
+                            Digitalisierung im Handwerk</h3>
+                        <p class="text-on-surface-variant leading-relaxed">Wie lokale Betriebe von der neuen Vernetzung
+                            profitieren und welche Fördermittel jetzt im Kreis bereitstehen.</p>
+                        <button
+                            class="mt-6 text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all">Weiterlesen
+                            <span class="material-symbols-outlined" data-icon="east">east</span></button>
+                    </div>
+                </div>
+                <!-- Secondary News List -->
+                <div class="space-y-6">
+                    <div
+                        class="flex gap-6 items-center group cursor-pointer bg-surface-container-low/50 p-4 rounded-xl hover:bg-surface-container-low transition-colors">
+                        <div class="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
+                            <img alt="Education center"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                data-alt="Modern architectural detail of a library or learning center with clean lines and large glass facades"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCziUFfcFNCMumvoWAhbF0gdPVV1vM4O7RJAjOSsOWEByt277Uk18S9gIhHjxztqjyCTE4uKecS4iNwpxbuZA212OIvbOhHs1F8G1ACnKGCA80t1z6iHkQE4XRCHvyqobqURz9fwvEOwnZLvDXcOpFHB5T6J1UnRd0bXPzzzgFEHVuTRBAtYIGXwlkoYg6733kvYHrCgizY3c9oYVfRI59EAbX4j8jNnNTAQLmz1hb8-0-ct4mucrHuUK5pbRIpmaNLgd-_3PgbNhc" />
+                        </div>
+                        <div>
+                            <time class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">08.
+                                OKT 2023</time>
+                            <h4 class="text-lg font-bold text-primary mt-1 leading-tight">Neues Gründerzentrum in
+                                Eschwege eröffnet</h4>
+                        </div>
+                    </div>
+                    <div
+                        class="flex gap-6 items-center group cursor-pointer bg-surface-container-low/50 p-4 rounded-xl hover:bg-surface-container-low transition-colors">
+                        <div class="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
+                            <img alt="Business team"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                data-alt="Professional business team collaborating in a modern glass-walled meeting room with sunlight streaming in"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX7m3lI9pD8xY5kMG-rMQ50msHZVsCNXUhaL_oR9kUYrVbZ-BbrniLcW55n-n-oI1xFgNI_cW1F_Scu4luNDAlPPhWpvSsxlA9dcyh6ScQb2lix0kgf-9-sbq7dXn82tOqhnoBxWg_W6Em141jN746NdjGmcI3MXxpNzf4FLZH1gK-7Y2KqMrSxryGowbfRTJe_buG2FEbi7o4T5lHZJ_EwBDHVfXmXWIRC3FT-YsbHTZn77xfiYIQNclptyFoOmjUKTDSK-t2RLg" />
+                        </div>
+                        <div>
+                            <time class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">05.
+                                OKT 2023</time>
+                            <h4 class="text-lg font-bold text-primary mt-1 leading-tight">Fachkräftemangel: Strategien
+                                für den Mittelstand</h4>
+                        </div>
+                    </div>
+                    <div
+                        class="flex gap-6 items-center group cursor-pointer bg-surface-container-low/50 p-4 rounded-xl hover:bg-surface-container-low transition-colors">
+                        <div class="w-32 h-24 shrink-0 rounded-lg overflow-hidden">
+                            <img alt="Office workspace"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                data-alt="Overhead view of a person working on a laptop at a clean wooden desk with coffee and notebooks"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1iPnUwvMUY1zi21N2X3RxjvMNvDk2a3mN2M0J-lnUFxKKj8X2hR-Tk-YsD4B5TIuio5U51qYEhsC1wHV_By-LtFD8IkFqXk8rurPV-HuZefREPkA6EaUmi7NW9h_GCTLmAyeaoTF_19u5xUEZiWQKREXZycNfxkDF97ky17gSfQvT5Eeulc7UPQTmp07dEwG5rIE_7wvFSptLHi8r2HNRPNAI3g9JP0gEJdH-Zb4r-SUahpOZGa3n12uVC5c8hWidKpssV2NnpTM" />
+                        </div>
+                        <div>
+                            <time class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">01.
+                                OKT 2023</time>
+                            <h4 class="text-lg font-bold text-primary mt-1 leading-tight">Remote Work: Trends im
+                                ländlichen Raum</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Installation Snackbar/Banner -->
+    <div class="fixed bottom-24 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-lg z-40">
+        <div
+            class="bg-tertiary text-on-tertiary p-4 rounded-xl shadow-2xl flex items-center justify-between border border-white/10 backdrop-blur-sm">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+                    <span class="text-xs font-black uppercase tracking-tighter">WMK</span>
+                </div>
+                <div>
+                    <p class="font-bold text-sm">Connect App installieren</p>
+                    <p class="text-[10px] opacity-70">Jobs und News direkt aufs Handy.</p>
+                </div>
+            </div>
+            <button
+                class="bg-secondary text-on-secondary px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider">Holen</button>
+        </div>
+    </div>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#fbf9f8]/80 dark:bg-[#192435]/80 backdrop-blur-md shadow-[0_-10px_40px_rgba(0,0,0,0.03)] z-50 rounded-t-xl">
+        <a class="flex flex-col items-center justify-center text-[#b52426] bg-[#ffffff]/60 dark:bg-[#ffffff]/5 rounded-xl px-3 py-1"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="explore">explore</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest mt-1">Entdecken</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#1b3b5a] dark:text-slate-400 opacity-60 hover:opacity-100 transition-opacity"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="work">work</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest mt-1">Jobs</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#1b3b5a] dark:text-slate-400 opacity-60 hover:opacity-100 transition-opacity"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="event">event</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest mt-1">Events</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#1b3b5a] dark:text-slate-400 opacity-60 hover:opacity-100 transition-opacity"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="newspaper">newspaper</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest mt-1">Aktuelles</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-[#1b3b5a] dark:text-slate-400 opacity-60 hover:opacity-100 transition-opacity"
+            href="#">
+            <span class="material-symbols-outlined" data-icon="map">map</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest mt-1">Karte</span>
+        </a>
+    </nav>
+</body>
+
+</html>

@@ -1,0 +1,264 @@
+<!-- Kandidaten-Profil (Admin Redux) -->
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Candidate Profile - Elena Fischer | Civic Architect</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { "colors": { "surface": "#f8f9ff", "surface-variant": "#d1e4ff", "primary-fixed": "#ffdad5", "tertiary-fixed-dim": "#a1c9ff", "secondary-fixed": "#d1e4ff", "on-secondary-fixed-variant": "#2a4968", "outline-variant": "#e8bdb7", "secondary-container": "#b9d7fd", "surface-container-low": "#eef4ff", "tertiary-fixed": "#d2e4ff", "on-primary-fixed": "#410001", "on-error": "#ffffff", "primary-fixed-dim": "#ffb4aa", "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "inverse-primary": "#ffb4aa", "tertiary-container": "#0076cb", "outline": "#926e6a", "on-error-container": "#93000a", "on-background": "#001d35", "on-secondary-fixed": "#001d35", "error-container": "#ffdad6", "surface-container-highest": "#d1e4ff", "surface-container-high": "#dbe9ff", "on-primary-container": "#fff9f8", "surface-dim": "#c2dcff", "on-secondary-container": "#405e7e", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#004880", "background": "#f8f9ff", "on-primary-fixed-variant": "#930006", "on-surface-variant": "#5e3f3b", "secondary-fixed-dim": "#abc9ef", "on-tertiary-fixed": "#001c37", "on-tertiary-container": "#fafaff", "inverse-surface": "#103251", "surface-tint": "#c0000c", "surface-bright": "#f8f9ff", "inverse-on-surface": "#e9f1ff", "on-primary": "#ffffff", "primary": "#b9000b", "secondary": "#436182", "surface-container": "#e4efff", "error": "#ba1a1a", "primary-container": "#e31a1a", "on-surface": "#001d35", "tertiary": "#005da2" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "fontFamily": { "headline": ["Public Sans"], "body": ["Inter"], "label": ["Inter"] } } }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #b9000b 0%, #e31a1a 100%);
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(24px);
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-background min-h-screen pb-32">
+    <header class="fixed top-0 w-full z-50 glass-header shadow-[0px_12px_32px_rgba(27,59,90,0.06)]">
+        <div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-red-600">account_balance</span>
+                <h1 class="text-xl font-bold tracking-tighter text-slate-900 font-headline">Civic Architect</h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <nav class="hidden md:flex gap-8 items-center text-slate-500 font-body">
+                    <a class="text-red-600 font-bold hover:text-red-700 transition-colors" href="#">Discover</a>
+                    <a class="hover:text-red-700 transition-colors" href="#">Jobs</a>
+                    <a class="hover:text-red-700 transition-colors" href="#">Events</a>
+                </nav>
+                <div class="h-8 w-8 rounded-full overflow-hidden">
+                    <img alt="Admin Avatar"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvky3zX93a3_hxjizMCof6FiGoG0IeN9ERSfo1qFmW9SXmDj1gPYjLej9pANHSlP8JMADiSnqJyTYkqf_CvtDf2GdFck4fNowkSsHYRv8SkBsBcL-YdgN4c6pjv2mJbK79Qa9Fwfrzn2QZ4f5Xt1Nre-9RC6-NktxNYCXPf8FfOWxDiWoy3bu310m1UfgynXiicmbt8iRiG2wkie0qWfj4do4GVjkWo0oQuvnlbJTVw-EnzB4vZOBEh3AKRT8QUOwiLnEsT3VKmNE" />
+                </div>
+            </div>
+        </div>
+        <div class="bg-slate-100 h-[1px] w-full"></div>
+    </header>
+    <main class="pt-24 px-4 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-12">
+            <div
+                class="bg-surface-container-lowest p-8 flex flex-col md:flex-row items-center md:items-end gap-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 text-right">
+                    <div class="text-sm font-label uppercase tracking-[0.2em] text-secondary">Compatibility Score</div>
+                    <div class="text-6xl font-headline font-extrabold text-primary tracking-tighter">96%</div>
+                    <div class="text-xs font-medium text-secondary mt-1">Excellent Match for Senior Architect</div>
+                </div>
+                <div class="relative">
+                    <div class="w-40 h-40 overflow-hidden shadow-xl ring-4 ring-surface-container-low">
+                        <img alt="Elena Fischer" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT0UwMnJKZK2ZstK3F7q0IuAq1X5z0DiMUzsNgPHrkPKWvK3XJjNCuR3j61e9efmwU69WgvOFLcBN0_j4h14SWH0I-_vAlPfn9GLGjkqldvWAVqM-WdWha2WQIvHPMlmY4-HwB2laN-d9hxvB0EyEWoqpCq65G5C24UmykbhkD4fUMCj6xrsbmy7ZML1wmVBCw7xZC1HqWlJlGKVcf__2nfab_utTNpqZsXwflNMreeZLQ8NfMxTNai6LBfSDJMsVKfMuuDbmGFEw" />
+                    </div>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <div class="flex flex-col md:flex-row md:items-center gap-2 mb-2">
+                        <h2 class="text-4xl font-headline font-bold text-on-background tracking-tight">Elena Fischer
+                        </h2>
+                        <span
+                            class="px-3 py-1 bg-surface-container-high text-tertiary text-xs font-bold uppercase tracking-widest self-center md:self-auto">Verfügbar
+                            ab 01.09</span>
+                    </div>
+                    <p class="text-xl text-secondary font-light">Senior Urban Planner &amp; Architect</p>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
+                        <div class="flex items-center gap-2 text-sm text-on-surface-variant"><span
+                                class="material-symbols-outlined text-sm">location_on</span> Berlin, DE</div>
+                        <div class="flex items-center gap-2 text-sm text-on-surface-variant"><span
+                                class="material-symbols-outlined text-sm">payments</span> 85k - 95k EUR</div>
+                        <div class="flex items-center gap-2 text-sm text-on-surface-variant"><span
+                                class="material-symbols-outlined text-sm">history</span> 8+ Years Exp.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lg:col-span-8 space-y-8">
+            <section class="bg-surface-container-high p-8 border-l-[12px] border-primary">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="material-symbols-outlined text-primary"
+                        style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    <h3 class="text-2xl font-headline font-bold text-on-background tracking-tight">Warum passt Elena?
+                    </h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex gap-4"><span class="text-primary font-bold text-lg leading-none">01</span>
+                            <div>
+                                <p class="font-bold text-on-background">Strategische Stadtplanung</p>
+                                <p class="text-sm text-on-surface-variant leading-relaxed">Ihre Erfahrung bei der
+                                    Modernisierung historischer Stadtkerne deckt sich zu 100% mit dem Projekt
+                                    "Altstadt-Revival".</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4"><span class="text-primary font-bold text-lg leading-none">02</span>
+                            <div>
+                                <p class="font-bold text-on-background">Leadership-Expertise</p>
+                                <p class="text-sm text-on-surface-variant leading-relaxed">Elena leitete bereits Teams
+                                    von 15+ Architekten in komplexen behördlichen Genehmigungsverfahren.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex gap-4"><span class="text-primary font-bold text-lg leading-none">03</span>
+                            <div>
+                                <p class="font-bold text-on-background">Software-Stack</p>
+                                <p class="text-sm text-on-surface-variant leading-relaxed">Exzellente Kenntnisse in
+                                    BIM-Methodik und Revit, was die Einarbeitungszeit um geschätzte 4 Wochen reduziert.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4"><span class="text-primary font-bold text-lg leading-none">04</span>
+                            <div>
+                                <p class="font-bold text-on-background">Kultureller Fit</p>
+                                <p class="text-sm text-on-surface-variant leading-relaxed">Starker Fokus auf
+                                    nachhaltiges Bauen und soziale Integration – Kernwerte von WMK Connect.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="bg-surface-container-lowest p-8">
+                <h3 class="text-2xl font-headline font-bold text-on-background mb-10 tracking-tight">Berufserfahrung
+                </h3>
+                <div class="relative space-y-12">
+                    <div class="absolute left-[11px] top-2 bottom-0 w-[2px] bg-surface-container-high"></div>
+                    <div class="relative pl-10">
+                        <div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-white border-4 border-primary z-10">
+                        </div>
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                            <div>
+                                <h4 class="text-lg font-bold text-on-background">Lead Urban Designer</h4>
+                                <p class="text-primary font-medium">Urban Future Lab, Berlin</p>
+                            </div>
+                            <span
+                                class="text-sm font-label text-secondary-fixed-variant bg-surface-container px-3 py-1 mt-2 md:mt-0">2020
+                                – Heute</span>
+                        </div>
+                        <p class="text-on-surface-variant text-sm leading-relaxed max-w-2xl">Leitung großangelegter
+                            Projekte zur klimaresilienten Stadtumgestaltung. Verantwortung für Budgets bis zu 12 Mio.
+                            EUR.</p>
+                    </div>
+                    <div class="relative pl-10">
+                        <div
+                            class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-white border-4 border-surface-dim z-10">
+                        </div>
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                            <div>
+                                <h4 class="text-lg font-bold text-on-background">Senior Architect</h4>
+                                <p class="text-primary font-medium">Studio Nord, Hamburg</p>
+                            </div>
+                            <span
+                                class="text-sm font-label text-secondary-fixed-variant bg-surface-container px-3 py-1 mt-2 md:mt-0">2016
+                                – 2020</span>
+                        </div>
+                        <p class="text-on-surface-variant text-sm leading-relaxed max-w-2xl">Projektleitung für Wohn-
+                            und Geschäftshäuser. Fokus auf denkmalgeschützte Sanierungen und modernen Holzbau.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="lg:col-span-4 space-y-8">
+            <section class="bg-surface-container-lowest p-8 h-full">
+                <h3 class="text-xl font-headline font-bold text-on-background mb-8 tracking-tight">Fähigkeiten &amp;
+                    Dokumente</h3>
+                <div class="mb-10">
+                    <p class="text-xs font-bold uppercase tracking-[0.15em] text-secondary mb-4">Hard Skills</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1.5 bg-surface-container text-on-secondary-container text-xs font-medium">AutoCAD
+                            Revit</span>
+                        <span
+                            class="px-3 py-1.5 bg-surface-container text-on-secondary-container text-xs font-medium">BIM
+                            Strategy</span>
+                        <span
+                            class="px-3 py-1.5 bg-surface-container text-on-secondary-container text-xs font-medium">Urban
+                            Design</span>
+                        <span
+                            class="px-3 py-1.5 bg-surface-container text-on-secondary-container text-xs font-medium">Stakeholder
+                            Mgmt</span>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.15em] text-secondary mb-4">Dokumente</p>
+                    <div class="space-y-4">
+                        <a class="group flex items-center justify-between p-4 bg-surface-container-low transition-colors hover:bg-surface-container"
+                            href="#">
+                            <div class="flex items-center gap-3"><span
+                                    class="material-symbols-outlined text-primary">description</span>
+                                <div>
+                                    <p
+                                        class="text-sm font-bold text-on-background group-hover:text-primary transition-colors">
+                                        CV_Elena_Fischer.pdf</p>
+                                    <p class="text-xs text-secondary">Letztes Update: 12.05.2023</p>
+                                </div>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-secondary opacity-50 group-hover:opacity-100">download</span>
+                        </a>
+                        <a class="group flex items-center justify-between p-4 bg-surface-container-low transition-colors hover:bg-surface-container"
+                            href="#">
+                            <div class="flex items-center gap-3"><span
+                                    class="material-symbols-outlined text-primary">verified</span>
+                                <div>
+                                    <p
+                                        class="text-sm font-bold text-on-background group-hover:text-primary transition-colors">
+                                        Master_Degree_TU.pdf</p>
+                                    <p class="text-xs text-secondary">Verifiziertes Dokument</p>
+                                </div>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-secondary opacity-50 group-hover:opacity-100">download</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <div class="fixed bottom-0 left-0 w-full z-50 glass-header border-t border-slate-100">
+        <div class="flex justify-between items-center h-24 px-6 max-w-7xl mx-auto w-full">
+            <div class="hidden md:flex flex-col">
+                <span class="text-xs uppercase tracking-widest text-secondary font-bold">Aktueller Status</span>
+                <span class="text-sm font-bold text-on-background">In Prüfung durch Recruiting-Team</span>
+            </div>
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <button
+                    class="flex-1 md:flex-none h-12 px-8 flex items-center justify-center gap-2 rounded-lg border-2 border-slate-200 text-on-surface font-bold hover:bg-slate-50 transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-sm">bookmark</span><span class="hidden sm:inline">Profil
+                        speichern</span>
+                </button>
+                <button
+                    class="flex-1 md:flex-none h-12 px-8 flex items-center justify-center gap-2 rounded-lg border-2 border-slate-200 text-on-surface font-bold hover:border-red-200 hover:text-red-600 transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-sm">close</span>Ablehnen
+                </button>
+                <button
+                    class="flex-[2] md:flex-none h-12 px-10 flex items-center justify-center gap-2 rounded-lg bg-primary-gradient text-white font-bold shadow-lg shadow-red-500/20 active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-sm">calendar_today</span>Zum Interview einladen
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
