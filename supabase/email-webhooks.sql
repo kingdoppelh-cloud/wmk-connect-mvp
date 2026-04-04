@@ -22,7 +22,7 @@ BEGIN
       url := 'https://ednlbgioxlndddlofenu.supabase.co/functions/v1/send-templated-email',
       headers := jsonb_build_object(
         'Content-Type', 'application/json',
-        'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkbmxiZ2lveGxuZGRkbG9mZW51Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDA0MDc5MSwiZXhwIjoyMDg5NjE2NzkxfQ.5VOuOFMSdASeUvyxvYpvKEnZFbJVCG1i9KC_DhMFKYM'
+        'Authorization', 'Bearer ' || '<YOUR_SERVICE_ROLE_KEY>'
       ),
       body := jsonb_build_object(
         'to', NEW.email,
@@ -56,7 +56,7 @@ BEGIN
         url := 'https://ednlbgioxlndddlofenu.supabase.co/functions/v1/send-templated-email',
         headers := jsonb_build_object(
           'Content-Type', 'application/json',
-          'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkbmxiZ2lveGxuZGRkbG9mZW51Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDA0MDc5MSwiZXhwIjoyMDg5NjE2NzkxfQ.5VOuOFMSdASeUvyxvYpvKEnZFbJVCG1i9KC_DhMFKYM'
+          'Authorization', 'Bearer ' || '<YOUR_SERVICE_ROLE_KEY>'
         ),
         body := jsonb_build_object(
           'to', candidate_email,
